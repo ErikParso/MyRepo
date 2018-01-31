@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="Kros.TroubleShooterClient.View.AutoFixModeUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Kros.TroubleShooterClient.View"
+             xmlns:myControls="clr-namespace:MyControls;assembly=MyControls"
+             xmlns:vm="clr-namespace:Kros.TroubleShooterClient.ViewModel"
+             xmlns:res="clr-namespace:Kros.TroubleShooterClient.Properties"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <vm:PercentageConverter x:Key="doubleToPercentage"/>
+        <local:BoolColorConv x:Key="boolToColor"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition  Width ="230"/>
+            
+            <ColumnDefinition  Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="180"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Background="White" Margin="3">
+            <myControls:CircularProgress Name="inner" Width="130" Height="130" StrokeThickness="20" FromColor="Pink" ToColor="LightGreen" Value="{Binding DetectProblemsProgress.Progress}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"/>
+            <myControls:CircularProgress Name="outer" Width="172" Height="172" StrokeThickness="20" FromColor="Pink" ToColor="LightGreen" Value="{Binding SolveProblemsProgress.Progress}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"/>
+            <StackPanel Name="SpProgressContext" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+                <TextBlock Text="{Binding ActualWork}" FontSize="20" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding ProgressPercentage}" FontSize="20" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+
+        <Border BorderBrush="Black" BorderThickness="1" Margin="3" Grid.Row="0" Grid.Column="1" Name="Detail"  Visibility="Hidden">
+            <ScrollViewer>
+                <ItemsControl Grid.Column="3" ItemsSource="{Binding PatchResults}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <myControls:PopupInfo MainText="{Binding Name}" ContentContext="{Binding .}" Margin="0,3,0,3" Background="{Binding ProblemFixed, Converter={StaticResource boolToColor}}">
+                                <myControls:PopupInfo.PlaceHolder>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Grid.Row="0" Margin="3"/>
+                                        <TextBlock Text="{Binding ExecutionResult}" TextWrapping="Wrap" Grid.Row="1" Margin="3"/>
+                                        <Image ToolTip="Neaplikovať túto opravu" Source="/Kros.TroubleShooterClient;component/Resources/cancel.png" Grid.Row="2" Margin="3"  Width="12" Height="13" HorizontalAlignment="Right" MouseLeftButtonUp="removePatchResult"/>
+                                    </Grid>
+                                </myControls:PopupInfo.PlaceHolder>
+                            </myControls:PopupInfo>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+
+        <Border BorderBrush="Black" BorderThickness="1" Margin="3" Grid.Row="0" Grid.Column="1" Name="Summary">
+            <Grid>
+                <Grid  HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Identifikovaných:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" FontSize="20" Margin="3"/>
+                    <TextBlock Text="Opravených:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" FontSize="20" Margin="3"/>
+                    <TextBlock Text="{Binding ProblemsFound}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" FontSize="20" Margin="3"/>
+                    <TextBlock Text="{Binding ProblemsFixed}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" FontSize="20" Margin="3"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Grid Name="modeButton" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3">
+            <Image Source="/Kros.TroubleShooterClient;component/Resources/zoom.png" Width="20" Height="20" MouseLeftButtonUp="modeChange"/>
+        </Grid>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="formModeButton" MainText="Problémy pretrvávajú ?" DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="3" Grid.Row="1" Grid.ColumnSpan="2" Click="formModeClick"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="executePatchesButton" Margin="3" MainText="Oprav" DescriptionText="{x:Static res:Resources.buttonDesc5}" Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Hotovo" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="2" Grid.ColumnSpan="2" Click="FinishClick"/>
+    </Grid>
+</UserControl>

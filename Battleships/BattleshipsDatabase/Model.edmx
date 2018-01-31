@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BattleshipsDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="GameId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Winner" Type="bigint" Nullable="false" />
+          <Property Name="Loser" Type="bigint" Nullable="false" />
+          <Property Name="Start" Type="datetime" Nullable="false" />
+          <Property Name="End" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Turns">
+          <Key>
+            <PropertyRef Name="TurnId" />
+          </Key>
+          <Property Name="TurnId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Game" Type="bigint" Nullable="false" />
+          <Property Name="Time" Type="datetime" Nullable="false" />
+          <Property Name="Player" Type="bigint" Nullable="false" />
+          <Property Name="Hit" Type="bit" Nullable="false" />
+          <Property Name="X" Type="int" Nullable="false" />
+          <Property Name="Y" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Game">
+          <End Role="Games" Type="Self.Games" Multiplicity="1" />
+          <End Role="Turns" Type="Self.Turns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="Game" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loser">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Loser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Turns" Type="Self.Turns" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Turns">
+              <PropertyRef Name="Player" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Winner">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Winner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BattleshipsDbModelStoreContainer">
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Turns" EntityType="Self.Turns" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Game" Association="Self.FK_Game">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loser" Association="Self.FK_Loser">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player" Association="Self.FK_Player">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Turns" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Winner" Association="Self.FK_Winner">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BattleshipsDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BattleshipsDbEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Games" EntityType="BattleshipsDbModel.Game" />
+          <EntitySet Name="Players" EntityType="BattleshipsDbModel.Player" />
+          <EntitySet Name="Turns" EntityType="BattleshipsDbModel.Turn" />
+          <AssociationSet Name="FK_Game" Association="BattleshipsDbModel.FK_Game">
+            <End Role="Game" EntitySet="Games" />
+            <End Role="Turn" EntitySet="Turns" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Loser" Association="BattleshipsDbModel.FK_Loser">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Winner" Association="BattleshipsDbModel.FK_Winner">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player" Association="BattleshipsDbModel.FK_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="Turn" EntitySet="Turns" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="GameId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Winner" Type="Int64" Nullable="false" />
+          <Property Name="Loser" Type="Int64" Nullable="false" />
+          <Property Name="Start" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="End" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Turns" Relationship="BattleshipsDbModel.FK_Game" FromRole="Game" ToRole="Turn" />
+          <NavigationProperty Name="LoserRef" Relationship="BattleshipsDbModel.FK_Loser" FromRole="Game" ToRole="Player" />
+          <NavigationProperty Name="WinnerRef" Relationship="BattleshipsDbModel.FK_Winner" FromRole="Game" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="LostGames" Relationship="BattleshipsDbModel.FK_Loser" FromRole="Player" ToRole="Game" />
+          <NavigationProperty Name="WonGames" Relationship="BattleshipsDbModel.FK_Winner" FromRole="Player" ToRole="Game" />
+          <NavigationProperty Name="Turns" Relationship="BattleshipsDbModel.FK_Player" FromRole="Player" ToRole="Turn" />
+        </EntityType>
+        <EntityType Name="Turn">
+          <Key>
+            <PropertyRef Name="TurnId" />
+          </Key>
+          <Property Name="TurnId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Game" Type="Int64" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Player" Type="Int64" Nullable="false" />
+          <Property Name="Hit" Type="Boolean" Nullable="false" />
+          <Property Name="X" Type="Int32" Nullable="false" />
+          <Property Name="Y" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="GameRef" Relationship="BattleshipsDbModel.FK_Game" FromRole="Turn" ToRole="Game" />
+          <NavigationProperty Name="PlayerRef" Relationship="BattleshipsDbModel.FK_Player" FromRole="Turn" ToRole="Player" />
+        </EntityType>
+        <Association Name="FK_Game">
+          <End Type="BattleshipsDbModel.Game" Role="Game" Multiplicity="1" />
+          <End Type="BattleshipsDbModel.Turn" Role="Turn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="Turn">
+              <PropertyRef Name="Game" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Loser">
+          <End Type="BattleshipsDbModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="BattleshipsDbModel.Game" Role="Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="Loser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Winner">
+          <End Type="BattleshipsDbModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="BattleshipsDbModel.Game" Role="Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="Winner" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player">
+          <End Type="BattleshipsDbModel.Player" Role="Player" Multiplicity="1" />
+          <End Type="BattleshipsDbModel.Turn" Role="Turn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Turn">
+              <PropertyRef Name="Player" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BattleshipsDbModelStoreContainer" CdmEntityContainer="BattleshipsDbEntities">
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="BattleshipsDbModel.Game">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="End" ColumnName="End" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="Loser" ColumnName="Loser" />
+                <ScalarProperty Name="Winner" ColumnName="Winner" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="BattleshipsDbModel.Player">
+              <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Turns">
+            <EntityTypeMapping TypeName="BattleshipsDbModel.Turn">
+              <MappingFragment StoreEntitySet="Turns">
+                <ScalarProperty Name="Y" ColumnName="Y" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="Hit" ColumnName="Hit" />
+                <ScalarProperty Name="Player" ColumnName="Player" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Game" ColumnName="Game" />
+                <ScalarProperty Name="TurnId" ColumnName="TurnId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

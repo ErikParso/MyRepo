@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="BattleshipsClient.UserControls.StatsUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BattleshipsClient.UserControls"
+             xmlns:myControls="clr-namespace:MyControls;assembly=MyControls"
+             mc:Ignorable="d" Background="White">
+    <UserControl.Resources>
+        <Style TargetType="DataGridCell" BasedOn="{StaticResource {x:Type DataGridCell}}">
+            <Setter Property="Foreground" Value="Black" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Setter Property="BorderBrush" Value="Transparent"  />
+                    <Setter Property="Foreground" Value="Black" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="{Binding Me.Name}" FontSize="20" Margin="5" Grid.Row="0"/>
+            <Label FontSize="20"  HorizontalAlignment="Right" Content="Wins " Grid.Row="1" Grid.Column="0"/>
+            <Label FontSize="20"  HorizontalAlignment="Left" Content="{Binding Me.Wins}" Grid.Row="1" Grid.Column="1"/>
+            <Label FontSize="20"  HorizontalAlignment="Right" Content="Loses " Grid.Row="2" Grid.Column="0"/>
+            <Label FontSize="20"  HorizontalAlignment="Left" Content="{Binding Me.Loses}" Grid.Row="2" Grid.Column="1"/>
+            <Label FontSize="20" HorizontalAlignment="Right" Content="Rank " Grid.Row="3" Grid.Column="0"/>
+            <Label FontSize="20"  HorizontalAlignment="Left" Content="{Binding Me.Rank}" Grid.Row="3" Grid.Column="1"/>
+            <ScrollViewer Grid.Row="4" Grid.ColumnSpan="2" Margin="3">
+                <DataGrid ItemsSource="{Binding Games}" AutoGenerateColumns="False" Background="Transparent" GridLinesVisibility="None" IsReadOnly="True">
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Result}" Value="True">
+                                    <Setter Property="Background" Value="LightGreen"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Result}" Value="False">
+                                    <Setter Property="Background" Value="LightPink"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Start" Binding="{Binding Path=Start}" Width="Auto"/>
+                        <DataGridTextColumn Header="End" Binding="{Binding Path=End}" Width="Auto"/>
+                        <DataGridTextColumn Header="Opponent" Binding="{Binding Path=Opponent}" Width="Auto"/>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="R" Click="ReplayClick" Margin="3"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </ScrollViewer>
+        </Grid>
+        <ScrollViewer Grid.Row="0" Grid.Column="1" Margin="3">
+            <DataGrid ItemsSource="{Binding Players}" AutoGenerateColumns="False" Background="Transparent" GridLinesVisibility="None" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Rank" Binding="{Binding Path=Rank}" Width="0.25*"/>
+                    <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}" Width="0.25*"/>
+                    <DataGridTextColumn Header="Wins" Binding="{Binding Path=Wins}" Width="0.25*"/>
+                    <DataGridTextColumn Header="Loses" Binding="{Binding Path=Loses}" Width="0.25*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+        <myControls:TextButtonUC Grid.Row="1" Grid.ColumnSpan="2" MainText="Main menu" Click="MainMenuClick" Margin="3"/>
+        <local:ReplayModeUC x:Name="ReplayModeUc" Visibility="Hidden" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+    </Grid>
+</UserControl>

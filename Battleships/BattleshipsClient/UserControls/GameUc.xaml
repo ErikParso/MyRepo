@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="BattleshipsClient.UserControls.GameUc"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:myControls="clr-namespace:MyControls;assembly=MyControls" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BattleshipsClient.UserControls"
+             mc:Ignorable="d">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Canvas Name="AvailableBoats" Background="LightGray" Width="150" Margin="3" Height="210" Grid.Column="1" MouseLeftButtonUp="canvas_MouseLeftButtonDown" Grid.Row="1">
+            <Rectangle Name="H5" Width="146" Height="26" Fill="Gray" Margin="2"/>
+            <Rectangle Name="V5" Width="26" Height="146" Fill="Gray" Margin="2" Canvas.Top="30"/>
+            <Rectangle Name="H4" Width="116" Height="26" Fill="Gray" Margin="2" Canvas.Left ="30" Canvas.Top="30"/>
+            <Rectangle Name="V4" Width="26" Height="116" Fill="Gray" Margin="2" Canvas.Left ="30" Canvas.Top="60"/>
+            <Rectangle Name="V3a" Width="26" Height="86" Fill="Gray" Margin="2" Canvas.Left ="60" Canvas.Top="60"/>
+            <Rectangle Name="V3b" Width="26" Height="86" Fill="Gray" Margin="2" Canvas.Left ="90" Canvas.Top="60"/>
+            <Rectangle Name="H3a" Width="86" Height="26" Fill="Gray" Margin="2" Canvas.Left ="60" Canvas.Top="150"/>
+            <Rectangle Name="H3b" Width="86" Height="26" Fill="Gray" Margin="2" Canvas.Left ="0" Canvas.Top="180"/>
+            <Rectangle Name ="H2" Width="56" Height="26" Fill="Gray" Margin="2" Canvas.Left ="90" Canvas.Top="180"/>
+            <Rectangle Name ="V2" Width="26" Height="56" Fill="Gray" Margin="2" Canvas.Left ="120" Canvas.Top="60"/>
+        </Canvas>
+        <local:BoardUc x:Name="myBoard" Grid.Column="0" Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"/>
+        <local:BoardUc x:Name="opponentsBoard" Grid.Column="2" Margin="3" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden" Grid.Row="1"/>
+        <Label Name="GameInfo" Content="Info" Grid.ColumnSpan="2" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20"/>
+        <myControls:TextButtonUC Grid.Row="2" Grid.ColumnSpan="2" Margin="3" MainText="Leave game" Click="LeaveGame"/>
+    </Grid>
+</UserControl>

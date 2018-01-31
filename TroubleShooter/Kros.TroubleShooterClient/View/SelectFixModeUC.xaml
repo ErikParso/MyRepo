@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="Kros.TroubleShooterClient.View.SelectFixModeUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Kros.TroubleShooterClient.View"
+             xmlns:myControls="clr-namespace:MyControls;assembly=MyControls" 
+             xmlns:res="clr-namespace:Kros.TroubleShooterClient.Properties"  
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <local:BoolColorConv x:Key="boolToColor"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ItemsControl ItemsSource="{Binding Path=QuestionLink}" Grid.Row="0" Margin="3" IsEnabled="{Binding IsVisible, ElementName=ProblemsBorder}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <myControls:TextButtonUC MainText="{Binding Category}" MouseLeftButtonUp="ProblemLinkClick"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel></WrapPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
+        <TextBlock Text="{Binding ActualQuestion}" Margin="3" FontSize="20" Grid.Row="1"/>
+
+        <Border Margin="3" BorderThickness="1" BorderBrush="Black" Grid.Row="2">
+            <ScrollViewer>
+                <ItemsControl Grid.Column="3" ItemsSource="{Binding Answers}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <myControls:TextButtonUC MainText="{Binding Text}" MouseLeftButtonUp="ProblemSelected" IsEnabled="{Binding Available}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Border>
+        
+        <myControls:TextButtonUC WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain3}" DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="3" Grid.Row="3"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Hotovo" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="4" Click="FinishClick"/>
+    </Grid>
+</UserControl>

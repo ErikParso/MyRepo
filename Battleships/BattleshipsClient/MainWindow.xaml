@@ -1,0 +1,16 @@
+﻿<Window x:Class="BattleshipsClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BattleshipsClient"
+        xmlns:res="clr-namespace:BattleshipsClient.Properties"
+        xmlns:uc="clr-namespace:BattleshipsClient.UserControls"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="750" ResizeMode="NoResize">
+    <Grid>
+        <uc:MenuUC x:Name="MainMenuUc"/>
+        <uc:GameUc x:Name="GameUc" Visibility="Hidden"/>
+        <uc:StatsUC x:Name="StatsUc" Visibility="Hidden"/>
+    </Grid>
+</Window>
