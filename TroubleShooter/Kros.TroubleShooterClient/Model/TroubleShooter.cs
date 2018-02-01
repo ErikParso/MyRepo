@@ -1,9 +1,9 @@
-﻿using Kros.TroubleShooterClient.Model;
+﻿using Kros.TroubleShooterClient.Update;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
+using System.Threading.Tasks;
 
 namespace Kros.TroubleShooterClient.Model
 {
@@ -41,6 +41,7 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         private TroubleShooter()
         {
+            SignedSource[] s = new Updater(SOURCES_LOCATION).Execute();
             //try compile assemblies
             Assembly patchAssembly = Compiler.Compile(SOURCES_LOCATION);
             if (patchAssembly == null)
@@ -56,15 +57,6 @@ namespace Kros.TroubleShooterClient.Model
                                    where type.IsSubclassOf(typeof(Question))
                                    where type.GetCustomAttributes(typeof(RootQuestionAttribute)).Count() != 0
                                    select (Question)Activator.CreateInstance(type)).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Registers patch to problem structure
-        /// </summary>
-        /// <param name="patch"></param>
-        public void RegisterPatch(Patch patch)
-        {
-            Patches.Add(patch);
         }
 
         /// <summary>

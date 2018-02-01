@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyControls", "..\MyControls
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.TroubleShooterClient", "Kros.TroubleShooterClient\Kros.TroubleShooterClient.csproj", "{6BF8A4E1-F84C-4F11-8F07-1574D5C834D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.TroubleShooterServer", "Kros.TroubleShooterServer\Kros.TroubleShooterServer.csproj", "{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6BF8A4E1-F84C-4F11-8F07-1574D5C834D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BF8A4E1-F84C-4F11-8F07-1574D5C834D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BF8A4E1-F84C-4F11-8F07-1574D5C834D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

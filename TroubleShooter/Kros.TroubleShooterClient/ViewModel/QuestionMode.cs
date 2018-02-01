@@ -21,7 +21,7 @@ namespace Kros.TroubleShooterClient.ViewModel
 
         public QuestionMode(Question rootQuestion)
         {
-            QuestionLink = new ObservableCollection<Question>() { rootQuestion };
+            QuestionLink = new ObservableCollection<Question>() { rootQuestion };         
             Answers = new ObservableCollection<Answer>();
             updateByCurentQuestion();
         }
@@ -47,15 +47,20 @@ namespace Kros.TroubleShooterClient.ViewModel
 
         private void updateByCurentQuestion()
         {
-            Question question = QuestionLink.Last();
-            ActualQuestion = question.Text;
             Answers.Clear();
-            foreach (KeyValuePair<int, string> answ in question.PossibleAnswers)
+            Question rootQuestion = QuestionLink.Last();
+            if (rootQuestion == null)
+            {
+                ActualQuestion = "K dispozícii nie sú žiadne otázky.";
+                return;
+            }
+            ActualQuestion = rootQuestion.Text;
+            foreach (KeyValuePair<int, string> answ in rootQuestion.PossibleAnswers)
                 Answers.Add(new Answer()
                 {
                     Id = answ.Key,
                     Text = answ.Value,
-                    Available = question.getQuestionByAnswer(answ.Key) != null
+                    Available = rootQuestion.getQuestionByAnswer(answ.Key) != null
                 });
         }
 
