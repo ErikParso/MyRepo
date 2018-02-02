@@ -41,7 +41,7 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         private TroubleShooter()
         {
-            SignedSource[] s = new Updater(SOURCES_LOCATION).Execute();
+            new Updater(SOURCES_LOCATION).Execute();
             //try compile assemblies
             Assembly patchAssembly = Compiler.Compile(SOURCES_LOCATION);
             if (patchAssembly == null)

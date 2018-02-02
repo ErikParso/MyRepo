@@ -1,4 +1,6 @@
-﻿using Kros.TroubleShooterClient.Model;
+﻿
+
+using Kros.TroubleShooterClient.Model;
 using Microsoft.Win32;
 using System.Threading;
 

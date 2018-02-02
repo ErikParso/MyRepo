@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Kros.TroubleShooterClient.Update
 {
-    public class SignedSource
+    public class ProtectedSource
     {
+        public string FileName { get; set; }
+        public int Version { get; set; }
         public string SourceCode { get; set; }
         public string Signature { get; set; }
     }

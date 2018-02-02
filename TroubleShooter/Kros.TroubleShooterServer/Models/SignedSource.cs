@@ -9,5 +9,6 @@ namespace Kros.TroubleShooterServer.Models
     {
         public string SourceCode { get; set; }
         public string Signature { get; set; }
+        public string FileName { get; set; }
     }
 }
