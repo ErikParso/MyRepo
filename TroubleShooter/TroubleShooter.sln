@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElipticCurves", "..\Eliptic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuloExtensions", "..\ModuloExtensions\ModuloExtensions\ModuloExtensions.csproj", "{9CE60921-9866-4A74-B7D2-D237FB61CB8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eliptic crypto test", "..\ElipticCryptography\Eliptic crypto test\Eliptic crypto test.csproj", "{B405AC4D-079D-4341-9D88-71B8BBB92B59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElipticCryptoTest", "..\ElipticCryptography\ElipticCryptoTest\ElipticCryptoTest.csproj", "{A0F7353A-B565-4859-8D58-A7FB58CEA583}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B405AC4D-079D-4341-9D88-71B8BBB92B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B405AC4D-079D-4341-9D88-71B8BBB92B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B405AC4D-079D-4341-9D88-71B8BBB92B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B405AC4D-079D-4341-9D88-71B8BBB92B59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

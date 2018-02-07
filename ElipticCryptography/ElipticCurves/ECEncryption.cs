@@ -1,6 +1,7 @@
 ﻿using ModuloExtensions;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -75,8 +76,9 @@ namespace ElipticCurves
         /// <param name="cipher">cipher text</param>
         /// <param name="privateKey">private key</param>
         /// <returns>original plain text</returns>
-        public string Decrypt(string cipher, BigInteger privateKey)
+        public string Decrypt(string cipher, string privateKey)
         {
+            BigInteger pk = BigInteger.Parse(privateKey, NumberStyles.HexNumber);
             string message = "";
             foreach (string c in Split(cipher, curve.BitSize / 2 + 4))
             {
@@ -84,7 +86,7 @@ namespace ElipticCurves
                 string c2 = c.Substring(c.Length / 2);
                 ElipticCurvePoint C1 = serialiser.FromHex(c1);
                 ElipticCurvePoint C2 = serialiser.FromHex(c2);
-                message += PointTochar(calculator.Add(C2, calculator.Inverse(calculator.Multiply(privateKey, C1))));
+                message += PointTochar(calculator.Add(C2, calculator.Inverse(calculator.Multiply(pk, C1))));
             }
             return message;
         }
@@ -171,8 +173,9 @@ namespace ElipticCurves
         /// <param name="cipher">cipher text</param>
         /// <param name="privateKey">private key</param>
         /// <returns>original plain text</returns>
-        public string Decrypt(string cipher, BigInteger privateKey, Encoding enc)
+        public string Decrypt(string cipher, string privateKey, Encoding enc)
         {
+            BigInteger pk = BigInteger.Parse(privateKey, NumberStyles.HexNumber);
             int encByteSize = enc.GetBytes("a").Length;
             int M = ((curve.BitSize / 8) - 1) / encByteSize * encByteSize;
             int N = curve.BitSize / 8 - M;
@@ -184,7 +187,7 @@ namespace ElipticCurves
                 string c2 = c.Substring(c.Length / 2);
                 ElipticCurvePoint C1 = serialiser.FromHex(c1);
                 ElipticCurvePoint C2 = serialiser.FromHex(c2);
-                ElipticCurvePoint m = calculator.Add(C2, calculator.Inverse(calculator.Multiply(privateKey, C1)));
+                ElipticCurvePoint m = calculator.Add(C2, calculator.Inverse(calculator.Multiply(pk, C1)));
                 xByte.AddRange(m.X.ToByteArray().Skip(N));
                 while (xByte.Count % encByteSize != 0)
                 {

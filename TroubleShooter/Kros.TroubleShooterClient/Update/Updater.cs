@@ -13,7 +13,9 @@ namespace Kros.TroubleShooterClient.Update
         private string _updateDir;
         private const string URI_GET_VERSION = "api/updateFiles";
         private ECEncryption decryptor;
+        private ECSignature verifier;
         private ECKeysGenerator keyGen;
+        private string signatureKey = "0318959FDB04DF2C1345656325657D0ABBDB4A5368";
 
         private HttpClient client = new HttpClient();
 
@@ -24,12 +26,17 @@ namespace Kros.TroubleShooterClient.Update
             ElipticCurve curve = ElipticCurve.secp160r1();
             decryptor = new ECEncryption(curve);
             keyGen = new ECKeysGenerator(curve);
+            verifier = new ECSignature(curve);
         }
 
         public void Execute()
         {
+            //remove later !!!!!!!!!!!!!
+            if(Directory.Exists(_updateDir))
+                Directory.Delete(_updateDir, true);
+
             string publicKey;
-            BigInteger privateKey;
+            string privateKey;
             keyGen.GenerateKeyPair(out privateKey, out publicKey);
 
             IEnumerable<ProtectedSource> sources = new List<ProtectedSource>();
@@ -42,7 +49,9 @@ namespace Kros.TroubleShooterClient.Update
             foreach (ProtectedSource source in sources)
             {
                 string decryptedSource = decryptor.Decrypt(source.SourceCode, privateKey, Encoding.Unicode);
-                File.WriteAllText(Path.Combine(_updateDir, source.FileName), decryptedSource);
+                decryptedSource += "}";
+                if(verifier.VerifySignature(decryptedSource, source.Signature, signatureKey))
+                    File.WriteAllText(Path.Combine(_updateDir, source.FileName), decryptedSource);
             }
         }
     }

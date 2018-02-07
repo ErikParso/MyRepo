@@ -46,18 +46,18 @@ namespace ElipticCurves
         /// <param name="file">File to sign</param>
         /// <param name="privateKey">private key</param>
         /// <returns></returns>
-        public string Signature(string message, BigInteger privateKey)
+        public string Signature(string message, string privateKey)
         {
             BigInteger hash = new BigInteger(HashMessage(message));
             BigInteger r, s;
-
+            BigInteger pk = BigInteger.Parse(privateKey, NumberStyles.HexNumber);
             do
             {
                 BigInteger k = rnd.Next(1, curve.N - 1);
                 ElipticCurvePoint x1y1 = calculator.Multiply(k, curve.G);
                 r = x1y1.X.Mod(curve.N);
                 //s = ((BigInteger)k.ModInv(curve.N)).ModMul(hash.ModAdd(privateKey.ModMul(r, curve.N), curve.N), curve.N);
-                s = (((BigInteger)k.ModInv(curve.N)) * (hash + privateKey * r)).Mod(curve.N);
+                s = (((BigInteger)k.ModInv(curve.N)) * (hash + pk * r)).Mod(curve.N);
             } while (r == 0 || s == 0);
 
             return r.ToString("X") + " " + s.ToString("X");

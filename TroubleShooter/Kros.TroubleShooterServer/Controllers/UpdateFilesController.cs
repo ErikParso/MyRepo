@@ -13,15 +13,17 @@ namespace Kros.TroubleShooterServer.Controllers
     {
         private ECEncryption encryptor;
 
-        private ECSignature signature;
+        private ECSignature signatureMaker;
 
         private ECKeysGenerator keyGen;
+
+        private string signatureKey = "0EB5C3428BAAC0A933EBF20C8BCCA1DA0C2564E27";
 
         public UpdateFilesController()
         {
             ElipticCurve curve = ElipticCurve.secp160r1();
             encryptor = new ECEncryption(curve);
-            signature = new ECSignature(curve);
+            signatureMaker = new ECSignature(curve);
             keyGen = new ECKeysGenerator(curve);
         }
 
@@ -37,12 +39,13 @@ namespace Kros.TroubleShooterServer.Controllers
             List<ProtectedSource> sources = new List<ProtectedSource>();
             foreach (string sourceFile in Directory.GetFiles("UpdateFiles", "*.cs"))
             {
+                string sourceCode = System.IO.File.ReadAllText(sourceFile);
                 sources.Add(new ProtectedSource()
                 {
                     Version = 1,
                     FileName = Path.GetFileName(sourceFile),
-                    SourceCode = encryptor.Encrypt(System.IO.File.ReadAllText(sourceFile), publicKey, Encoding.Unicode),
-                    Signature = new Random().Next().ToString()
+                    SourceCode = encryptor.Encrypt(sourceCode, publicKey, Encoding.Unicode),
+                    Signature = signatureMaker.Signature(sourceCode, signatureKey)
                 });
             }
             return sources;

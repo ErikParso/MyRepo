@@ -23,10 +23,10 @@ namespace ElipticCryptoTest
             {
                 Console.Write($"signature curve {curve.Name} test {i}... ");
                 //generovanie klucoveho paru
-                BigInteger privateKey1;
+                string privateKey1;
                 string publicKey1;
                 keyGen.GenerateKeyPair(out privateKey1, out publicKey1);
-                BigInteger privateKey2;
+                string privateKey2;
                 string publicKey2;
                 keyGen.GenerateKeyPair(out privateKey2, out publicKey2);
 

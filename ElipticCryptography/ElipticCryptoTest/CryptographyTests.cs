@@ -21,7 +21,7 @@ namespace ElipticCryptoTest
             ECKeysGenerator keyGen = new ECKeysGenerator(curve);
             ECEncryption crypto = new ECEncryption(curve);
             //generovanie klucoveho paru
-            BigInteger privateKey;
+            string privateKey;
             string publicKey;
             for (int i = 0; i < iterations; i++)
             {
