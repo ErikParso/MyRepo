@@ -1,9 +1,5 @@
 ﻿using ElipticCurves;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
 
 namespace ElipticCryptoTest
 {
@@ -11,25 +7,26 @@ namespace ElipticCryptoTest
     {
         static void Main(string[] args)
         {
-            //create curve 
-            ElipticCurve curve = ElipticCurve.secp521r1();
-            Encoding encoding = Encoding.UTF32;
-            ECKeysGenerator keyGen = new ECKeysGenerator(curve);
-            ECEncryption krypto = new ECEncryption(curve);
-
-            //generovanie klucoveho paru
-            BigInteger privateKey;
-            string publicKey;
-            keyGen.GenerateKeyPair(out privateKey, out publicKey);
-
-            string test = "ABCDEFGHIJKLMNOPQRSTUVZ\n1234567890\n!@#$%^&*()\n_ {}|\":\t|\"\"\\|€÷×¤ß$><\n++ščťžýýáíé=´*";
-            string cipher = krypto.Encrypt(test, publicKey, encoding);
-            string enc = krypto.Decrypt(cipher, privateKey, encoding);
-            Console.WriteLine(test);
-            Console.WriteLine(enc);
-            Console.WriteLine(cipher);
-
+            runTest();
             Console.ReadLine();
+        }
+
+        private static void runTest()
+        {
+            CryptographyTests ct = new CryptographyTests();
+            ct.TestEncryption(ElipticCurve.Secp112r1(), 10);
+            ct.TestEncryption(ElipticCurve.secp160r1(), 10);
+            ct.TestEncryption(ElipticCurve.secp192r1(), 10);
+            ct.TestEncryption(ElipticCurve.secp256r1(), 10);
+            ct.TestEncryption(ElipticCurve.secp521r1(), 10);
+
+            DigitalSignatureTests st = new DigitalSignatureTests();
+            st.TestSignature(ElipticCurve.Secp112r1(), 10);
+            st.TestSignature(ElipticCurve.secp160r1(), 10);
+            st.TestSignature(ElipticCurve.secp192r1(), 10);
+            st.TestSignature(ElipticCurve.secp256r1(), 10);
+            st.TestSignature(ElipticCurve.secp521r1(), 10);
+            st.TestSignature(ElipticCurve.TestCurve(), 10);
         }
     }
 }

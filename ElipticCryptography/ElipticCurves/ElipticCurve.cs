@@ -9,38 +9,43 @@ namespace ElipticCurves
         /// <summary>
         /// Integer prime number defined by Fp.
         /// </summary>
-        internal BigInteger P { get; }
+        public BigInteger P { get; private set; }
 
         /// <summary>
         /// The eliptic curve definition parameters. 
         /// </summary>
-        internal BigInteger A {get;}
+        public BigInteger A { get; private set; }
 
         /// <summary>
         /// The eliptic curve definition parameters. 
         /// </summary>
-        internal BigInteger B { get; }
+        public BigInteger B { get; private set; }
 
         /// <summary>
         /// Generartor - point of eliptic curve. 
         /// </summary>
-        internal ElipticCurvePoint G { get; }
+        public ElipticCurvePoint G { get; private set; }
 
         /// <summary>
         /// G point place value. The smallest n -> n * G = infPoint
         /// </summary>
-        internal BigInteger N { get; }
+        public BigInteger N { get; private set; }
 
         /// <summary>
         /// Cofactor h = #E(F)/n
         /// #E = number of points in eliptic curve E
         /// </summary>
-        internal BigInteger H { get; }
+        public BigInteger H { get; private set; }
 
         /// <summary>
         /// The bitsize of eliptic curve.
         /// </summary>
-        internal int BitSize { get; }
+        public int BitSize { get; private set; }
+
+        /// <summary>
+        /// the curve name
+        /// </summary>
+        public string Name { get; private set; }
 
         /// <summary>
         /// set parameters of eliptic curve
@@ -52,7 +57,7 @@ namespace ElipticCurves
         /// <param name="n"></param>
         /// <param name="h"></param>
         /// <param name="bitSize"></param>
-        private ElipticCurve(BigInteger p, BigInteger a, BigInteger b, ElipticCurvePoint g, BigInteger n, BigInteger h, int bitSize)
+        private ElipticCurve(BigInteger p, BigInteger a, BigInteger b, ElipticCurvePoint g, BigInteger n, BigInteger h, int bitSize, string name)
         {
             P = p;
             A = a;
@@ -61,6 +66,7 @@ namespace ElipticCurves
             N = n; //skontroluj bod 3 v diplomovke aj s G
             H = h;
             BitSize = bitSize;
+            Name = name;
         }
 
         /// <summary>
@@ -69,7 +75,7 @@ namespace ElipticCurves
         /// <returns></returns>
         public static ElipticCurve TestCurve()
         {
-            return new ElipticCurve(23, 1, 1, new ElipticCurvePoint(13, 16), 7, 4, 20);            
+            return new ElipticCurve(23, 1, 1, new ElipticCurvePoint(13, 16), 7, 4, 20, "example");            
         }
 
         public static ElipticCurve Secp112r1()
@@ -84,7 +90,7 @@ namespace ElipticCurves
                     ),
                     BigInteger.Parse("0DB7C2ABF62E35E7628DFAC6561C5", NumberStyles.HexNumber),
                     BigInteger.Parse("001", NumberStyles.HexNumber),
-                    112
+                    112, "Secp112r1"
                 );
         }
 
@@ -100,7 +106,7 @@ namespace ElipticCurves
                     ),
                     BigInteger.Parse("00100000000000000000001F4C8F927AED3CA752257", NumberStyles.HexNumber),
                     BigInteger.Parse("001", NumberStyles.HexNumber),
-                    160
+                    160, "secp160r1"
                 );
         }
 
@@ -116,7 +122,7 @@ namespace ElipticCurves
                     ),
                     BigInteger.Parse("0FFFFFFFFFFFFFFFFFFFFFFFF99DEF836146BC9B1B4D22831", NumberStyles.HexNumber),
                     BigInteger.Parse("001", NumberStyles.HexNumber),
-                    192
+                    192, "secp192r1"
                 );
         }
 
@@ -132,7 +138,7 @@ namespace ElipticCurves
                     ),
                     BigInteger.Parse("0FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551", NumberStyles.HexNumber),
                     BigInteger.Parse("001", NumberStyles.HexNumber),
-                    256
+                    256, "secp256r1"
                 );
         }
 
@@ -148,7 +154,7 @@ namespace ElipticCurves
                     ),
                     BigInteger.Parse("001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA51868783BF2F966B7FCC0148F709A5D03BB5C9B8899C47AEBB6FB71E91386409", NumberStyles.HexNumber),
                     BigInteger.Parse("001", NumberStyles.HexNumber),
-                    528
+                    528, "secp521r1"
                 );
         }
 
@@ -159,6 +165,7 @@ namespace ElipticCurves
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine(string.Format("Name:{0}", Name));
             sb.AppendLine(string.Format("P:{0}", P));
             sb.AppendLine(string.Format("A:{0}", A));
             sb.AppendLine(string.Format("B:{0}", B));

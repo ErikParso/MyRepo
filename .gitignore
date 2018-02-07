@@ -53,3 +53,5 @@
 /ElipticCryptography/ElipticCurves/obj
 /ElipticCryptography/packages/MSTest.TestAdapter.1.2.0
 /ElipticCryptography/packages/MSTest.TestFramework.1.2.0
+/ElipticCryptography/ElipticCurves/bin/Debug/netstandard1.6
+/ModuloExtensions/ModuloExtensions/bin/Debug/netstandard1.6

@@ -6,7 +6,7 @@ namespace ElipticCurves
     /// <summary>
     /// Eliptic curve point
     /// </summary>
-    internal class ElipticCurvePoint
+    public class ElipticCurvePoint
     {
         /// <summary>
         /// x coordinate

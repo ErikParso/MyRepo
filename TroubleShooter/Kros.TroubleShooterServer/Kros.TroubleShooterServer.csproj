@@ -30,4 +30,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\ElipticCryptography\ElipticCurves\ElipticCurves.csproj" />
+  </ItemGroup>
+
 </Project>

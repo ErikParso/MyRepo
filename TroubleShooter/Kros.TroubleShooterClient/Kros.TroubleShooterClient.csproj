@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Kros.TroubleShooterClient</RootNamespace>
     <AssemblyName>Kros.TroubleShooterClient</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -224,7 +224,7 @@
     </ApplicationDefinition>
     <Compile Include="Logger.cs" />
     <Compile Include="Model\Question.cs" />
-    <Compile Include="Update\SignedSource.cs" />
+    <Compile Include="Update\ProtectedSource.cs" />
     <Compile Include="Update\Updater.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\ObservableObject.cs" />
@@ -326,6 +326,10 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ElipticCryptography\ElipticCurves\ElipticCurves.csproj">
+      <Project>{5095da36-9faf-4123-8a99-a5b3935da2d5}</Project>
+      <Name>ElipticCurves</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\MyControls\MyControls\MyControls.csproj">
       <Project>{aee992f3-c609-43cf-b161-1311b72cb0b1}</Project>
       <Name>MyControls</Name>

@@ -7,7 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyControls", "..\MyControls
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.TroubleShooterClient", "Kros.TroubleShooterClient\Kros.TroubleShooterClient.csproj", "{6BF8A4E1-F84C-4F11-8F07-1574D5C834D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.TroubleShooterServer", "Kros.TroubleShooterServer\Kros.TroubleShooterServer.csproj", "{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.TroubleShooterServer", "Kros.TroubleShooterServer\Kros.TroubleShooterServer.csproj", "{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElipticCurves", "..\ElipticCryptography\ElipticCurves\ElipticCurves.csproj", "{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuloExtensions", "..\ModuloExtensions\ModuloExtensions\ModuloExtensions.csproj", "{9CE60921-9866-4A74-B7D2-D237FB61CB8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Eliptic crypto test", "..\ElipticCryptography\Eliptic crypto test\Eliptic crypto test.csproj", "{B405AC4D-079D-4341-9D88-71B8BBB92B59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +33,18 @@ Global
 		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B405AC4D-079D-4341-9D88-71B8BBB92B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B405AC4D-079D-4341-9D88-71B8BBB92B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B405AC4D-079D-4341-9D88-71B8BBB92B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B405AC4D-079D-4341-9D88-71B8BBB92B59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
