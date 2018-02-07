@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ElipticCryptoTest</RootNamespace>
     <AssemblyName>ElipticCryptoTest</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,13 +52,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ModuloCalculation\ModuloCalculation.csproj">
-      <Project>{7FA7C45A-81BC-4EC3-9718-06B2E80598D0}</Project>
-      <Name>ModuloCalculation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ElipticCryptography\ElipticCryptography.csproj">
-      <Project>{b6df4758-5199-45ce-bf55-14c2b7ccc3ec}</Project>
-      <Name>ElipticCryptography</Name>
+    <ProjectReference Include="..\ElipticCurves\ElipticCurves.csproj">
+      <Project>{93b9fea0-46da-4237-9cb6-00b065eb2063}</Project>
+      <Name>ElipticCurves</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

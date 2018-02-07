@@ -64,5 +64,20 @@ namespace UnitTests
                 throw new Exception("test failed");
         }
 
+        [TestMethod]
+        public void ModuloInverseTests()
+        {
+            bool res =
+                new BigInteger(5).ModInv(11) == 9 &&
+                new BigInteger(-5).ModInv(11) == 2 &&
+                new BigInteger(-156).ModInv(147) == null &&
+                new BigInteger(156).ModInv(5) == 1 &&
+                new BigInteger(0).ModInv(47) == null;
+            if (!res)
+                throw new Exception("test failed");
+            for (int i = 1; i < 701; i++)
+                if (((BigInteger)new BigInteger(i).ModInv(701)).ModMul(i, 701) != 1)
+                    throw new Exception("test failed");
+        }
     }
 }

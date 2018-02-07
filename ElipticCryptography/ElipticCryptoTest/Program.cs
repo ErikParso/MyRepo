@@ -1,11 +1,9 @@
-﻿using ElipticCryptography;
-using ModuloCalculation;
+﻿using ElipticCurves;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ElipticCryptoTest
 {
@@ -13,30 +11,23 @@ namespace ElipticCryptoTest
     {
         static void Main(string[] args)
         {
-            ElipticCurve curve = ElipticCurve.TestCurve();
-            ECCProvider calc = new ECCProvider(curve);
-
+            //create curve 
+            ElipticCurve curve = ElipticCurve.secp521r1();
+            Encoding encoding = Encoding.UTF32;
+            ECKeysGenerator keyGen = new ECKeysGenerator(curve);
+            ECEncryption krypto = new ECEncryption(curve);
 
             //generovanie klucoveho paru
-            BigInteger d;
-            string q;
-            calc.GenerateKeyPair(out d, out q);
-            Console.WriteLine(string.Format("d:{0}  q:{1}", d, q));
+            BigInteger privateKey;
+            string publicKey;
+            keyGen.GenerateKeyPair(out privateKey, out publicKey);
 
-            for (int x = 0; x < 23; x++)
-            {
-                for (int y = 0; y < 23; y++)
-                {
-                    //zasifrovanie
-                    ElipticCurvePoint M = calc.CreatePoint(new ModNum(x), new ModNum(y)); //sprava zmapovana do tohoto bodu
-                    if (calc.IsCurvePoint(M))
-                    {
-                        ElipticCurvePoint[] cipher = calc.Encrypt(M, q);
-                        ElipticCurvePoint decrypted = calc.Decrypt(cipher, d);
-                        Console.WriteLine(decrypted);
-                    }
-                }
-            }
+            string test = "ABCDEFGHIJKLMNOPQRSTUVZ\n1234567890\n!@#$%^&*()\n_ {}|\":\t|\"\"\\|€÷×¤ß$><\n++ščťžýýáíé=´*";
+            string cipher = krypto.Encrypt(test, publicKey, encoding);
+            string enc = krypto.Decrypt(cipher, privateKey, encoding);
+            Console.WriteLine(test);
+            Console.WriteLine(enc);
+            Console.WriteLine(cipher);
 
             Console.ReadLine();
         }

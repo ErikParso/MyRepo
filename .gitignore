@@ -46,3 +46,10 @@
 /ModuloExtensions/packages
 /ModuloExtensions/UnitTests/bin/Debug
 /ModuloExtensions/UnitTests/obj/Debug
+/ElipticCryptography/Eliptic crypto test/bin/Debug
+/ElipticCryptography/Eliptic crypto test/obj/Debug
+/ElipticCryptography/ElipticCurves/bin/Debug/netstandard2.0
+/ElipticCryptography/ElipticCurves/obj/Debug/netstandard2.0
+/ElipticCryptography/ElipticCurves/obj
+/ElipticCryptography/packages/MSTest.TestAdapter.1.2.0
+/ElipticCryptography/packages/MSTest.TestFramework.1.2.0

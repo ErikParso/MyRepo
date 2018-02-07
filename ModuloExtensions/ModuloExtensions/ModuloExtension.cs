@@ -3,7 +3,7 @@ using System.Numerics;
 
 namespace ModuloExtensions
 {
-    public static class ModuloExtensions
+    public static class ModuloExtension
     {
         public static BigInteger Mod(this BigInteger num, BigInteger modulo)
         {
@@ -48,7 +48,7 @@ namespace ModuloExtensions
             return gcd;
         }
 
-        public static BigInteger Divide(this BigInteger num1, BigInteger num2, BigInteger modulo)
+        public static BigInteger ModDiv(this BigInteger num1, BigInteger num2, BigInteger modulo)
         {
             BigInteger? inv = num2.ModInv(modulo);
             if (inv == null)
@@ -61,7 +61,7 @@ namespace ModuloExtensions
             return num.ModMul(-1, modulo);
         }
 
-        public static bool ModNeg(this BigInteger num1, BigInteger num2, BigInteger modulo)
+        public static bool ModEquals(this BigInteger num1, BigInteger num2, BigInteger modulo)
         {
             return num1.Mod(modulo) == num2.Mod(modulo);
         }
