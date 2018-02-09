@@ -8,7 +8,7 @@ namespace ElipticCurves
     /// <summary>
     /// Randoms over big integer
     /// </summary>
-    internal class RandomBigNumbers
+    public class RandomBigNumbers
     {
         /// <summary>
         /// rnd instance
@@ -21,7 +21,7 @@ namespace ElipticCurves
         /// <param name="min">minimum genersted number</param>
         /// <param name="max">maximum generated number</param>
         /// <returns>generated number</returns>
-        internal BigInteger Next(BigInteger min, BigInteger max)
+        public BigInteger Next(BigInteger min, BigInteger max)
         {
             byte[] bytes = max.ToByteArray();
             BigInteger R;

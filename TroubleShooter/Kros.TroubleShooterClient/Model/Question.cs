@@ -6,16 +6,15 @@ namespace Kros.TroubleShooterClient.Model
 {
     public abstract class Question
     {
-
         /// <summary>
         /// the dictionary of possible answers
         /// </summary>
         public Dictionary<int,string> PossibleAnswers;
-
         /// <summary>
         /// Question text.
         /// </summary>
         public abstract string Text { get; }
+
         /// <summary>
         /// The problem category
         /// </summary>

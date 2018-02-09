@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Numerics;
 using System.Text;
 using ElipticCurves;
-using Kros.TroubleShooterServer.Models;
+using Kros.TroubleShooterCommon;
+using Kros.TroubleShooterCommon.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kros.TroubleShooterServer.Controllers
@@ -11,13 +14,18 @@ namespace Kros.TroubleShooterServer.Controllers
     [Route("api/[controller]")]
     public class UpdateFilesController : Controller
     {
+        private const string SOURCE_FILES_DIR = "UpdateFiles";
+        private const string signatureKey = "0EB5C3428BAAC0A933EBF20C8BCCA1DA0C2564E27";
+
         private ECEncryption encryptor;
 
         private ECSignature signatureMaker;
 
         private ECKeysGenerator keyGen;
 
-        private string signatureKey = "0EB5C3428BAAC0A933EBF20C8BCCA1DA0C2564E27";
+        private ECDiffieHelman diffieHelman;
+
+        private IEnumerable<SourceFileInfo> sourceFiles;
 
         public UpdateFilesController()
         {
@@ -25,30 +33,42 @@ namespace Kros.TroubleShooterServer.Controllers
             encryptor = new ECEncryption(curve);
             signatureMaker = new ECSignature(curve);
             keyGen = new ECKeysGenerator(curve);
+            diffieHelman = new ECDiffieHelman(curve);
+            sourceFiles = SourceFileInfoBuilder.GetSourceFiles(SOURCE_FILES_DIR);
         }
 
         /// <summary>
         /// Gets source code encoded using clients publicKey 
         /// signed by server
         /// </summary>
-        /// <param name="publicKey">clients public key</param>
+        /// <param name="dhClientPublic">clients public key</param>
         /// <returns></returns>
-        [HttpGet("protected")]
-        public IEnumerable<ProtectedSource> Get(string publicKey)
+        [HttpGet("sources")]
+        public ProtectedSource Get(string dhClientPublic, string sourceFile)
         {
-            List<ProtectedSource> sources = new List<ProtectedSource>();
-            foreach (string sourceFile in Directory.GetFiles("UpdateFiles", "*.cs"))
+            string sourceCode = sourceFile == null ? 
+                "source code should be AES encrypted so nobody can see sensitive data" :
+                System.IO.File.ReadAllText(Path.Combine(SOURCE_FILES_DIR, sourceFile));
+            
+            string dhServerPublic, dhServerPrivate;
+            keyGen.GenerateKeyPair(out dhServerPrivate, out dhServerPublic);
+            string sharedSecret = diffieHelman.SharedSecret(dhServerPrivate, dhClientPublic);
+            if (sharedSecret == null)
+                sharedSecret = "0";
+
+            return new ProtectedSource()
             {
-                string sourceCode = System.IO.File.ReadAllText(sourceFile);
-                sources.Add(new ProtectedSource()
-                {
-                    Version = 1,
-                    FileName = Path.GetFileName(sourceFile),
-                    SourceCode = encryptor.Encrypt(sourceCode, publicKey, Encoding.Unicode),
-                    Signature = signatureMaker.Signature(sourceCode, signatureKey)
-                });
-            }
-            return sources;
+                //SourceCode = encryptor.Encrypt(sourceCode, dhClientPublic, Encoding.Unicode),
+                SourceCode = AesGenerator.EncryptStringToBytes_Aes(sourceCode, sharedSecret),
+                DhPublicServer = dhServerPublic,
+                Signature = signatureMaker.Signature(sourceCode, signatureKey)
+            };
+        }
+
+        [HttpGet("updateinfo")]
+        public IEnumerable<SourceFileInfo> GetFileInfo()
+        {
+            return sourceFiles;
         }
     }
 }

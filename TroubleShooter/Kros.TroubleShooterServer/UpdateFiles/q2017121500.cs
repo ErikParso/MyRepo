@@ -1,4 +1,6 @@
-﻿using Kros.TroubleShooterClient.Model;
+﻿//version(2018020802)
+
+using Kros.TroubleShooterClient.Model;
 using System.Collections.Generic;
 
 namespace Kros.TroubleShooterClient.Patches
@@ -10,7 +12,7 @@ namespace Kros.TroubleShooterClient.Patches
 
         public override int Id { get { return 2017121500; } }
 
-        public override string Text { get { return "V akej časti programu sa vyskytuje problém ?"; } }
+        public override string Text { get { return "V akej časti programu sa vyskytuje problém ? v2"; } }
 
         protected override void registerAnswers(Dictionary<int, string> possibleAnswers)
         {

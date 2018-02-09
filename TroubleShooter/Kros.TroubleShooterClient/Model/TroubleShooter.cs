@@ -18,7 +18,7 @@ namespace Kros.TroubleShooterClient.Model
         /// <summary>
         /// Location of patches to compile
         /// </summary>
-        private string SOURCES_LOCATION = "Patches";  
+        private string SOURCES_LOCATION = "Patches";
 
         /// <summary>
         /// error message
@@ -41,22 +41,23 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         private TroubleShooter()
         {
-            new Updater(SOURCES_LOCATION).Execute();
+            //get latest source files
+            bool newVersion = new Updater(SOURCES_LOCATION).Execute();
             //try compile assemblies
-            Assembly patchAssembly = Compiler.Compile(SOURCES_LOCATION);
+            Assembly patchAssembly = Compiler.Compile(SOURCES_LOCATION, newVersion);
             if (patchAssembly == null)
                 throw new Exception("patch compilation failed");
             //register all patches
             Patches = new List<Patch>();
             var compiledPatches = (from type in patchAssembly.GetTypes()
-                               where type.IsSubclassOf(typeof(Patch))
-                               select (Patch)Activator.CreateInstance(type)).ToList();
+                                   where type.IsSubclassOf(typeof(Patch))
+                                   select (Patch)Activator.CreateInstance(type)).ToList();
             foreach (Patch patch in compiledPatches)
                 Patches.Add(patch);
             RootQuestion = (from type in patchAssembly.GetTypes()
-                                   where type.IsSubclassOf(typeof(Question))
-                                   where type.GetCustomAttributes(typeof(RootQuestionAttribute)).Count() != 0
-                                   select (Question)Activator.CreateInstance(type)).FirstOrDefault();
+                            where type.IsSubclassOf(typeof(Question))
+                            where type.GetCustomAttributes(typeof(RootQuestionAttribute)).Count() != 0
+                            select (Question)Activator.CreateInstance(type)).FirstOrDefault();
         }
 
         /// <summary>
@@ -72,6 +73,6 @@ namespace Kros.TroubleShooterClient.Model
             };
         }
 
-        
+
     }
 }

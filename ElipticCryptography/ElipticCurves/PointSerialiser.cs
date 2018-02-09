@@ -11,7 +11,7 @@ namespace ElipticCurves
     /// 0X1234567890ABCDEF... X = 2 => Y EVEN
     ///                       X = 3 => Y ODD
     /// </summary>
-    internal class PointSerialiser
+    public class PointSerialiser
     {
         /// <summary>
         /// the curve to store the point against

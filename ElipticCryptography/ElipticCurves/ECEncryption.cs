@@ -8,38 +8,10 @@ using System.Text;
 
 namespace ElipticCurves
 {
-    public class ECEncryption
+    public class ECEncryption : ECProvider
     {
-        /// <summary>
-        /// Eliptic curve parameters stored here.. 
-        /// </summary>
-        private ElipticCurve curve;
-
-        /// <summary>
-        /// Eliptic curve point arithemtics
-        /// </summary>
-        private PointCalculator calculator;
-
-        /// <summary>
-        /// Serialises the eliptic curve point in its comprimed form
-        /// </summary>
-        private PointSerialiser serialiser;
-
-        /// <summary>
-        /// to generate big integers in specified range
-        /// </summary>
-        private RandomBigNumbers rnd;
-
-        /// <summary>
-        /// Creates provider for specified eliptic curve technology.
-        /// </summary>
-        /// <param name="curve"></param>
-        public ECEncryption(ElipticCurve curve)
+        public ECEncryption(ElipticCurve curve) : base(curve)
         {
-            this.curve = curve;
-            calculator = new PointCalculator(curve);
-            serialiser = new PointSerialiser(curve);
-            rnd = new RandomBigNumbers();
         }
 
         // maps single character of plain text to eliptic curve point is not optimal

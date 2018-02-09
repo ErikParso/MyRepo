@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\ElipticCryptography\ElipticCurves\ElipticCurves.csproj" />
+    <ProjectReference Include="..\Kros.TroubleShooterCommon\Kros.TroubleShooterCommon.csproj" />
   </ItemGroup>
 
 </Project>

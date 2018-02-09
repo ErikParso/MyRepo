@@ -11,19 +11,19 @@ namespace ElipticCurves
         /// <summary>
         /// x coordinate
         /// </summary>
-        internal BigInteger X { get; private set; }
+        public BigInteger X { get; private set; }
 
         /// <summary>
         /// y coordinate
         /// </summary>
-        internal BigInteger Y { get; private set; }
+        public BigInteger Y { get; private set; }
 
         /// <summary>
         /// Creates point
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        internal ElipticCurvePoint(BigInteger x, BigInteger y)
+        public ElipticCurvePoint(BigInteger x, BigInteger y)
         {
             this.X = x;
             this.Y = y;

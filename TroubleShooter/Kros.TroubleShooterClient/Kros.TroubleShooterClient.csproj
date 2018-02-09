@@ -55,9 +55,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup />
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="Esent.Interop, Version=1.9.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\ManagedEsent.1.9.4\lib\net40\Esent.Interop.dll</HintPath>
@@ -212,7 +210,7 @@
     </ApplicationDefinition>
     <Compile Include="Logger.cs" />
     <Compile Include="Model\Question.cs" />
-    <Compile Include="Update\ProtectedSource.cs" />
+    <Compile Include="Update\Ecxeptions.cs" />
     <Compile Include="Update\Updater.cs" />
     <Compile Include="ViewModel\ObservableObject.cs" />
     <Compile Include="ViewModel\AutoFixModeVM.cs" />
@@ -257,7 +255,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Patch.cs" />
-    <Compile Include="Model\Compiler.cs" />
+    <Compile Include="Update\Compiler.cs" />
     <Compile Include="Model\TroubleShooter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -276,9 +274,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.manifest">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -316,6 +311,10 @@
     <ProjectReference Include="..\..\MyControls\MyControls\MyControls.csproj">
       <Project>{aee992f3-c609-43cf-b161-1311b72cb0b1}</Project>
       <Name>MyControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kros.TroubleShooterCommon\Kros.TroubleShooterCommon.csproj">
+      <Project>{d472ccf6-e654-4b9f-b9e0-6727e1ea0c24}</Project>
+      <Name>Kros.TroubleShooterCommon</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

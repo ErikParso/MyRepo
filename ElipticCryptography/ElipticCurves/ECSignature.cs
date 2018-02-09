@@ -6,38 +6,10 @@ using System.Text;
 
 namespace ElipticCurves
 {
-    public class ECSignature
+    public class ECSignature : ECProvider
     {
-        /// <summary>
-        /// Eliptic curve parameters stored here.. 
-        /// </summary>
-        private ElipticCurve curve;
-
-        /// <summary>
-        /// Eliptic curve point arithemtics
-        /// </summary>
-        private PointCalculator calculator;
-
-        /// <summary>
-        /// Serialises the eliptic curve point in its comprimed form
-        /// </summary>
-        private PointSerialiser serialiser;
-
-        /// <summary>
-        /// to generate big integers in specified range
-        /// </summary>
-        private RandomBigNumbers rnd;
-
-        /// <summary>
-        /// Creates provider for specified eliptic curve technology.
-        /// </summary>
-        /// <param name="curve"></param>
-        public ECSignature(ElipticCurve curve)
+        public ECSignature(ElipticCurve curve) : base(curve)
         {
-            this.curve = curve;
-            calculator = new PointCalculator(curve);
-            serialiser = new PointSerialiser(curve);
-            rnd = new RandomBigNumbers();
         }
 
         /// <summary>

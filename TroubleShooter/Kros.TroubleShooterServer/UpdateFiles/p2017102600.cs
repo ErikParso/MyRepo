@@ -1,4 +1,4 @@
-﻿
+﻿//version(2017020801)
 
 using Kros.TroubleShooterClient.Model;
 using Microsoft.Win32;
@@ -10,7 +10,7 @@ namespace Kros.TroubleShooterClient.Patches
     {
         private static string key = @"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts";
 
-        public override string Description { get { return "Došlo k poškodeniu registrov uchovávajúcich názvy súborov s fontami. Problém sa môže prejavovať pri tlači."; } }
+        public override string Description { get { return "XDošlo k poškodeniu registrov uchovávajúcich názvy súborov s fontami. Problém sa môže prejavovať pri tlači."; } }
 
         public override string PatchName { get { return "p2017102600"; } }
 

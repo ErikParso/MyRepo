@@ -1,5 +1,6 @@
 ﻿using ElipticCurves;
 using System;
+using System.Numerics;
 
 namespace ElipticCryptoTest
 {
@@ -7,27 +8,42 @@ namespace ElipticCryptoTest
     {
         static void Main(string[] args)
         {
-            runTest();
-            generateKeys();
+            BigInteger i = 1000;
+            Console.WriteLine(i);
+            BigInteger u = BigInteger.Parse("04" + i.ToString("X"), System.Globalization.NumberStyles.HexNumber);
+            Console.WriteLine(u.ToString("X"));
+                 
+            //runTest();
+            //generateKeys();
             Console.ReadLine();
         }
 
         private static void runTest()
         {
+            int iterations = 5;
+
             CryptographyTests ct = new CryptographyTests();
-            ct.TestEncryption(ElipticCurve.Secp112r1(), 10);
-            ct.TestEncryption(ElipticCurve.secp160r1(), 10);
-            ct.TestEncryption(ElipticCurve.secp192r1(), 10);
-            ct.TestEncryption(ElipticCurve.secp256r1(), 10);
-            ct.TestEncryption(ElipticCurve.secp521r1(), 10);
+            ct.TestEncryption(ElipticCurve.Secp112r1(), iterations);
+            ct.TestEncryption(ElipticCurve.secp160r1(), iterations);
+            ct.TestEncryption(ElipticCurve.secp192r1(), iterations);
+            ct.TestEncryption(ElipticCurve.secp256r1(), iterations);
+            ct.TestEncryption(ElipticCurve.secp521r1(), iterations);
 
             DigitalSignatureTests st = new DigitalSignatureTests();
-            st.TestSignature(ElipticCurve.Secp112r1(), 10);
-            st.TestSignature(ElipticCurve.secp160r1(), 10);
-            st.TestSignature(ElipticCurve.secp192r1(), 10);
-            st.TestSignature(ElipticCurve.secp256r1(), 10);
-            st.TestSignature(ElipticCurve.secp521r1(), 10);
-            st.TestSignature(ElipticCurve.TestCurve(), 10);
+            st.TestSignature(ElipticCurve.Secp112r1(), iterations);
+            st.TestSignature(ElipticCurve.secp160r1(), iterations);
+            st.TestSignature(ElipticCurve.secp192r1(), iterations);
+            st.TestSignature(ElipticCurve.secp256r1(), iterations);
+            st.TestSignature(ElipticCurve.secp521r1(), iterations);
+            st.TestSignature(ElipticCurve.TestCurve(), iterations);
+
+            DiffieHelmanTest dht = new DiffieHelmanTest();
+            dht.TestDiffieHelman(ElipticCurve.Secp112r1(), iterations);
+            dht.TestDiffieHelman(ElipticCurve.secp160r1(), iterations);
+            dht.TestDiffieHelman(ElipticCurve.secp192r1(), iterations);
+            dht.TestDiffieHelman(ElipticCurve.secp256r1(), iterations);
+            dht.TestDiffieHelman(ElipticCurve.secp521r1(), iterations);
+            dht.TestDiffieHelman(ElipticCurve.TestCurve(), iterations);
         }
 
         private static void generateKeys()

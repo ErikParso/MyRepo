@@ -6,18 +6,18 @@ namespace ElipticCurves
     /// <summary>
     /// provides arithmetic and logic operations over eliptic curve point
     /// </summary>
-    internal class PointCalculator
+    public class PointCalculator
     {
         /// <summary>
         /// the eliptic curve
         /// </summary>
-        ElipticCurve curve;
+        private ElipticCurve curve;
 
         /// <summary>
         /// creates calculator
         /// </summary>
         /// <param name="curve"></param>
-        internal PointCalculator(ElipticCurve curve)
+        public PointCalculator(ElipticCurve curve)
         {
             this.curve = curve;
         }
