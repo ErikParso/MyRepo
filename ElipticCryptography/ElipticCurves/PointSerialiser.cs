@@ -34,38 +34,145 @@ namespace ElipticCurves
         }
 
         /// <summary>
-        /// Creates comprimed hex number of eliptic curve point
+        /// serialises ec point into byte array over specified eliptic curve.
+        /// first byte value meaning:
+        /// 0x00 - zero point
+        /// 0x04 - uncomprimed
+        /// 0x02 - comprimed with even Y
+        /// 0x03 - comprimed with odd Y
         /// </summary>
-        /// <param name="point">point</param>
-        /// <returns>hex string</returns>
-        internal string ToHex(ElipticCurvePoint point)
+        /// <param name="point">point to serialise</param>
+        /// <param name="comprimend">serialised point</param>
+        /// <returns></returns>
+        internal byte[] SerialisePoint(ElipticCurvePoint point, bool comprimend = true)
         {
-            if (point == null)
-                return "";
-            string xhex = point.X.ToString("X").TrimStart('0').PadLeft(curve.BitSize / 4, '0');
-            int parity = 2 + (point.Y.IsEven ? 0 : 1);
-            return string.Format("0{0}{1}", parity, xhex);
+            int size = curve.P.ToByteArray().Length;
+            if (comprimend)
+            {
+                byte[] result = new byte[1 + size];
+                if (point == null)
+                    return result;
+                byte[] xBytes = point.X.ToByteArray();
+                if (point.Y.IsEven)
+                    result[0] = 0x02;
+                else
+                    result[0] = 0x03;
+                Buffer.BlockCopy(xBytes, 0, result, 1, xBytes.Length);
+                return result;
+            }
+            else
+            {
+                byte[] result = new byte[1 + size * 2];
+                if (point == null)
+                    return result;
+                byte[] xBytes = point.X.ToByteArray();
+                byte[] yBytes = point.Y.ToByteArray();
+                result[0] = 0x04;
+                Buffer.BlockCopy(xBytes, 0, result, 1, xBytes.Length);
+                Buffer.BlockCopy(yBytes, 0, result, 1 + size, yBytes.Length);
+                return result;
+            }
         }
 
         /// <summary>
-        /// creates eliptic curve point from hex string
+        /// Deserialise ec point over specified eliptic curve
         /// </summary>
-        /// <param name="hexString">hex string</param>
-        /// <returns>eliptic curve point</returns>
-        internal ElipticCurvePoint FromHex(string hexString)
+        /// <param name="bytes">serialised point</param>
+        /// <returns>deserialised point</returns>
+        internal ElipticCurvePoint DeserialisePoint(byte[] bytes)
         {
-            if (string.IsNullOrEmpty(hexString))
+            //this is error
+            if (bytes == null)
+                throw new InvalidPointFormatException("Cannot convert null to eliptic curve point. Zero point (null) is serialised with prefix 0x00", bytes);
+            if (bytes.Length == 0)
+                throw new InvalidPointFormatException("Cannot convert empty byte array to eliptic curve point. Zero point (null) is serialised with prefix 0x00", bytes);
+            int size = curve.P.ToByteArray().Length;
+            //deserialise zero point
+            if (bytes[0] == 0x00)
                 return null;
-            bool yEven = hexString.Substring(1, 1) == "2";
-            string xhex = "0" + hexString.Substring(2, curve.BitSize / 4);
-            BigInteger xcord = BigInteger.Parse(xhex, NumberStyles.HexNumber);
-            ElipticCurvePoint point = calc.FindPointByX(xcord);
-            if (point == null)
-                throw new PointNotFoundException();
-            if (point.Y.IsEven == yEven)
+            //deserielse uncomprimed point
+            if (bytes[0] == 0x04)
+            {
+                if (bytes.Length != size * 2 + 1)
+                    throw new InvalidPointFormatException($"point serialised over curve {curve.Name} should have {size * 2 + 1} bytes in uncomprimed form.", bytes);
+                byte[] xBytes = new byte[size];
+                byte[] yBytes = new byte[size];
+                Buffer.BlockCopy(bytes, 1, xBytes, 0, size);
+                Buffer.BlockCopy(bytes, 1 + size, yBytes, 0, size);
+                ElipticCurvePoint point = new ElipticCurvePoint(new BigInteger(xBytes), new BigInteger(yBytes));
+                if(!calc.IsCurvePoint(point))
+                    throw new InvalidPointFormatException("deserialised point was not found on curve...", bytes);
                 return point;
+            }
+            //deserialise comprimed point
             else
-                return calc.Inverse(point);
+            {
+                if (bytes.Length != size + 1)
+                    throw new InvalidPointFormatException($"point serialised over curve {curve.Name} should have {size + 1} bytes in comprimed form.", bytes);
+                bool yEven;
+                switch (bytes[0])
+                {
+                    case 0x02: yEven = true; break;
+                    case 0x03: yEven = false; break;
+                    default: throw new InvalidPointFormatException("First byte of serialised point should be 0x00 for zero point, 0x04 for uncomprimed, 0x02 for comprimed with even Y and 0x03 for comprimed with odd Y.", bytes);
+                }
+                byte[] xBytes = new byte[size];
+                Buffer.BlockCopy(bytes, 1, xBytes, 0, size);
+                BigInteger x = new BigInteger(xBytes);
+                ElipticCurvePoint point = calc.FindPointByX(x);
+                if (point == null)
+                    throw new InvalidPointFormatException("deserialised point was not found on curve...", bytes);
+                if (point.Y.IsEven == yEven)
+                    return point;
+                else
+                    return calc.Inverse(point);
+            }
+        }
+
+        /// <summary>
+        /// Serialises sequence of eliptic curve points over specified curve
+        /// </summary>
+        /// <param name="points">ec points to serielise</param>
+        /// <returns>serialised points</returns>
+        internal byte[] ToByteArray(IEnumerable<ElipticCurvePoint> points)
+        {
+            List<byte> bytes = new List<byte>();
+            foreach (ElipticCurvePoint point in points)
+                bytes.AddRange(SerialisePoint(point));
+            return bytes.ToArray();
+        }
+
+        /// <summary>
+        /// splits byte sequence and deserielises blocks ito eliptic curve points over specified curve.
+        /// </summary>
+        /// <param name="bytes">points serielised in bytes</param>
+        /// <param name="comprimed">if points are in comprimed form</param>
+        /// <returns></returns>
+        internal IEnumerable<ElipticCurvePoint> FromByteArray(byte[] bytes, bool comprimed)
+        {
+            int size = curve.P.ToByteArray().Length;
+            if (comprimed)
+            {
+                if (bytes.Length % (size + 1) != 0)
+                    throw new InvalidCipherTextexception();
+                for (int i = 0; i < bytes.Length; i += size + 1)
+                {
+                    byte[] buff = new byte[size + 1];
+                    Buffer.BlockCopy(bytes, i, buff, 0, size + 1);
+                    yield return DeserialisePoint(buff);
+                }
+            }
+            else
+            {
+                if (bytes.Length % (size * 2 + 1) != 0)
+                    throw new InvalidCipherTextexception();
+                for (int i = 0; i < bytes.Length; i += size * 2 + 1)
+                {
+                    byte[] buff = new byte[size * 2 + 1];
+                    Buffer.BlockCopy(bytes, i, buff, 0, size * 2 + 1);
+                    yield return DeserialisePoint(buff);
+                }
+            }
         }
     }
 }

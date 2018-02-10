@@ -1,4 +1,5 @@
 ﻿using ModuloExtensions;
+using System;
 using System.Globalization;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -18,11 +19,11 @@ namespace ElipticCurves
         /// <param name="file">File to sign</param>
         /// <param name="privateKey">private key</param>
         /// <returns></returns>
-        public string Signature(string message, string privateKey)
+        public byte[] Signature(string message, byte[] privateKey)
         {
             BigInteger hash = new BigInteger(HashMessage(message));
             BigInteger r, s;
-            BigInteger pk = BigInteger.Parse(privateKey, NumberStyles.HexNumber);
+            BigInteger pk = new BigInteger(privateKey);
             do
             {
                 BigInteger k = rnd.Next(1, curve.N - 1);
@@ -32,8 +33,13 @@ namespace ElipticCurves
                 s = (((BigInteger)k.ModInv(curve.N)) * (hash + pk * r)).Mod(curve.N);
             } while (r == 0 || s == 0);
 
-            return r.ToString("X") + " " + s.ToString("X");
-            //return new BigInteger[] { r, s };
+            int size = curve.N.ToByteArray().Length;
+            byte[] result = new byte[size * 2];
+            byte[] rBytes = r.ToByteArray();
+            byte[] sBytes = s.ToByteArray();
+            Buffer.BlockCopy(rBytes, 0, result, 0, rBytes.Length);
+            Buffer.BlockCopy(sBytes, 0, result, size, sBytes.Length);
+            return result;
         }
 
         /// <summary>
@@ -43,16 +49,19 @@ namespace ElipticCurves
         /// <param name="signature">signature</param>
         /// <param name="publicKey">public key</param>
         /// <returns></returns>
-        public bool VerifySignature(string message, string signature, string publicKey)
+        public bool VerifySignature(string message, byte[] signature, byte[] publicKey)
         {
-            string[] rs = signature.Split();
-            if (rs.Length != 2)
-                return false;
-            BigInteger r = BigInteger.Parse(rs[0], NumberStyles.HexNumber);
-            BigInteger s = BigInteger.Parse(rs[1], NumberStyles.HexNumber);
+            int size = curve.N.ToByteArray().Length;
+            byte[] rBytes = new byte[size];
+            byte[] sBytes = new byte[size];
+            Buffer.BlockCopy(signature, 0, rBytes, 0, size);
+            Buffer.BlockCopy(signature, size, sBytes, 0, size);
+            BigInteger r = new BigInteger(rBytes);
+            BigInteger s = new BigInteger(sBytes);
+
             //1. public key point isnt identity element O' and coordinates are valid
             //2. public key point lies on curve (exception is thrown if not)
-            ElipticCurvePoint publicKeyPoint = serialiser.FromHex(publicKey);
+            ElipticCurvePoint publicKeyPoint = serialiser.DeserialisePoint(publicKey);
             if (publicKeyPoint == null)
                 return false;
             //3. N x publicKey != O

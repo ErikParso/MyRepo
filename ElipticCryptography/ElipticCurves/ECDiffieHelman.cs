@@ -12,10 +12,10 @@ namespace ElipticCurves
         {
         }
 
-        public string SharedSecret(string privateKey, string publicKey)
+        public string SharedSecret(byte[] privateKey, byte[] publicKey)
         {
-            BigInteger privateK = BigInteger.Parse(privateKey, NumberStyles.HexNumber);
-            ElipticCurvePoint publicK = serialiser.FromHex(publicKey);
+            BigInteger privateK = new BigInteger(privateKey);
+            ElipticCurvePoint publicK = serialiser.DeserialisePoint(publicKey);
             ElipticCurvePoint P = calculator.Multiply(privateK, publicK);
             if (P == null)
                 return null;

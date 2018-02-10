@@ -13,10 +13,10 @@ namespace ElipticCryptoTest
             ECKeysGenerator keyGen = new ECKeysGenerator(curve);
             ECDiffieHelman diffie = new ECDiffieHelman(curve);
             //generovanie klucoveho paru
-            string privateKeyAlice;
-            string publicKeyAlice;
-            string privateKeyBob;
-            string publicKeyBob;
+            byte[] privateKeyAlice;
+            byte[] publicKeyAlice;
+            byte[] privateKeyBob;
+            byte[] publicKeyBob;
             for (int i = 0; i < iterations; i++)
             {
                 Console.Write($"diffie-helman curve {curve.Name} test {i}... ");

@@ -69,6 +69,10 @@ namespace ElipticCurves
         /// <returns>inverse point</returns>
         internal ElipticCurvePoint Inverse(ElipticCurvePoint point)
         {
+            if (point == null)
+            {
+                return null;
+            }
             return new ElipticCurvePoint(point.X, point.Y.ModNeg(curve.P));
         }
 

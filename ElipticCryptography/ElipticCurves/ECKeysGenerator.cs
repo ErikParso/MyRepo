@@ -20,12 +20,12 @@ namespace ElipticCurves
         /// </summary>
         /// <param name="privateKey">the private key</param>
         /// <param name="publicKey"> the public key</param>
-        public void GenerateKeyPair(out string privateKey, out string publicKey)
+        public void GenerateKeyPair(out byte[] privateKey, out byte[] publicKey)
         {
             // vygenreuj nahodne 1..N-1
             BigInteger pk = rnd.Next(1, curve.N - 1);
-            privateKey = pk.ToString("X");
-            publicKey = serialiser.ToHex(calculator.Multiply(pk, curve.G));
+            privateKey = pk.ToByteArray();
+            publicKey = serialiser.SerialisePoint(calculator.Multiply(pk, curve.G));
         }
     }
 }

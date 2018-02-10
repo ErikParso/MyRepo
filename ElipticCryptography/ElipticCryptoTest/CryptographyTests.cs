@@ -21,14 +21,17 @@ namespace ElipticCryptoTest
             ECKeysGenerator keyGen = new ECKeysGenerator(curve);
             ECEncryption crypto = new ECEncryption(curve);
             //generovanie klucoveho paru
-            string privateKey;
-            string publicKey;
+            byte[] privateKey;
+            byte[] publicKey;
             for (int i = 0; i < iterations; i++)
             {
-                Console.Write($"encrtyption curve {curve.Name} test {i}... ");
+                Console.WriteLine($"encrtyption curve {curve.Name} test {i}... ");
                 keyGen.GenerateKeyPair(out privateKey, out publicKey);
                 string test = RandomString(random.Next(10));
-                string cipher = crypto.Encrypt(test, publicKey, Encoding.Unicode);
+                byte[] cipher = crypto.Encrypt(test, publicKey, Encoding.Unicode);
+                foreach (byte b in cipher)
+                    Console.Write(b.ToString("X"));
+                Console.WriteLine();
                 string decoded = crypto.Decrypt(cipher, privateKey, Encoding.Unicode);
                 if (test != decoded)
                     throw new Exception("Fatal Error");

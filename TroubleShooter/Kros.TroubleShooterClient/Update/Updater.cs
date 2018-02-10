@@ -22,7 +22,7 @@ namespace Kros.TroubleShooterClient.Update
         private ECSignature verifier;
         private ECKeysGenerator keyGen;
         private ECDiffieHelman diffieHelman;
-        private string signatureKey = "0318959FDB04DF2C1345656325657D0ABBDB4A5368";
+        private byte[] signatureKey = BigInteger.Parse("0318959FDB04DF2C1345656325657D0ABBDB4A5368", NumberStyles.HexNumber).ToByteArray();
 
         private HttpClient client = new HttpClient();
 
@@ -133,7 +133,8 @@ namespace Kros.TroubleShooterClient.Update
 
         private string DecryptSourceFromServer(SourceFileInfo sourceFileInfo)
         {
-            string dhClientPublic, dhClientPrivate;
+            byte[] dhClientPublic;
+            byte[] dhClientPrivate;
             keyGen.GenerateKeyPair(out dhClientPrivate, out dhClientPublic);
 
             string uri = (URI_GET_VERSION + $"/sources?dhClientPublic={dhClientPublic}&sourceFile={sourceFileInfo.FileName}");

@@ -15,7 +15,7 @@ namespace Kros.TroubleShooterServer.Controllers
     public class UpdateFilesController : Controller
     {
         private const string SOURCE_FILES_DIR = "UpdateFiles";
-        private const string signatureKey = "0EB5C3428BAAC0A933EBF20C8BCCA1DA0C2564E27";
+        private byte[] signatureKey = BigInteger.Parse("0EB5C3428BAAC0A933EBF20C8BCCA1DA0C2564E27", NumberStyles.HexNumber).ToByteArray();
 
         private ECEncryption encryptor;
 
@@ -44,13 +44,14 @@ namespace Kros.TroubleShooterServer.Controllers
         /// <param name="dhClientPublic">clients public key</param>
         /// <returns></returns>
         [HttpGet("sources")]
-        public ProtectedSource Get(string dhClientPublic, string sourceFile)
+        public ProtectedSource Get(byte[] dhClientPublic, string sourceFile)
         {
             string sourceCode = sourceFile == null ? 
                 "source code should be AES encrypted so nobody can see sensitive data" :
                 System.IO.File.ReadAllText(Path.Combine(SOURCE_FILES_DIR, sourceFile));
-            
-            string dhServerPublic, dhServerPrivate;
+
+            byte[] dhServerPublic;
+            byte[] dhServerPrivate;
             keyGen.GenerateKeyPair(out dhServerPrivate, out dhServerPublic);
             string sharedSecret = diffieHelman.SharedSecret(dhServerPrivate, dhClientPublic);
             if (sharedSecret == null)

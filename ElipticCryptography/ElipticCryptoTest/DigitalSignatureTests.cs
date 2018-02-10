@@ -21,13 +21,13 @@ namespace ElipticCryptoTest
             ECSignature signature = new ECSignature(curve);
             for (int i = 0; i < iterations; i++)
             {
-                Console.Write($"signature curve {curve.Name} test {i}... ");
+                Console.WriteLine($"signature curve {curve.Name} test {i}... ");
                 //generovanie klucoveho paru
-                string privateKey1;
-                string publicKey1;
+                byte[] privateKey1;
+                byte[] publicKey1;
                 keyGen.GenerateKeyPair(out privateKey1, out publicKey1);
-                string privateKey2;
-                string publicKey2;
+                byte[] privateKey2;
+                byte[] publicKey2;
                 keyGen.GenerateKeyPair(out privateKey2, out publicKey2);
 
                 string str1 = RandomString(random.Next(100));
@@ -35,8 +35,12 @@ namespace ElipticCryptoTest
                 while (str1 == str2)
                     str2 = RandomString(random.Next(100));
 
-                string sign1 = signature.Signature(str1, privateKey1);
-                string sign2 = signature.Signature(str2, privateKey1);
+                byte[] sign1 = signature.Signature(str1, privateKey1);
+                byte[] sign2 = signature.Signature(str2, privateKey1);
+
+                foreach(byte b in sign1)
+                    Console.Write(b.ToString("X"));
+                Console.WriteLine();
 
                 if (!signature.VerifySignature(str1, sign1, publicKey1))
                 {

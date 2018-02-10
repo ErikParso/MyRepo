@@ -1,6 +1,7 @@
 ﻿using ElipticCurves;
 using System;
 using System.Numerics;
+using System.Text;
 
 namespace ElipticCryptoTest
 {
@@ -8,13 +9,8 @@ namespace ElipticCryptoTest
     {
         static void Main(string[] args)
         {
-            BigInteger i = 1000;
-            Console.WriteLine(i);
-            BigInteger u = BigInteger.Parse("04" + i.ToString("X"), System.Globalization.NumberStyles.HexNumber);
-            Console.WriteLine(u.ToString("X"));
-                 
-            //runTest();
-            //generateKeys();
+            runTest();
+            generateKeys();
             Console.ReadLine();
         }
 
@@ -61,8 +57,8 @@ namespace ElipticCryptoTest
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(curve.Name);
             Console.ResetColor();
-            string privateKey;
-            string publicKey;
+            byte[] privateKey;
+            byte[] publicKey;
             new ECKeysGenerator(curve).GenerateKeyPair(out privateKey, out publicKey);
             Console.WriteLine($"private:{privateKey}");
             Console.WriteLine($"public :{publicKey}");
