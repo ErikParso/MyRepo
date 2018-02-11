@@ -38,9 +38,7 @@ namespace ElipticCryptoTest
                 byte[] sign1 = signature.Signature(str1, privateKey1);
                 byte[] sign2 = signature.Signature(str2, privateKey1);
 
-                foreach(byte b in sign1)
-                    Console.Write(b.ToString("X"));
-                Console.WriteLine();
+                Console.WriteLine(Convert.ToBase64String(sign1));
 
                 if (!signature.VerifySignature(str1, sign1, publicKey1))
                 {

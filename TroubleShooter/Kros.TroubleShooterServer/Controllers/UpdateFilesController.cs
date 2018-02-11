@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -11,26 +12,48 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Kros.TroubleShooterServer.Controllers
 {
+    /// <summary>
+    /// provides functions needed for update sources on clients
+    /// </summary>
     [Route("api/[controller]")]
     public class UpdateFilesController : Controller
     {
+        /// <summary>
+        /// directory with patch files
+        /// </summary>
         private const string SOURCE_FILES_DIR = "UpdateFiles";
-        private byte[] signatureKey = BigInteger.Parse("0EB5C3428BAAC0A933EBF20C8BCCA1DA0C2564E27", NumberStyles.HexNumber).ToByteArray();
 
-        private ECEncryption encryptor;
+        /// <summary>
+        /// server private key to sign protected source files
+        /// </summary>
+        private byte[] signatureKey = Convert.FromBase64String("YkOydPkgS0av3U6xeOEMl74HkbMA");
 
+        /// <summary>
+        /// provider used to sign source files
+        /// </summary>
         private ECSignature signatureMaker;
 
+        /// <summary>
+        /// provider used to generate key pair 
+        /// </summary>
         private ECKeysGenerator keyGen;
 
+        /// <summary>
+        /// provider to derive shared secret between client and server
+        /// </summary>
         private ECDiffieHelman diffieHelman;
 
+        /// <summary>
+        /// list of actual source files and its versions
+        /// </summary>
         private IEnumerable<SourceFileInfo> sourceFiles;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public UpdateFilesController()
         {
             ElipticCurve curve = ElipticCurve.secp160r1();
-            encryptor = new ECEncryption(curve);
             signatureMaker = new ECSignature(curve);
             keyGen = new ECKeysGenerator(curve);
             diffieHelman = new ECDiffieHelman(curve);
@@ -38,34 +61,35 @@ namespace Kros.TroubleShooterServer.Controllers
         }
 
         /// <summary>
-        /// Gets source code encoded using clients publicKey 
-        /// signed by server
+        /// Gets source code encoded by common secret and signed by server
         /// </summary>
-        /// <param name="dhClientPublic">clients public key</param>
-        /// <returns></returns>
-        [HttpGet("sources")]
-        public ProtectedSource Get(byte[] dhClientPublic, string sourceFile)
+        /// <param name="request">contains filename and clients public key</param>
+        /// <returns>protected source</returns>
+        [HttpPost("sources")]
+        public ProtectedSource Post([FromBody] ProtectedSourceRequest request)
         {
-            string sourceCode = sourceFile == null ? 
-                "source code should be AES encrypted so nobody can see sensitive data" :
-                System.IO.File.ReadAllText(Path.Combine(SOURCE_FILES_DIR, sourceFile));
-
+            //read source code
+            string sourceCode = System.IO.File.ReadAllText(Path.Combine(SOURCE_FILES_DIR, request.FileName));
+            //generate key pair and derive shared secret
             byte[] dhServerPublic;
             byte[] dhServerPrivate;
             keyGen.GenerateKeyPair(out dhServerPrivate, out dhServerPublic);
-            string sharedSecret = diffieHelman.SharedSecret(dhServerPrivate, dhClientPublic);
-            if (sharedSecret == null)
-                sharedSecret = "0";
+            byte[] sharedSecret = diffieHelman.SharedSecret(dhServerPrivate, request.DhClientPublic);
 
+            //send encrypted and signed source back to client;
+            //send also servers public key so client can derive common secret
             return new ProtectedSource()
             {
-                //SourceCode = encryptor.Encrypt(sourceCode, dhClientPublic, Encoding.Unicode),
-                SourceCode = AesGenerator.EncryptStringToBytes_Aes(sourceCode, sharedSecret),
+                SourceCode = AesHandler.EncryptStringToBytes_Aes(sourceCode, sharedSecret),
                 DhPublicServer = dhServerPublic,
                 Signature = signatureMaker.Signature(sourceCode, signatureKey)
             };
         }
 
+        /// <summary>
+        /// gets actual file info
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("updateinfo")]
         public IEnumerable<SourceFileInfo> GetFileInfo()
         {

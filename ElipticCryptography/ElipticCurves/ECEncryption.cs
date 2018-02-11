@@ -112,9 +112,9 @@ namespace ElipticCurves
         /// <param name="plainText">the plain text</param>
         /// <param name="publicKey">the public key</param>
         /// <returns>cipherText</returns>
-        public byte[] Encrypt(string plainText, byte[] publicKey, Encoding enc)
+        public byte[] Encrypt(string plainText, byte[] publicKey, Encoding enc, bool comprimed = false)
         {
-            List<byte> result = new List<byte>();
+            List<ElipticCurvePoint> result = new List<ElipticCurvePoint>();
             int encByteSize = enc.GetBytes("a").Length;
             int M = ((curve.BitSize / 8) - 1) / encByteSize * encByteSize;
             int N = curve.BitSize / 8 - M;
@@ -134,10 +134,10 @@ namespace ElipticCurves
                 BigInteger k = rnd.Next(1, curve.N - 1);
                 ElipticCurvePoint C1 = calculator.Multiply(k, curve.G);
                 ElipticCurvePoint C2 = calculator.Add(point, calculator.Multiply(k, Q));
-                result.AddRange(serialiser.SerialisePoint(C1));
-                result.AddRange(serialiser.SerialisePoint(C2));
+                result.Add(C1);
+                result.Add(C2);
             }
-            return result.ToArray();
+            return serialiser.SerialisePoints(result, comprimed);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace ElipticCurves
         /// <param name="cipher">cipher text</param>
         /// <param name="privateKey">private key</param>
         /// <returns>original plain text</returns>
-        public string Decrypt(byte[] cipher, byte[] privateKey, Encoding enc)
+        public string Decrypt(byte[] cipher, byte[] privateKey, Encoding enc, bool comprimed = false)
         {
             BigInteger pk = new BigInteger(privateKey);
             int encByteSize = enc.GetBytes("a").Length;
@@ -154,7 +154,7 @@ namespace ElipticCurves
             int N = curve.BitSize / 8 - M;
 
             List<byte> xByte = new List<byte>();
-            ElipticCurvePoint[] points = serialiser.FromByteArray(cipher, true).ToArray();
+            ElipticCurvePoint[] points = serialiser.DeserielisePoints(cipher, comprimed).ToArray();
             for (int i = 0; i < points.Count(); i += 2)
             {
                 ElipticCurvePoint C1 = points[i];

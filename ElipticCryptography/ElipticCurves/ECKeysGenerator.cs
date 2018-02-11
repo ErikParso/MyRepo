@@ -25,7 +25,7 @@ namespace ElipticCurves
             // vygenreuj nahodne 1..N-1
             BigInteger pk = rnd.Next(1, curve.N - 1);
             privateKey = pk.ToByteArray();
-            publicKey = serialiser.SerialisePoint(calculator.Multiply(pk, curve.G));
+            publicKey = serialiser.SerialisePoint(calculator.Multiply(pk, curve.G), true);
         }
     }
 }

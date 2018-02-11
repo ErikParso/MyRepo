@@ -1,4 +1,5 @@
 ﻿using ModuloExtensions;
+using System;
 using System.Numerics;
 
 namespace ElipticCurves
@@ -71,7 +72,7 @@ namespace ElipticCurves
         {
             if (point == null)
             {
-                return null;
+                throw new ArgumentException("cannot find an inverse of zero point.. ");
             }
             return new ElipticCurvePoint(point.X, point.Y.ModNeg(curve.P));
         }

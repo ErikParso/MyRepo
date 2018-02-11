@@ -19,11 +19,12 @@ namespace ElipticCryptoTest
             byte[] publicKeyBob;
             for (int i = 0; i < iterations; i++)
             {
-                Console.Write($"diffie-helman curve {curve.Name} test {i}... ");
+                Console.WriteLine($"diffie-helman curve {curve.Name} test {i}... ");
                 keyGen.GenerateKeyPair(out privateKeyAlice, out publicKeyAlice);
                 keyGen.GenerateKeyPair(out privateKeyBob, out publicKeyBob);
-                string commnonAlices = diffie.SharedSecret(privateKeyAlice, publicKeyBob);
-                string commnonBobs = diffie.SharedSecret(privateKeyBob, publicKeyAlice);
+                string commnonAlices = Convert.ToBase64String(diffie.SharedSecret(privateKeyAlice, publicKeyBob));
+                string commnonBobs = Convert.ToBase64String(diffie.SharedSecret(privateKeyBob, publicKeyAlice));
+                Console.WriteLine(commnonAlices);
                 if (commnonAlices != commnonBobs) 
                     throw new Exception("Fatal Error");
                 Write("OK", ConsoleColor.Green);

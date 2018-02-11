@@ -29,9 +29,7 @@ namespace ElipticCryptoTest
                 keyGen.GenerateKeyPair(out privateKey, out publicKey);
                 string test = RandomString(random.Next(10));
                 byte[] cipher = crypto.Encrypt(test, publicKey, Encoding.Unicode);
-                foreach (byte b in cipher)
-                    Console.Write(b.ToString("X"));
-                Console.WriteLine();
+                Console.WriteLine(Convert.ToBase64String(cipher));
                 string decoded = crypto.Decrypt(cipher, privateKey, Encoding.Unicode);
                 if (test != decoded)
                     throw new Exception("Fatal Error");

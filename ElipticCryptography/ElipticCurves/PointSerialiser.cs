@@ -44,7 +44,7 @@ namespace ElipticCurves
         /// <param name="point">point to serialise</param>
         /// <param name="comprimend">serialised point</param>
         /// <returns></returns>
-        internal byte[] SerialisePoint(ElipticCurvePoint point, bool comprimend = true)
+        internal byte[] SerialisePoint(ElipticCurvePoint point, bool comprimend)
         {
             int size = curve.P.ToByteArray().Length;
             if (comprimend)
@@ -134,11 +134,11 @@ namespace ElipticCurves
         /// </summary>
         /// <param name="points">ec points to serielise</param>
         /// <returns>serialised points</returns>
-        internal byte[] ToByteArray(IEnumerable<ElipticCurvePoint> points)
+        internal byte[] SerialisePoints(IEnumerable<ElipticCurvePoint> points, bool encrypted)
         {
             List<byte> bytes = new List<byte>();
             foreach (ElipticCurvePoint point in points)
-                bytes.AddRange(SerialisePoint(point));
+                bytes.AddRange(SerialisePoint(point, encrypted));
             return bytes.ToArray();
         }
 
@@ -148,7 +148,7 @@ namespace ElipticCurves
         /// <param name="bytes">points serielised in bytes</param>
         /// <param name="comprimed">if points are in comprimed form</param>
         /// <returns></returns>
-        internal IEnumerable<ElipticCurvePoint> FromByteArray(byte[] bytes, bool comprimed)
+        internal IEnumerable<ElipticCurvePoint> DeserielisePoints(byte[] bytes, bool comprimed)
         {
             int size = curve.P.ToByteArray().Length;
             if (comprimed)

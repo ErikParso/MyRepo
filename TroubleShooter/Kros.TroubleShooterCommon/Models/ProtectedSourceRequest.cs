@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Kros.TroubleShooterCommon.Models
 {
     /// <summary>
-    /// Source file info
+    /// clients request for protected file to server
     /// </summary>
-    public class SourceFileInfo
+    public class ProtectedSourceRequest
     {
         /// <summary>
-        /// File name
+        /// the file name
         /// </summary>
         public string FileName { get; set; }
 
         /// <summary>
-        /// the file version
+        /// clients public so server can derive common secret
         /// </summary>
-        public int Version { get; set; }
+        public byte[] DhClientPublic { get; set; }
     }
 }

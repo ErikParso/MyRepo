@@ -7,9 +7,18 @@ using System.Text;
 
 namespace Kros.TroubleShooterCommon
 {
-    public class AesGenerator
+    /// <summary>
+    /// symetric cryptology used to encrypt sources sent frtom server to client
+    /// </summary>
+    public class AesHandler
     {
-        public static byte[] EncryptStringToBytes_Aes(string plainText, string Key)
+        /// <summary>
+        /// encrypts mesage using key
+        /// </summary>
+        /// <param name="plainText"></param>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        public static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key)
         {
             // Check arguments.
             if (plainText == null || plainText.Length <= 0)
@@ -49,7 +58,13 @@ namespace Kros.TroubleShooterCommon
 
         }
 
-        public static string DecryptStringFromBytes_Aes(byte[] cipherText, string Key)
+        /// <summary>
+        /// decrypts message using key
+        /// </summary>
+        /// <param name="cipherText"></param>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        public static string DecryptStringFromBytes_Aes(byte[] cipherText, byte[] Key)
         {
             // Check arguments.
             if (cipherText == null || cipherText.Length <= 0)
@@ -90,14 +105,21 @@ namespace Kros.TroubleShooterCommon
             return plaintext;
         }
 
+        /// <summary>
+        /// salt used here
+        /// </summary>
         private static byte[] AesSalt = BigInteger.Parse("01234567891011121314151617181920", System.Globalization.NumberStyles.HexNumber).ToByteArray();
 
-        private static byte[] CreateKey(string password)
+        /// <summary>
+        /// extends key to 256 bytes.. 
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        private static byte[] CreateKey(byte[] password)
         {
             using (SHA256 sha = SHA256.Create())
             {
-                BigInteger commonSecret = BigInteger.Parse(password, System.Globalization.NumberStyles.HexNumber);
-                return sha.ComputeHash(commonSecret.ToByteArray());
+                return sha.ComputeHash(password);
             }
 
         }

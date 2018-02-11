@@ -22,7 +22,7 @@ namespace Kros.TroubleShooterClient.Update
         private ECSignature verifier;
         private ECKeysGenerator keyGen;
         private ECDiffieHelman diffieHelman;
-        private byte[] signatureKey = BigInteger.Parse("0318959FDB04DF2C1345656325657D0ABBDB4A5368", NumberStyles.HexNumber).ToByteArray();
+        private byte[] signatureKey = Convert.FromBase64String("A0mbdQ20EsLzFyiFwr58QrdLFqmIAA==");
 
         private HttpClient client = new HttpClient();
 
@@ -137,13 +137,14 @@ namespace Kros.TroubleShooterClient.Update
             byte[] dhClientPrivate;
             keyGen.GenerateKeyPair(out dhClientPrivate, out dhClientPublic);
 
-            string uri = (URI_GET_VERSION + $"/sources?dhClientPublic={dhClientPublic}&sourceFile={sourceFileInfo.FileName}");
-            HttpResponseMessage response = client.GetAsync(uri).GetAwaiter().GetResult();
+            string uri = (URI_GET_VERSION + "/sources");
+            ProtectedSourceRequest request = new ProtectedSourceRequest() { DhClientPublic = dhClientPublic, FileName = sourceFileInfo.FileName };
+            HttpResponseMessage response = client.PostAsJsonAsync(uri, request).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)
             {
                 ProtectedSource source = response.Content.ReadAsAsync<ProtectedSource>().GetAwaiter().GetResult();
-                string sharedSecret = diffieHelman.SharedSecret(dhClientPrivate, source.DhPublicServer);
-                string decryptedSource = AesGenerator.DecryptStringFromBytes_Aes(source.SourceCode, sharedSecret);
+                byte[] sharedSecret = diffieHelman.SharedSecret(dhClientPrivate, source.DhPublicServer);
+                string decryptedSource = AesHandler.DecryptStringFromBytes_Aes(source.SourceCode, sharedSecret);
                 if (verifier.VerifySignature(decryptedSource, source.Signature, signatureKey))
                     return decryptedSource;
                 else

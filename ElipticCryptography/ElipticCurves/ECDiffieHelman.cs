@@ -12,7 +12,7 @@ namespace ElipticCurves
         {
         }
 
-        public string SharedSecret(byte[] privateKey, byte[] publicKey)
+        public byte[] SharedSecret(byte[] privateKey, byte[] publicKey)
         {
             BigInteger privateK = new BigInteger(privateKey);
             ElipticCurvePoint publicK = serialiser.DeserialisePoint(publicKey);
@@ -20,7 +20,7 @@ namespace ElipticCurves
             if (P == null)
                 return null;
             else
-                return P.X.ToString("X");
+                return P.X.ToByteArray();
         }
     }
 }
