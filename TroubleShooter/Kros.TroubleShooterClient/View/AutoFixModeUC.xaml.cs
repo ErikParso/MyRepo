@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Kros.TroubleShooterClient.View
@@ -27,6 +28,7 @@ namespace Kros.TroubleShooterClient.View
             model = new AutoFixVm();
             DataContext = model;
             mode = Mode.SUMMARY;
+            modeChange(this, null);
         }
 
         public void Show(IEnumerable<Patch> patches, bool alreadyIdentified = false)
@@ -105,6 +107,11 @@ namespace Kros.TroubleShooterClient.View
             model.PatchResults.Remove(patch);
         }
 
+        private void CloseHtmlClick()
+        {
+            HtmlInfo.Visibility = Visibility.Hidden;
+        }
+
         private enum Mode
         {
             DETAIL, SUMMARY
@@ -126,6 +133,13 @@ namespace Kros.TroubleShooterClient.View
                 modeButton.Opacity = 1;
                 Summary.Visibility = Visibility.Visible;
             }
+        }
+
+        private void displayHtmlDetail(object sender, MouseButtonEventArgs e)
+        {
+            string html = ((PatchResultVM)((TextBlock)sender).DataContext).HelpHtml;
+            this.WebBrowser.NavigateToString(html);
+            HtmlInfo.Visibility = Visibility.Visible;
         }
     }
 }

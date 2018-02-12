@@ -15,7 +15,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition  Width ="230"/>
-            
+
             <ColumnDefinition  Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -34,28 +34,78 @@
         </Grid>
 
         <Border BorderBrush="Black" BorderThickness="1" Margin="3" Grid.Row="0" Grid.Column="1" Name="Detail"  Visibility="Hidden">
-            <ScrollViewer>
-                <ItemsControl Grid.Column="3" ItemsSource="{Binding PatchResults}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <myControls:PopupInfo MainText="{Binding Name}" ContentContext="{Binding .}" Margin="0,3,0,3" Background="{Binding ProblemFixed, Converter={StaticResource boolToColor}}">
-                                <myControls:PopupInfo.PlaceHolder>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Grid.Row="0" Margin="3"/>
-                                        <TextBlock Text="{Binding ExecutionResult}" TextWrapping="Wrap" Grid.Row="1" Margin="3"/>
-                                        <Image ToolTip="Neaplikovať túto opravu" Source="/Kros.TroubleShooterClient;component/Resources/cancel.png" Grid.Row="2" Margin="3"  Width="12" Height="13" HorizontalAlignment="Right" MouseLeftButtonUp="removePatchResult"/>
-                                    </Grid>
-                                </myControls:PopupInfo.PlaceHolder>
-                            </myControls:PopupInfo>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Label Content="Identifikované problémy:" FontSize="18" Margin="3" Grid.Row="0"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                    <ItemsControl Grid.Column="3" ItemsSource="{Binding PatchResults}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <myControls:PopupInfo MainText="{Binding Name}" ContentContext="{Binding .}" Margin="0,3,0,3" Background="{Binding ProblemFixed, Converter={StaticResource boolToColor}}">
+                                    <myControls:PopupInfo.PlaceHolder>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Text="{Binding Description}" TextWrapping="Wrap" Grid.Row="0" Margin="3"/>
+                                            <TextBlock Text="Viac informácií" MouseLeftButtonUp="displayHtmlDetail" Foreground="Blue" Grid.Row="1" Margin="5" HorizontalAlignment="Right" >
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="TextDecorations" Value="Underline"/>
+                                                            </Trigger>
+                                                            <DataTrigger Binding="{Binding HelpHtml}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <TextBlock FontWeight="Bold" TextWrapping="Wrap" Grid.Row="2" Margin="3">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="{x:Type TextBlock}">
+                                                        <Setter Property="Text" Value="Oprava ešte neprebehla. Pre spustenie kliknite na tlačidlo oprav."/>
+                                                        <Setter Property="Foreground" Value="DarkBlue"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ProblemFixed}" Value="False">
+                                                                <Setter Property="Foreground" Value="DarkRed"/>
+                                                                <Setter Property="Text" Value="Problém sa nepodarilo opraviť."/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ProblemFixed}" Value="True">
+                                                                <Setter Property="Foreground" Value="DarkGreen"/>
+                                                                <Setter Property="Text" Value="Zdá sa, že oprava chyby prebehla úspešne."/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <Image ToolTip="Neaplikovať túto opravu" Source="/Kros.TroubleShooterClient;component/Resources/cancel.png" Grid.Row="3" Margin="3"  Width="12" Height="13" HorizontalAlignment="Right" MouseLeftButtonUp="removePatchResult"/>
+                                        </Grid>
+                                    </myControls:PopupInfo.PlaceHolder>
+                                </myControls:PopupInfo>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+                <Grid Background="White" Grid.RowSpan="2" Name="HtmlInfo"  Visibility="Hidden">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <myControls:TextButtonUC WithDescription="Collapsed" x:Name="CloseHtmlButton" MainText="Späť" Margin="3" Grid.ColumnSpan="2" Click="CloseHtmlClick" Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
+                        <WebBrowser Name="WebBrowser" Grid.Row="1"/>
+                    </Grid>
+                </Grid>
+            </Grid>
         </Border>
 
         <Border BorderBrush="Black" BorderThickness="1" Margin="3" Grid.Row="0" Grid.Column="1" Name="Summary">
@@ -81,8 +131,8 @@
         <Grid Name="modeButton" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3">
             <Image Source="/Kros.TroubleShooterClient;component/Resources/zoom.png" Width="20" Height="20" MouseLeftButtonUp="modeChange"/>
         </Grid>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="formModeButton" MainText="Problémy pretrvávajú ?" DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="3" Grid.Row="1" Grid.ColumnSpan="2" Click="formModeClick"/>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="executePatchesButton" Margin="3" MainText="Oprav" DescriptionText="{x:Static res:Resources.buttonDesc5}" Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick"/>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Hotovo" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="2" Grid.ColumnSpan="2" Click="FinishClick"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="formModeButton" MainText="Problémy pretrvávajú ?" DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="3" Grid.Row="1" Grid.ColumnSpan="2" Click="formModeClick" Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="executePatchesButton" Margin="3" MainText="Oprav" DescriptionText="{x:Static res:Resources.buttonDesc5}" Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick" Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Hotovo" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="2" Grid.ColumnSpan="2" Click="FinishClick" Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
     </Grid>
 </UserControl>

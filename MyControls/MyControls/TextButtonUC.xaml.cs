@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -7,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace MyControls
 {
@@ -21,7 +23,16 @@ namespace MyControls
             DependencyProperty.Register("DescriptionText", typeof(string), typeof(TextButtonUC), new UIPropertyMetadata(null));
         public static readonly DependencyProperty WithDescriptionProperty =
             DependencyProperty.Register("WithDescription", typeof(Visibility), typeof(TextButtonUC), new UIPropertyMetadata(Visibility.Collapsed));
+        // Using a DependencyProperty as the backing store for Source.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SourceProperty =
+            DependencyProperty.Register("Source", typeof(ImageSource), typeof(TextButtonUC));
 
+
+        public ImageSource Source
+        {
+            get { return (ImageSource)GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void SetValueDP(DependencyProperty property, object value, [CallerMemberName]String p = null)

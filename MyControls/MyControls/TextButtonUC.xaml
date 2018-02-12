@@ -17,7 +17,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Image  Width="20" Height="20" Grid.Row="0" Grid.Column="0" Margin="3,0,3,0" HorizontalAlignment="Center" VerticalAlignment="Center" Source="Resources/greenArrow.png"/>
+        <Image Name="image" Width="20" Height="20" Grid.Row="0" Grid.Column="0" Margin="3,0,3,0" HorizontalAlignment="Center" VerticalAlignment="Center" Source="{Binding Source, ElementName=control}"/>
         <TextBlock Text="{Binding MainText, ElementName=control}" Grid.Row="0" Grid.Column="1" FontSize="20" VerticalAlignment="Center" Margin="0,0,3,0"/>
         <TextBlock Text="{Binding DescriptionText, ElementName=control}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Visibility="{Binding WithDescription, ElementName=control}"/>
         <Grid.Style>

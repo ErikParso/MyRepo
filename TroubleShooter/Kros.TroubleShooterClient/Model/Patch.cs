@@ -19,6 +19,11 @@ namespace Kros.TroubleShooterClient.Model
         public abstract string PatchName { get; }
 
         /// <summary>
+        /// The patch Name.
+        /// </summary>
+        public abstract string HtmlInfo { get; }
+
+        /// <summary>
         /// The id of problem which patch solves
         /// </summary>
         public abstract int SolvesProblem { get; }

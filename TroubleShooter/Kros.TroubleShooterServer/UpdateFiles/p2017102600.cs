@@ -1,4 +1,4 @@
-﻿//version(2017020801)
+﻿//version(2017020802)
 
 using Kros.TroubleShooterClient.Model;
 using Microsoft.Win32;
@@ -13,6 +13,8 @@ namespace Kros.TroubleShooterClient.Patches
         public override string Description { get { return "XDošlo k poškodeniu registrov uchovávajúcich názvy súborov s fontami. Problém sa môže prejavovať pri tlači."; } }
 
         public override string PatchName { get { return "p2017102600"; } }
+
+        public override string HtmlInfo { get { return "<ul><li>point 1</li><li><span style=\"color: red; \">This is important text!</span></li><li><strong>point 3</strong></li></ul>"; } }
 
         public override int SolvesProblem { get { return 2017121503; } }
 
@@ -42,6 +44,8 @@ namespace Kros.TroubleShooterClient.Patches
 
         public override int SolvesProblem { get { return 0; } }
 
+        public override string HtmlInfo { get { return "some text"; } }
+
         protected override bool IdentifyProblem()
         {
             Thread.Sleep(1000);
@@ -60,6 +64,8 @@ namespace Kros.TroubleShooterClient.Patches
         public override string Description { get { return "utomaticky identifikuje problem XY a vie ho opravit"; } }
 
         public override string PatchName { get { return "p2017102602"; } }
+
+        public override string HtmlInfo { get { return null; } }
 
         public override int SolvesProblem { get { return 0; } }
 
