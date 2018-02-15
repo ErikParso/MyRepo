@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Numerics;
+using System.Runtime.InteropServices;
 using System.Text;
 using ElipticCurves;
 using Kros.TroubleShooterCommon;
 using Kros.TroubleShooterCommon.Models;
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft.Json;
 
 namespace Kros.TroubleShooterServer.Controllers
 {
@@ -22,6 +29,11 @@ namespace Kros.TroubleShooterServer.Controllers
         /// directory with patch files
         /// </summary>
         private const string SOURCE_FILES_DIR = "UpdateFiles";
+
+        /// <summary>
+        /// directory with patch files
+        /// </summary>
+        private const string SERVIS_DIR = "Servis";
 
         /// <summary>
         /// server private key to sign protected source files
@@ -84,6 +96,29 @@ namespace Kros.TroubleShooterServer.Controllers
                 DhPublicServer = dhServerPublic,
                 Signature = signatureMaker.Signature(sourceCode, signatureKey)
             };
+        }
+
+        [HttpPost("service")]
+        public IActionResult Post()
+        {
+            if (!Directory.Exists(SERVIS_DIR))
+                Directory.CreateDirectory(SERVIS_DIR);
+            IFormCollection form  = Request.Form;
+            foreach (IFormFile file in form.Files)
+            {
+                using (FileStream fs = new FileStream(Path.Combine(SERVIS_DIR, file.FileName), FileMode.OpenOrCreate))
+                {
+                    file.CopyTo(fs);
+                }
+            }
+            foreach (string key in form.Keys)
+            {
+                StringValues val;
+                form.TryGetValue(key, out val);
+                Debug.WriteLine(key + " -");
+                Debug.WriteLine("\t" + val);
+            }
+            return Ok();
         }
 
         /// <summary>

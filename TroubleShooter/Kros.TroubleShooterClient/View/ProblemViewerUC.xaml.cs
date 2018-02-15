@@ -28,6 +28,7 @@ namespace Kros.TroubleShooterClient.View
             DataContext = TroubleShooter.Current;
             selectFixMode.PatchesSelected += patches => autoFixMode.Show(patches, true);
             autoFixMode.RunFormMode += selectFixMode.Show;
+            selectFixMode.ServiceSelected += () => serviceMode.Show();
         }
 
         public void detectProblem()

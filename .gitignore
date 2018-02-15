@@ -58,3 +58,5 @@
 /obj/Debug
 /TroubleShooter/Kros.TroubleShooterCommon/bin/Debug/netstandard1.6
 /TroubleShooter/Kros.TroubleShooterCommon/obj
+/TroubleShooter/HostingApp/bin/Debug
+/TroubleShooter/HostingApp/obj/Debug

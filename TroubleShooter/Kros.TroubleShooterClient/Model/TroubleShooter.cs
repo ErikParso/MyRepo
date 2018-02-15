@@ -1,9 +1,11 @@
 ﻿using Kros.TroubleShooterClient.Update;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using System.Threading;
+using System.Windows;
 
 namespace Kros.TroubleShooterClient.Model
 {
@@ -23,7 +25,7 @@ namespace Kros.TroubleShooterClient.Model
         /// <summary>
         /// error message
         /// </summary>
-        public string Error { get; set; }
+        public Exception Exception { get; set; }
 
         /// <summary>
         /// List of all patches
@@ -35,12 +37,16 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         public Question RootQuestion { get; }
 
+        private App app;
+
         /// <summary>
         /// Tries to compile patches in defined folder.
         /// Creates its instances and builds the problem structure.
         /// </summary>
         private TroubleShooter()
         {
+            if (!Directory.Exists(SOURCES_LOCATION))
+                Directory.CreateDirectory(SOURCES_LOCATION);
             //get latest source files
             bool newVersion = new Updater(SOURCES_LOCATION).Execute();
             //try compile assemblies
@@ -64,15 +70,15 @@ namespace Kros.TroubleShooterClient.Model
         /// TroubleShooter will catch all unhandled exceptions and executes handling method.
         /// <see cref="ProblemOccurred(Problem)"/>
         /// </summary>
-        public void Listen()
+        public void Fire(Exception ex)
         {
-            AppDomain currentDomain = AppDomain.CurrentDomain;
-            currentDomain.UnhandledException += (sender, args) =>
+            Exception = ex;
+            if (App.Current == null)
             {
-                throw new NotImplementedException();
-            };
+                new App();
+                App.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            }
+            new MainWindow().ShowDialog();
         }
-
-
     }
 }

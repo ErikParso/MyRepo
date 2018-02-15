@@ -22,10 +22,10 @@
         <TextBlock Text="{Binding DescriptionText, ElementName=control}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Visibility="{Binding WithDescription, ElementName=control}"/>
         <Grid.Style>
             <Style TargetType="Grid">
-                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Background" Value="Transparent" />
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="AliceBlue"/>
+                        <Setter Property="Background" Value="Wheat"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>

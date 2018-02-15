@@ -154,7 +154,7 @@ namespace ElipticCurves
                     ),
                     BigInteger.Parse("001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFA51868783BF2F966B7FCC0148F709A5D03BB5C9B8899C47AEBB6FB71E91386409", NumberStyles.HexNumber),
                     BigInteger.Parse("001", NumberStyles.HexNumber),
-                    528, "secp521r1"
+                    521, "secp521r1"
                 );
         }
 

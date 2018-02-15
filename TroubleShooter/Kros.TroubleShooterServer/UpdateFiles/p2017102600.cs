@@ -1,4 +1,4 @@
-﻿//version(2017020802)
+﻿//version(2017020803)
 
 using Kros.TroubleShooterClient.Model;
 using Microsoft.Win32;
@@ -20,7 +20,7 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool IdentifyProblem()
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             return !Registry.GetValue(key, "Arial Narrow CE (TrueType)", "not registered").Equals("arince.ttf")
                 || !Registry.GetValue(key, "Arial Narrow CE Bold (TrueType)", "not registered").Equals("arinceb.ttf")
                 || !Registry.GetValue(key, "Arial CE Bold (TrueType)", "not registered").Equals("CEARIABD.TTF");
@@ -28,7 +28,7 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool SolveProblem()
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             Registry.SetValue(key, "Arial Narrow CE (TrueType)", "arince.ttf");
             Registry.SetValue(key, "Arial Narrow CE Bold (TrueType)", "arinceb.ttf");
             Registry.SetValue(key, "Arial CE Bold (TrueType)", "CEARIABD.TTF");
@@ -48,13 +48,13 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool IdentifyProblem()
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             return true;
         }
 
         protected override bool SolveProblem()
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             return false;
         }
     }
@@ -71,13 +71,13 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool IdentifyProblem()
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             return true;
         }
 
         protected override bool SolveProblem()
         {
-            Thread.Sleep(1000);
+            Thread.Sleep(100);
             return true;
         }
     }

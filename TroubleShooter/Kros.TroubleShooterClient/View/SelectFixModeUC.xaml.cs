@@ -15,7 +15,8 @@ namespace Kros.TroubleShooterClient.View
     {
         private QuestionMode model;
 
-        public Action<IEnumerable<Patch>> PatchesSelected; 
+        public Action<IEnumerable<Patch>> PatchesSelected;
+        public Action ServiceSelected;
 
         public SelectFixModeUC()
         {
@@ -33,7 +34,13 @@ namespace Kros.TroubleShooterClient.View
         private void FinishClick()
         {
             this.Visibility = Visibility.Hidden;
-            Application.Current.Shutdown();
+            Application.Current.MainWindow.Close();
+        }
+
+        private void ServiceClick()
+        {
+            this.Visibility = Visibility.Hidden;
+            ServiceSelected();
         }
 
         private void ProblemSelected(object sender, MouseButtonEventArgs e)

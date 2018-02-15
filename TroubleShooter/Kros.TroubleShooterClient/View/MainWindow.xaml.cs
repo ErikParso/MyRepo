@@ -1,5 +1,4 @@
 ﻿using Kros.TroubleShooterClient.Model;
-using System.ServiceModel;
 using System.Windows;
 
 
@@ -12,8 +11,13 @@ namespace Kros.TroubleShooterClient
     {
         public MainWindow()
         {
-            TroubleShooter.Current.Error = @"Pri behu programu sa vyskytla neočakávaná chyba 1 - 1009 - X210 - 5\n" + Properties.Resources.lorem;
             InitializeComponent();
+        }
+
+        public MainWindow(TroubleShooter troubleShooter)
+        {
+            InitializeComponent();
+            this.DataContext = troubleShooter;
         }
     }
 }

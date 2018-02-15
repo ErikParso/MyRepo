@@ -16,7 +16,7 @@ namespace ElipticCryptoTest
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        public void TestEncryption(ElipticCurve curve, int iterations)
+        public void TestEncryption(ElipticCurve curve, int iterations, Encoding enc)
         {
             ECKeysGenerator keyGen = new ECKeysGenerator(curve);
             ECEncryption crypto = new ECEncryption(curve);
@@ -27,10 +27,10 @@ namespace ElipticCryptoTest
             {
                 Console.WriteLine($"encrtyption curve {curve.Name} test {i}... ");
                 keyGen.GenerateKeyPair(out privateKey, out publicKey);
-                string test = RandomString(random.Next(10));
-                byte[] cipher = crypto.Encrypt(test, publicKey, Encoding.Unicode);
+                string test = RandomString(random.Next(100));
+                byte[] cipher = crypto.Encrypt(test, publicKey, enc);
                 Console.WriteLine(Convert.ToBase64String(cipher));
-                string decoded = crypto.Decrypt(cipher, privateKey, Encoding.Unicode);
+                string decoded = crypto.Decrypt(cipher, privateKey, enc);
                 if (test != decoded)
                     throw new Exception("Fatal Error");
                 Write("OK", ConsoleColor.Green);

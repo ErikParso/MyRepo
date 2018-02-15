@@ -39,6 +39,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,12 +59,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="EnabledToOpacityConverter.cs" />
+    <Compile Include="FileDrop.xaml.cs">
+      <DependentUpon>FileDrop.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PopupInfo.xaml.cs">
       <DependentUpon>PopupInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="TextButtonUC.xaml.cs">
       <DependentUpon>TextButtonUC.xaml</DependentUpon>
     </Compile>
+    <Page Include="FileDrop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -137,6 +145,12 @@
     <Resource Include="Resources\arrow right.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cancel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

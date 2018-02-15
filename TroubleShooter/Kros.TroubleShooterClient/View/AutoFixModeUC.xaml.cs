@@ -68,7 +68,7 @@ namespace Kros.TroubleShooterClient.View
         private void FinishClick()
         {
             Visibility = Visibility.Hidden;
-            Application.Current.Shutdown();
+            Application.Current.MainWindow.Close();
         }
 
         private void ExecutePatchesClick()

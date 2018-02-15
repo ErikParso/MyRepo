@@ -7,5 +7,6 @@ namespace Kros.TroubleShooterClient
     /// </summary>
     public partial class App : Application
     {
+
     }
 }

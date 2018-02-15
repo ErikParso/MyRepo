@@ -16,29 +16,30 @@ namespace ElipticCryptoTest
 
         private static void runTest()
         {
-            int iterations = 5;
+            int iterations = 10;
 
             DiffieHelmanTest dht = new DiffieHelmanTest();
+            dht.TestDiffieHelman(ElipticCurve.secp521r1(), iterations);
             dht.TestDiffieHelman(ElipticCurve.Secp112r1(), iterations);
             dht.TestDiffieHelman(ElipticCurve.secp160r1(), iterations);
             dht.TestDiffieHelman(ElipticCurve.secp192r1(), iterations);
             dht.TestDiffieHelman(ElipticCurve.secp256r1(), iterations);
-            dht.TestDiffieHelman(ElipticCurve.secp521r1(), iterations);
             dht.TestDiffieHelman(ElipticCurve.TestCurve(), iterations);
 
             CryptographyTests ct = new CryptographyTests();
-            ct.TestEncryption(ElipticCurve.Secp112r1(), iterations);
-            ct.TestEncryption(ElipticCurve.secp160r1(), iterations);
-            ct.TestEncryption(ElipticCurve.secp192r1(), iterations);
-            ct.TestEncryption(ElipticCurve.secp256r1(), iterations);
-            ct.TestEncryption(ElipticCurve.secp521r1(), iterations);
+            ct.TestEncryption(ElipticCurve.secp521r1(), iterations, Encoding.UTF32);
+            ct.TestEncryption(ElipticCurve.secp521r1(), iterations, Encoding.Unicode);
+            ct.TestEncryption(ElipticCurve.Secp112r1(), iterations, Encoding.Unicode);
+            ct.TestEncryption(ElipticCurve.secp160r1(), iterations, Encoding.UTF32);
+            ct.TestEncryption(ElipticCurve.secp192r1(), iterations, Encoding.UTF32);
+            ct.TestEncryption(ElipticCurve.secp256r1(), iterations, Encoding.Unicode);
 
             DigitalSignatureTests st = new DigitalSignatureTests();
+            st.TestSignature(ElipticCurve.secp521r1(), iterations);
             st.TestSignature(ElipticCurve.Secp112r1(), iterations);
             st.TestSignature(ElipticCurve.secp160r1(), iterations);
             st.TestSignature(ElipticCurve.secp192r1(), iterations);
             st.TestSignature(ElipticCurve.secp256r1(), iterations);
-            st.TestSignature(ElipticCurve.secp521r1(), iterations);
             st.TestSignature(ElipticCurve.TestCurve(), iterations);
         }
 

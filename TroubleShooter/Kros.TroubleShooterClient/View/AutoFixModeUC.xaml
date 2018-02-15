@@ -101,7 +101,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <myControls:TextButtonUC WithDescription="Collapsed" x:Name="CloseHtmlButton" MainText="Späť" Margin="3" Grid.ColumnSpan="2" Click="CloseHtmlClick" Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
+                        <myControls:TextButtonUC WithDescription="Collapsed" x:Name="CloseHtmlButton" MainText="Späť" Margin="3" Grid.ColumnSpan="2" Click="CloseHtmlClick" Source="/Kros.TroubleShooterClient;component/Resources/exit.png"/>
                         <WebBrowser Name="WebBrowser" Grid.Row="1"/>
                     </Grid>
                 </Grid>
@@ -131,8 +131,8 @@
         <Grid Name="modeButton" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3">
             <Image Source="/Kros.TroubleShooterClient;component/Resources/zoom.png" Width="20" Height="20" MouseLeftButtonUp="modeChange"/>
         </Grid>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="formModeButton" MainText="Problémy pretrvávajú ?" DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="3" Grid.Row="1" Grid.ColumnSpan="2" Click="formModeClick" Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="executePatchesButton" Margin="3" MainText="Oprav" DescriptionText="{x:Static res:Resources.buttonDesc5}" Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick" Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Hotovo" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="2" Grid.ColumnSpan="2" Click="FinishClick" Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="formModeButton" MainText="Problémy pretrvávajú ?" DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="3" Grid.Row="1" Grid.ColumnSpan="2" Click="formModeClick" Source="/Kros.TroubleShooterClient;component/Resources/form.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="executePatchesButton" Margin="3" MainText="Oprav" DescriptionText="{x:Static res:Resources.buttonDesc5}" Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick" Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Hotovo" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="2" Grid.ColumnSpan="2" Click="FinishClick" Source="/Kros.TroubleShooterClient;component/Resources/exit.png"/>
     </Grid>
 </UserControl>

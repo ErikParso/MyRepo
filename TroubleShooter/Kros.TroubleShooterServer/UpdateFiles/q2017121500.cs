@@ -1,4 +1,4 @@
-﻿//version(2018020802)
+﻿//version(2018020803)
 
 using Kros.TroubleShooterClient.Model;
 using System.Collections.Generic;
