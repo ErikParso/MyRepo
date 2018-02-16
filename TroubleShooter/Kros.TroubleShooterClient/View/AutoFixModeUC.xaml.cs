@@ -97,6 +97,7 @@ namespace Kros.TroubleShooterClient.View
 
         private void formModeClick()
         {
+            model.Reset();
             this.Visibility = Visibility.Hidden;
             RunFormMode();
         }

@@ -30,7 +30,8 @@ namespace Kros.TroubleShooterClient.ViewModel
             {
                 Name = "Cesta k Olympu",
                 Value = Environment.CurrentDirectory,
-                IsPath = true, Editable = false
+                IsPath = true,
+                Editable = false
             });
 
             Properties.Add(new OptionalServiceProp()
@@ -43,6 +44,8 @@ namespace Kros.TroubleShooterClient.ViewModel
             Properties.Add(new OptionalServiceProp()
             {
                 Name = "Typ databázy",
+                PossibleValues = new List<string>() { "Neznámy", "Access", "SQL" },
+                Value = "Neznámy"
             });
 
             Properties.Add(new OptionalServiceProp()

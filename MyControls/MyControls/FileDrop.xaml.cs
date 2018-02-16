@@ -40,7 +40,7 @@ namespace MyControls
                 // Note that you can have more than one file.
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 foreach (string file in files)
-                    if (!Files.Contains(file))
+                    if (!Files.Contains(file) && File.Exists(file))
                         Files.Add(file);
             }
         }

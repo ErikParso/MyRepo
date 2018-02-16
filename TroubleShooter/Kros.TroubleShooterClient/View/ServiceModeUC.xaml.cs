@@ -26,19 +26,15 @@ namespace Kros.TroubleShooterClient.View
             this.Visibility = Visibility.Visible;
         }
 
-        private void DropFile(object sender, DragEventArgs e)
-        {
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-            {
-                // Note that you can have more than one file.
-                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            }
-        }
-
         private void SendClick()
         {
             ServiceManager m = new ServiceManager();
-            bool result = m.SendToServis(attachments.Files, model.Properties);           
+            bool result = m.SendToServis(attachments.Files, model.Properties);
+            if (result == true)
+                MessageBox.Show("Problém bol úspešne odoslaný na náš server. Prajete si ukončiť", "Servis", MessageBoxButton.OK , icon: MessageBoxImage.Information);      
+            else
+                MessageBox.Show("Problém sa nepodarilo odoslať. Server práve nie je dostupný alebo máte problém s pripojením na internet.", "Servis", MessageBoxButton.OK, icon: MessageBoxImage.Error);
+            this.Visibility = Visibility.Hidden;
         }
 
         private void FileExplorerClick(object sender, System.Windows.Input.MouseButtonEventArgs e)

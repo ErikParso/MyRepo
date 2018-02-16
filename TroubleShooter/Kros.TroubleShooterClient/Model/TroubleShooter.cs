@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows;
 
 namespace Kros.TroubleShooterClient.Model
@@ -37,7 +36,15 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         public Question RootQuestion { get; }
 
-        private App app;
+        /// <summary>
+        /// Determines if server is active
+        /// </summary>
+        public bool ServerOnline { get; private set; }
+
+        /// <summary>
+        /// determines if its a new version of troubleshooter
+        /// </summary>
+        public bool IsNewVersion { get; private set; }
 
         /// <summary>
         /// Tries to compile patches in defined folder.
@@ -48,9 +55,11 @@ namespace Kros.TroubleShooterClient.Model
             if (!Directory.Exists(SOURCES_LOCATION))
                 Directory.CreateDirectory(SOURCES_LOCATION);
             //get latest source files
-            bool newVersion = new Updater(SOURCES_LOCATION).Execute();
+            Updater updater = new Updater(SOURCES_LOCATION);
+            ServerOnline = updater.TryConnection();
+            IsNewVersion = updater.Execute();
             //try compile assemblies
-            Assembly patchAssembly = Compiler.Compile(SOURCES_LOCATION, newVersion);
+            Assembly patchAssembly = Compiler.Compile(SOURCES_LOCATION, IsNewVersion);
             if (patchAssembly == null)
                 throw new Exception("patch compilation failed");
             //register all patches
@@ -67,7 +76,7 @@ namespace Kros.TroubleShooterClient.Model
         }
 
         /// <summary>
-        /// TroubleShooter will catch all unhandled exceptions and executes handling method.
+        /// TroubleShooter tries solve exception
         /// <see cref="ProblemOccurred(Problem)"/>
         /// </summary>
         public void Fire(Exception ex)

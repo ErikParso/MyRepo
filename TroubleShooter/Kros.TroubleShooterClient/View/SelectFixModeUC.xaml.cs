@@ -23,6 +23,7 @@ namespace Kros.TroubleShooterClient.View
             InitializeComponent();
             model = new QuestionMode(TroubleShooter.Current.RootQuestion);
             this.DataContext = model;
+            ServiceButton.IsEnabled = TroubleShooter.Current.ServerOnline;
         }
 
         public void Show()

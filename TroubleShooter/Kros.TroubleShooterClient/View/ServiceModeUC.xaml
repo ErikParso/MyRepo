@@ -24,7 +24,30 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="{Binding Name}" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Center"/>
-                                    <TextBox Text="{Binding Value}" IsEnabled="{Binding Editable}" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1"/>
+                                    <TextBox Text="{Binding Value}" IsEnabled="{Binding Editable}" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1">
+                                        <TextBox.Style>
+                                            <Style TargetType="TextBox">
+                                                <Setter Property="Visibility" Value="Visible"></Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectText}" Value="True">
+                                                        <Setter Property="Visibility" Value="Hidden"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+                                    <ComboBox SelectedValue="{Binding Value}" ItemsSource="{Binding PossibleValues}" IsEnabled="{Binding Editable}" Grid.Row="1">
+                                        <ComboBox.Style>
+                                            <Style TargetType="ComboBox">
+                                                <Setter Property="Visibility" Value="Hidden"></Setter>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectText}" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible"></Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ComboBox.Style>
+                                    </ComboBox>
                                     <Image Margin="3" MouseLeftButtonUp="SelectPath" IsEnabled="{Binding Editable}" HorizontalAlignment="Right" Grid.Row="0" Stretch="None" Source="/Kros.TroubleShooterClient;component/Resources/folder.png">
                                         <Image.Style>
                                             <Style TargetType="Image">

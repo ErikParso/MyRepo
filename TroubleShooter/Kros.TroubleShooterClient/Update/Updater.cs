@@ -149,5 +149,15 @@ namespace Kros.TroubleShooterClient.Update
             }
             return null;
         }
+
+        public bool TryConnection()
+        {
+            string uri = (URI_GET_VERSION + "/test");
+            HttpResponseMessage response = client.GetAsync(uri).GetAwaiter().GetResult();
+            if (response.IsSuccessStatusCode)
+                return true;
+            else
+                return false;
+        }
     }
 }

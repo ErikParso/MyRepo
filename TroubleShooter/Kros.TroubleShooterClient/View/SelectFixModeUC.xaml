@@ -23,7 +23,8 @@
         <ItemsControl ItemsSource="{Binding Path=QuestionLink}" Grid.Row="0" Margin="3" IsEnabled="{Binding IsVisible, ElementName=ProblemsBorder}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <myControls:TextButtonUC MainText="{Binding Category}" MouseLeftButtonUp="ProblemLinkClick" Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
+                    <myControls:TextButtonUC MainText="{Binding Category}" MouseLeftButtonUp="ProblemLinkClick" 
+                                             Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
@@ -40,14 +41,17 @@
                 <ItemsControl Grid.Column="3" ItemsSource="{Binding Answers}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <myControls:TextButtonUC MainText="{Binding Text}" MouseLeftButtonUp="ProblemSelected" IsEnabled="{Binding Available}" Source="/Kros.TroubleShooterClient;component/Resources/point.png"/>
+                            <myControls:TextButtonUC MainText="{Binding Text}" MouseLeftButtonUp="ProblemSelected" IsEnabled="{Binding Available}" 
+                                                     Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
         </Border>
 
-        <myControls:TextButtonUC WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain3}" DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="3" Click="ServiceClick" Grid.Row="3" Source="/Kros.TroubleShooterClient;component/Resources/mail.png"/>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Hotovo" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="4" Click="FinishClick" Source="/Kros.TroubleShooterClient;component/Resources/exit.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain3}" DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="3" Click="ServiceClick" Grid.Row="3" 
+                                 x:Name="ServiceButton" Source="/Kros.TroubleShooterClient;component/Resources/mail.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Hotovo" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="4" Click="FinishClick" 
+                                 Source="/Kros.TroubleShooterClient;component/Resources/exit.png"/>
     </Grid>
 </UserControl>

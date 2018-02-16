@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Text;
 using ElipticCurves;
 using Kros.TroubleShooterCommon;
 using Kros.TroubleShooterCommon.Models;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Kros.TroubleShooterServer.Database;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
 
 namespace Kros.TroubleShooterServer.Controllers
 {
@@ -61,15 +55,27 @@ namespace Kros.TroubleShooterServer.Controllers
         private IEnumerable<SourceFileInfo> sourceFiles;
 
         /// <summary>
-        /// 
+        /// for generating attachment directories
         /// </summary>
-        public UpdateFilesController()
+        private Random rnd;
+
+        /// <summary>
+        /// servis database entity model
+        /// </summary>
+        private ServisContext ctx;
+
+        /// <summary>
+        /// see calss info
+        /// </summary>
+        public UpdateFilesController(ServisContext ctx)
         {
+            this.ctx = ctx;
             ElipticCurve curve = ElipticCurve.secp160r1();
             signatureMaker = new ECSignature(curve);
             keyGen = new ECKeysGenerator(curve);
             diffieHelman = new ECDiffieHelman(curve);
             sourceFiles = SourceFileInfoBuilder.GetSourceFiles(SOURCE_FILES_DIR);
+            rnd = new Random();
         }
 
         /// <summary>
@@ -100,24 +106,52 @@ namespace Kros.TroubleShooterServer.Controllers
 
         [HttpPost("service")]
         public IActionResult Post()
-        {
+        {      
+                 
             if (!Directory.Exists(SERVIS_DIR))
                 Directory.CreateDirectory(SERVIS_DIR);
+
+            string attachmentDir = null;
+            while (string.IsNullOrEmpty(attachmentDir) || Directory.Exists(Path.Combine(SERVIS_DIR, attachmentDir)))
+            {
+                byte[] dirnamebytes = new byte[30];
+                rnd.NextBytes(dirnamebytes);
+                attachmentDir = Convert.ToBase64String(dirnamebytes);
+                foreach (char c in Path.GetInvalidFileNameChars())
+                    attachmentDir = attachmentDir.Replace(c, '_');
+            }
+            Directory.CreateDirectory(Path.Combine(SERVIS_DIR, attachmentDir));
+
             IFormCollection form  = Request.Form;
             foreach (IFormFile file in form.Files)
             {
-                using (FileStream fs = new FileStream(Path.Combine(SERVIS_DIR, file.FileName), FileMode.OpenOrCreate))
+                using (FileStream fs = new FileStream(Path.Combine(SERVIS_DIR, attachmentDir, file.FileName), FileMode.OpenOrCreate))
                 {
                     file.CopyTo(fs);
                 }
             }
+
+            Servis s = new Servis()
+            {
+                AttachmentsDirectory = attachmentDir,
+                ServisInformations = new List<ServisInformation>(),
+                ReceiveDate = DateTime.Now,
+            };
+
             foreach (string key in form.Keys)
             {
                 StringValues val;
                 form.TryGetValue(key, out val);
-                Debug.WriteLine(key + " -");
-                Debug.WriteLine("\t" + val);
+                ServisInformation inf = new ServisInformation()
+                {
+                    Title = key,
+                    Value = val.ToString(),
+                    Servis = s     
+                };
+                ctx.ServisInformations.Add(inf);
             }
+            ctx.SaveChanges();
+
             return Ok();
         }
 
@@ -129,6 +163,23 @@ namespace Kros.TroubleShooterServer.Controllers
         public IEnumerable<SourceFileInfo> GetFileInfo()
         {
             return sourceFiles;
+        }
+
+        [HttpGet("errors")]
+        public IEnumerable<Servis> GetServises()
+        {
+            IEnumerable<Servis> ret = ctx.Servises.Include("ServisInformations").OrderBy(s => s.ReceiveDate).ToList();
+            return ret;
+        }
+
+        /// <summary>
+        /// gets actual file info
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("test")]
+        public IActionResult TestConn()
+        {
+            return Ok("server fine");
         }
     }
 }
