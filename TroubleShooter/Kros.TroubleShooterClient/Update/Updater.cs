@@ -1,4 +1,5 @@
 ﻿using ElipticCurves;
+using Kros.TroubleShooterClient.Model;
 using Kros.TroubleShooterCommon;
 using Kros.TroubleShooterCommon.Models;
 using Newtonsoft.Json;
@@ -10,30 +11,67 @@ using System.Net.Http;
 
 namespace Kros.TroubleShooterClient.Update
 {
+    /// <summary>
+    /// Compares server files with clients files and updates changes.
+    /// </summary>
     public class Updater
     {
+        /// <summary>
+        /// The update directory
+        /// </summary>
         private string _updateDir;
-        private const string URI_GET_VERSION = "api/updateFiles";
+
+        /// <summary>
+        /// clients file version config file
+        /// </summary>
         private const string VERSION_CONFIG_FILE = "FileVersions.json";
-        private ECEncryption decryptor;
+
+        /// <summary>
+        /// Provider used to verify EcSignature.
+        /// </summary>
         private ECSignature verifier;
+
+        /// <summary>
+        /// Provider used to generate keypair. keypair is used in EcDiffieHelman key Exchange
+        /// </summary>
         private ECKeysGenerator keyGen;
+
+        /// <summary>
+        /// Provider used to derive common secret. See Eliptic Curve Diffie-Helman key Exchange
+        /// </summary>
         private ECDiffieHelman diffieHelman;
+
+        /// <summary>
+        /// The servers public key used to verify source file signature.
+        /// </summary>
         private byte[] signatureKey = Convert.FromBase64String("A0mbdQ20EsLzFyiFwr58QrdLFqmIAA==");
 
-        private HttpClient client = new HttpClient();
+        /// <summary>
+        /// Troubleshooter client
+        /// </summary>
+        private TroubleShooterClient client;
 
-        public Updater(string updateDir)
+        /// <summary>
+        /// initialise updater.
+        /// </summary>
+        /// <param name="updateDir"></param>
+        public Updater(string updateDir, TroubleShooterClient client)
         {
+            this.client = client;
             _updateDir = updateDir;
-            client.BaseAddress = new Uri("http://localhost:51131/");
             ElipticCurve curve = ElipticCurve.secp160r1();
-            decryptor = new ECEncryption(curve);
             keyGen = new ECKeysGenerator(curve);
             verifier = new ECSignature(curve);
             diffieHelman = new ECDiffieHelman(curve);
         }
 
+        /// <summary>
+        /// Run update if server is running.
+        /// </summary>
+        /// <returns>
+        /// false - files are already up to date so no compilation is needed
+        /// true - files changed - recompilation needed
+        /// </returns>
         public bool Execute()
         {
             if (!Directory.Exists(_updateDir))
@@ -49,6 +87,15 @@ namespace Kros.TroubleShooterClient.Update
             return true;
         }
 
+        /// <summary>
+        /// Compares server files versions with clients files versions
+        /// </summary>
+        /// <param name="myFiles">list of client files versions</param>
+        /// <param name="serverFiles">list of server files versions</param>
+        /// <returns>
+        /// true - client files are already up to date
+        /// false - actualisation needed
+        /// </returns>
         private bool CompareFiles(List<SourceFileInfo> myFiles, List<SourceFileInfo> serverFiles)
         {
             if (myFiles.Count != serverFiles.Count)
@@ -60,9 +107,13 @@ namespace Kros.TroubleShooterClient.Update
             return true;
         }
 
+        /// <summary>
+        /// Gets server source files with versions
+        /// </summary>
+        /// <returns></returns>
         private IEnumerable<SourceFileInfo> GetServerFiles()
         {
-            string uri = (URI_GET_VERSION + "/updateInfo");
+            string uri = (TroubleShooterClient.SERVICE_PATH + "/updateInfo");
             HttpResponseMessage response = client.GetAsync(uri).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)
                 return response.Content.ReadAsAsync<IEnumerable<SourceFileInfo>>().GetAwaiter().GetResult();
@@ -70,6 +121,10 @@ namespace Kros.TroubleShooterClient.Update
                 return null;
         }
 
+        /// <summary>
+        /// Gets client source files with versions
+        /// </summary>
+        /// <returns></returns>
         private IEnumerable<SourceFileInfo> GetClientFiles()
         {
             string configFile = Path.Combine(_updateDir, VERSION_CONFIG_FILE);
@@ -84,6 +139,15 @@ namespace Kros.TroubleShooterClient.Update
             }
         }
 
+        /// <summary>
+        /// Actualise changes in files
+        /// - delete unactual files
+        /// - replace changed files
+        /// - add new files
+        /// also keeps actual version of files versions config file
+        /// </summary>
+        /// <param name="myFiles">client files informations</param>
+        /// <param name="serverFiles">server files informations</param>
         private void ActualizeFiles(List<SourceFileInfo> myFiles, List<SourceFileInfo> serverFiles)
         {
             //remove unactual files from directory and config
@@ -122,19 +186,31 @@ namespace Kros.TroubleShooterClient.Update
             }
         }
 
+        /// <summary>
+        /// saves specific config in update dir
+        /// </summary>
+        /// <param name="fileConfig">file informations to save on client</param>
         private void SaveConfig(IEnumerable<SourceFileInfo> fileConfig)
         {
             string json = JsonConvert.SerializeObject(fileConfig);
             File.WriteAllText(Path.Combine(_updateDir, VERSION_CONFIG_FILE), json);
         }
 
+        /// <summary>
+        /// - Gets specific encrypted source file from server. 
+        /// - Encryption and Decription using AES symetric and commonSecret derived from EC Diffie-Helman key Exchange
+        /// - Decrypts source files
+        /// - verifies digital signature of source code
+        /// </summary>
+        /// <param name="sourceFileInfo">the file to get</param>
+        /// <returns>verified and decrypted source file or null if operation unsuccessfull</returns>
         private string DecryptSourceFromServer(SourceFileInfo sourceFileInfo)
         {
             byte[] dhClientPublic;
             byte[] dhClientPrivate;
             keyGen.GenerateKeyPair(out dhClientPrivate, out dhClientPublic);
 
-            string uri = (URI_GET_VERSION + "/sources");
+            string uri = (TroubleShooterClient.SERVICE_PATH + "/sources");
             ProtectedSourceRequest request = new ProtectedSourceRequest() { DhClientPublic = dhClientPublic, FileName = sourceFileInfo.FileName };
             HttpResponseMessage response = client.PostAsJsonAsync(uri, request).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)
@@ -148,16 +224,6 @@ namespace Kros.TroubleShooterClient.Update
                     return null;
             }
             return null;
-        }
-
-        public bool TryConnection()
-        {
-            string uri = (URI_GET_VERSION + "/test");
-            HttpResponseMessage response = client.GetAsync(uri).GetAwaiter().GetResult();
-            if (response.IsSuccessStatusCode)
-                return true;
-            else
-                return false;
         }
     }
 }

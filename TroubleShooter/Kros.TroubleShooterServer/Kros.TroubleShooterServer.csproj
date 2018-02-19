@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Servis\**" />
+    <Content Remove="Servis\**" />
+    <EmbeddedResource Remove="Servis\**" />
+    <None Remove="Servis\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="UpdateFiles\p2017102600.cs" />
     <Compile Remove="UpdateFiles\q2017121500.cs" />
   </ItemGroup>

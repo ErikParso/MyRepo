@@ -28,10 +28,10 @@ namespace Kros.TroubleShooterClient.View
 
         private void SendClick()
         {
-            ServiceManager m = new ServiceManager();
+            ServisManager m = new ServisManager();
             bool result = m.SendToServis(attachments.Files, model.Properties);
             if (result == true)
-                MessageBox.Show("Problém bol úspešne odoslaný na náš server. Prajete si ukončiť", "Servis", MessageBoxButton.OK , icon: MessageBoxImage.Information);      
+                MessageBox.Show("Problém bol úspešne odoslaný na náš server.", "Servis", MessageBoxButton.OK , icon: MessageBoxImage.Information);      
             else
                 MessageBox.Show("Problém sa nepodarilo odoslať. Server práve nie je dostupný alebo máte problém s pripojením na internet.", "Servis", MessageBoxButton.OK, icon: MessageBoxImage.Error);
             this.Visibility = Visibility.Hidden;

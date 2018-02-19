@@ -1,5 +1,4 @@
-﻿//version(2018020803)
-
+﻿//version(2018020806)
 using Kros.TroubleShooterClient.Model;
 using System.Collections.Generic;
 
@@ -12,7 +11,7 @@ namespace Kros.TroubleShooterClient.Patches
 
         public override int Id { get { return 2017121500; } }
 
-        public override string Text { get { return "V akej časti programu sa vyskytuje problém ? v2"; } }
+        public override string Text { get { return "V akej časti programu sa vyskytuje problém ?"; } }
 
         protected override void registerAnswers(Dictionary<int, string> possibleAnswers)
         {
@@ -28,7 +27,9 @@ namespace Kros.TroubleShooterClient.Patches
             {
                 case 0: return new Q2017121501();
                 case 2: return new Q2017121502();
-                default: return null;
+                // answers 1 3 unselectable.. not implemented
+                default: return null; 
+                
             }
         }
     }
@@ -50,6 +51,7 @@ namespace Kros.TroubleShooterClient.Patches
 
         public override Question getQuestionByAnswer(int answerIndex)
         {
+            // answers 0 1 2 unselectable.. not implemented
             return null;
         }
     }
@@ -73,6 +75,7 @@ namespace Kros.TroubleShooterClient.Patches
             switch (answerIndex)
             {
                 case 0: return new Q2017121503();
+                // answer 1 unselectable.. not implemented
                 default: return null;
             }
         }
@@ -88,11 +91,12 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override void registerAnswers(Dictionary<int, string> possibleAnswers)
         {
-
+            //na answers are defined so patches will be executed
         }
 
         public override Question getQuestionByAnswer(int answerIndex)
         {
+            //answers no defined its final node
             return null;
         }
     }

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kros.TroubleShooterClient.Update
 {
+    /// <summary>
+    /// Throw this exception if source file signature is invalid
+    /// </summary>
     public class BadSignatureEcxeption : Exception
     {
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using Kros.TroubleShooterInput;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using System;
@@ -10,7 +11,7 @@ using System.Reflection;
 namespace Kros.TroubleShooterClient.Update
 {
     /// <summary>
-    /// Compiles the patch files in specified folder.
+    /// Compiles the patch and question files in specified folder.
     /// </summary>
     public class Compiler
     {
@@ -20,17 +21,19 @@ namespace Kros.TroubleShooterClient.Update
         private static List<MetadataReference> supportedReferences = new List<MetadataReference>()
         {
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-            MetadataReference.CreateFromFile(typeof(Compiler).Assembly.Location)
+            MetadataReference.CreateFromFile(typeof(Compiler).Assembly.Location),
+            MetadataReference.CreateFromFile(typeof(RunData).Assembly.Location)
         };
 
         /// <summary>
-        /// Compiles all patches in specified folder.
+        /// Compiles .cs source files located in update folder
         /// </summary>
-        /// <returns>
-        /// Compiled Assembly.
-        /// </returns>
+        /// <param name="path">update folder</param>
+        /// <param name="recompile">if its a new version</param>
+        /// <returns></returns>
         public static Assembly Compile(string path, bool recompile)
         {
+            //if version changed we need to recompile files.
             if (recompile)
             {
                 List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
@@ -49,6 +52,7 @@ namespace Kros.TroubleShooterClient.Update
                     references: supportedReferences,
                     options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
+                //emit compilation result in assembly
                 using (var fs = new FileStream("Patches.dll", FileMode.OpenOrCreate))
                 {
                     EmitResult result = compilation.Emit(fs);
@@ -63,6 +67,8 @@ namespace Kros.TroubleShooterClient.Update
                     }
                 }
             }
+
+            //load patches and questions assembly
             return Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "Patches.dll"));
         }
     }

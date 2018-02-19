@@ -58,7 +58,7 @@ namespace Kros.TroubleShooterClient.ViewModel
             Properties.Add(new OptionalServiceProp()
             {
                 Name = "Log",
-                Value = FlattenException(TroubleShooter.Current.Exception),
+                Value = FlattenException(TroubleShooter.Current.RunData?.Exception),
                 Editable = false
             });
         }

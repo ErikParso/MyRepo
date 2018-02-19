@@ -15,6 +15,8 @@ namespace Kros.TroubleShooterClient.ViewModel
         private bool _selected;
         public bool Selected { get { return _selected; } set { _selected = value; RaisePropertyChanged("Selected"); } }
 
+        private string executionResult;
+
         private bool? _problemFixed;
         public bool? ProblemFixed {
             get { return _problemFixed; }
