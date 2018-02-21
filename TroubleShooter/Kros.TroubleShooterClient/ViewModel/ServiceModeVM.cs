@@ -5,15 +5,27 @@ using System.Text;
 
 namespace Kros.TroubleShooterClient.ViewModel
 {
+    /// <summary>
+    /// model for servis mode
+    /// </summary>
     public class ServiceModeVM : ObservableObject
     {
+        /// <summary>
+        /// the list of servis parameters
+        /// </summary>
         public List<OptionalServiceProp> Properties { get; private set; }
 
+        /// <summary>
+        /// init view model 
+        /// </summary>
         public ServiceModeVM()
         {
             Properties = new List<OptionalServiceProp>();
         }
 
+        /// <summary>
+        /// defines servis data
+        /// </summary>
         public void DefineProperties()
         {
             Properties.Add(new OptionalServiceProp()
@@ -63,6 +75,11 @@ namespace Kros.TroubleShooterClient.ViewModel
             });
         }
 
+        /// <summary>
+        /// gets log
+        /// </summary>
+        /// <param name="exception"></param>
+        /// <returns></returns>
         public static string FlattenException(Exception exception)
         {
             var stringBuilder = new StringBuilder();

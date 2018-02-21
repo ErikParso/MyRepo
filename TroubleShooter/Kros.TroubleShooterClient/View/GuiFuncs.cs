@@ -3,6 +3,9 @@ using System.Windows.Controls;
 
 namespace Kros.TroubleShooterClient.View
 {
+    /// <summary>
+    /// Provides functionalities over controls where dispatcher is needed
+    /// </summary>
     public class GuiFuncs
     {
         /// <summary>

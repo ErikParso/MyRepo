@@ -3,11 +3,19 @@ using System.Net.Http;
 
 namespace Kros.TroubleShooterClient
 {
+    /// <summary>
+    /// HttpClient to communicate with web api 
+    /// </summary>
     public class TroubleShooterClient : HttpClient
     {
-
+        /// <summary>
+        /// controllers path
+        /// </summary>
         public const string SERVICE_PATH = "api/updateFiles";
 
+        /// <summary>
+        /// init this client
+        /// </summary>
         public TroubleShooterClient()
             : base()
         {

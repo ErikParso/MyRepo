@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Kros.TroubleShooterClient.ViewModel
 {
+    /// <summary>
+    /// view models are implementing this class
+    /// </summary>
     public abstract class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;

@@ -71,7 +71,7 @@
                         </Grid.RowDefinitions>
                         <Image Margin="3" HorizontalAlignment="Right" Source="/Kros.TroubleShooterClient;component/Resources/folder.png" MouseLeftButtonUp="FileExplorerClick" Stretch="None" />
                         <TextBlock Text="Prílohy" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Center"/>
-                        <myControls:FileDrop Name="attachments" Background="White" Grid.Row="1"/>
+                        <myControls:FileDrop Name="attachments" Grid.Row="1" Background="White"/>
                     </Grid>
                 </StackPanel>
             </ScrollViewer>

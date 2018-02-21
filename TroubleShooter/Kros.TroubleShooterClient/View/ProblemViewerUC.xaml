@@ -27,7 +27,7 @@
                     </Style.Triggers>
                 </Style>
             </Border.Style>
-            <TextBlock Text="{Binding RunData.Exception.Message}" Margin="5"/>
+            <TextBlock Text="{Binding RunData.ErrorMessage}" Margin="5"/>
         </Border>
         <myControls:TextButtonUC Grid.Row="3" WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain1}" DescriptionText="{x:Static res:Resources.buttonDesc1}" Margin="3" Click="detectProblem" x:Name="findProblemsButton" Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png"/>
         <local:AutoFixModeUC x:Name="autoFixMode" Grid.Row="0" Grid.RowSpan="4" Background="White" Visibility="Hidden"/>

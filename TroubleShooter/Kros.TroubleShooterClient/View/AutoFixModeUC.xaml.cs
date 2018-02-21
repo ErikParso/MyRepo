@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace Kros.TroubleShooterClient.View
@@ -16,21 +15,40 @@ namespace Kros.TroubleShooterClient.View
     /// </summary>
     public partial class AutoFixModeUC : UserControl
     {
+        /// <summary>
+        /// this controls model
+        /// </summary>
         private AutoFixVm model;
 
+        /// <summary>
+        /// if is displayed detail or summary
+        /// </summary>
         private Mode mode;
 
+        /// <summary>
+        /// the question form mode click
+        /// </summary>
         public Action RunFormMode { get; set; }
 
+        /// <summary>
+        /// initialises controller
+        /// </summary>
         public AutoFixModeUC()
         {
             InitializeComponent();
             model = new AutoFixVm();
             DataContext = model;
             mode = Mode.SUMMARY;
+            //this display detail 
             modeChange(this, null);
         }
 
+        /// <summary>
+        /// Resets and displays this controller. Identifies problem using <see cref="Patch.IdentifyProblemSafe"/> method.
+        /// If alreadyIdentified param is set true as it is done in form mode, all passed patches will be displayed for execution.
+        /// </summary>
+        /// <param name="patches">available patches</param>
+        /// <param name="alreadyIdentified">if problems are already identified - used from form mode</param>
         public void Show(IEnumerable<Patch> patches, bool alreadyIdentified = false)
         {
             GuiFuncs.SetVisibility(this, Visibility.Visible);
@@ -47,10 +65,9 @@ namespace Kros.TroubleShooterClient.View
                 if (alreadyIdentified || patch.IdentifyProblemSafe())
                 {
                     model.ProblemsFound++;
-                    PatchResultVM patchResult = new PatchResultVM(patch, false);
                     Dispatcher.Invoke(() =>
                     {
-                        model.PatchResults.Add(patchResult);
+                        model.PatchResults.Add(new PatchResultVM(patch));
                     });
                 }
                 model.DetectProblemsProgress.Add();
@@ -65,12 +82,18 @@ namespace Kros.TroubleShooterClient.View
             GuiFuncs.SetEnabled(executePatchesButton, true);
         }
 
+        /// <summary>
+        /// Close troubleshooter on finish click
+        /// </summary>
         private void FinishClick()
         {
             Visibility = Visibility.Hidden;
             Application.Current.MainWindow.Close();
         }
 
+        /// <summary>
+        /// Executes all patches which was selectet in process <see cref="Show(IEnumerable{Patch}, bool)"/>.
+        /// </summary>
         private void ExecutePatchesClick()
         {
             GuiFuncs.SetEnabled(finishButton, false);
@@ -95,6 +118,9 @@ namespace Kros.TroubleShooterClient.View
             }).Start();
         }
 
+        /// <summary>
+        /// reset and hide this control and fire run form control action
+        /// </summary>
         private void formModeClick()
         {
             model.Reset();
@@ -102,22 +128,45 @@ namespace Kros.TroubleShooterClient.View
             RunFormMode();
         }
 
+        /// <summary>
+        /// Remove selected patch so it wont be executed.
+        /// </summary>
+        /// <param name="sender">the patch detail controll</param>
+        /// <param name="e"></param>
         private void removePatchResult(object sender, MouseButtonEventArgs e)
         {
             PatchResultVM patch = ((Image)sender).DataContext as PatchResultVM;
             model.PatchResults.Remove(patch);
         }
 
+        /// <summary>
+        /// hides patch detail
+        /// </summary>
         private void CloseHtmlClick()
         {
             HtmlInfo.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// display mode
+        /// </summary>
         private enum Mode
         {
-            DETAIL, SUMMARY
+            /// <summary>
+            /// colored list of patches
+            /// </summary>
+            DETAIL,
+            /// <summary>
+            /// idetified and fixed counts
+            /// </summary>
+            SUMMARY
         }
 
+        /// <summary>
+        /// change 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void modeChange(object sender, MouseButtonEventArgs e)
         {
             if (mode == Mode.SUMMARY)
@@ -136,6 +185,11 @@ namespace Kros.TroubleShooterClient.View
             }
         }
 
+        /// <summary>
+        /// displays html detial for selected patch
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void displayHtmlDetail(object sender, MouseButtonEventArgs e)
         {
             string html = ((PatchResultVM)((TextBlock)sender).DataContext).HelpHtml;

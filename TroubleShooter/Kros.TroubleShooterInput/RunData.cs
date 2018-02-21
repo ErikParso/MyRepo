@@ -13,5 +13,9 @@ namespace Kros.TroubleShooterInput
         public Dictionary<string, string> Data { get; set; }
 
         public Exception Exception { get; set; }
+
+        public string LogFile { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 }

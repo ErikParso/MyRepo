@@ -2,30 +2,49 @@
 
 namespace Kros.TroubleShooterClient.ViewModel
 {
+    /// <summary>
+    /// Patch view model
+    /// </summary>
     public class PatchResultVM : ObservableObject
     {
+        /// <summary>
+        /// model
+        /// </summary>
         private Patch _patch;
 
+        /// <summary>
+        /// Patch name
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Patch description
+        /// </summary>
         public string Description { get; set; }
 
+        /// <summary>
+        /// patch detail
+        /// </summary>
         public string HelpHtml { get; set; }
 
-        private bool _selected;
-        public bool Selected { get { return _selected; } set { _selected = value; RaisePropertyChanged("Selected"); } }
-
-        private string executionResult;
-
+        /// <summary>
+        /// null - non executed
+        /// true - patch fixed a problem
+        /// false - patch didnt fix a problem
+        /// </summary>
         private bool? _problemFixed;
         public bool? ProblemFixed {
             get { return _problemFixed; }
             set { _problemFixed = value; RaisePropertyChanged("ProblemFixed"); }
         }
 
-        public PatchResultVM(Patch patch, bool makeSelected)
+        /// <summary>
+        /// initialiases a new model
+        /// </summary>
+        /// <param name="patch">patch</param>
+        /// <param name="makeSelected"></param>
+        public PatchResultVM(Patch patch)
         {
-            Selected = makeSelected;
             _patch = patch;
             Name = patch.PatchName;
             Description = patch.Description;
@@ -33,9 +52,12 @@ namespace Kros.TroubleShooterClient.ViewModel
             ProblemFixed = null;
         }
 
+        /// <summary>
+        /// executes patch
+        /// </summary>
         public void ExecutePatch()
         {
-            ProblemFixed =  _patch.SolveProblemSafe();
+            ProblemFixed = _patch.SolveProblemSafe();
         }
     }
 }

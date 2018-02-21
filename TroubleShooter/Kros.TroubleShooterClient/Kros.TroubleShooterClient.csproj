@@ -32,6 +32,10 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -88,8 +92,8 @@
     <Reference Include="Microsoft.CodeAnalysis.Workspaces.Desktop, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.2.4.0\lib\net46\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>True</Private>
@@ -187,7 +191,6 @@
     <Compile Include="View\ProblemViewerUC.xaml.cs">
       <DependentUpon>ProblemViewerUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\RichTextBoxHelper.cs" />
     <Compile Include="View\SelectFixModeUC.xaml.cs">
       <DependentUpon>SelectFixModeUC.xaml</DependentUpon>
     </Compile>
@@ -320,8 +323,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if not exist "$(SolutionDir)HostingApp\bin\Debug\TroubleShooter" mkdir "$(SolutionDir)HostingApp\bin\Debug\TroubleShooter"
-xcopy /E /Y "$(ProjectDir)bin\Debug" "$(SolutionDir)HostingApp\bin\Debug\TroubleShooter"</PostBuildEvent>
+    <PostBuildEvent>if not exist "$(ProjectDir)..\..\beta\Olymp\bin\Debug\TroubleShooter" mkdir "$(ProjectDir)..\..\beta\Olymp\bin\Debug\TroubleShooter"
+xcopy /E /Y "$(ProjectDir)bin\Debug" "$(ProjectDir)..\..\beta\Olymp\bin\Debug\TroubleShooter"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

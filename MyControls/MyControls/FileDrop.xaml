@@ -25,7 +25,7 @@
         <ItemsControl Grid.Column="3" ItemsSource="{Binding Files}" BorderThickness="0.5" BorderBrush="Gray">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" AllowDrop="True" Drop="UniformGrid_Drop" Background="Transparent"/>
+                    <StackPanel Orientation="Horizontal" Background="Transparent" AllowDrop="True" Drop="UniformGrid_Drop"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>

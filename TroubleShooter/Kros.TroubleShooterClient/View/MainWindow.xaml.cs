@@ -9,15 +9,12 @@ namespace Kros.TroubleShooterClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// initialises components
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        public MainWindow(TroubleShooter troubleShooter)
-        {
-            InitializeComponent();
-            this.DataContext = troubleShooter;
         }
     }
 }

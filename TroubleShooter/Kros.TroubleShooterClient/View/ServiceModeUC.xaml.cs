@@ -8,11 +8,18 @@ namespace Kros.TroubleShooterClient.View
 {
     /// <summary>
     /// Interaction logic for ServiceModeUC.xaml
+    /// Servis mode can send data specified in model <see cref="ServiceModeVM"/>
     /// </summary>
     public partial class ServiceModeUC : UserControl
     {
+        /// <summary>
+        /// datacontext of this controll
+        /// </summary>
         private ServiceModeVM model; 
 
+        /// <summary>
+        /// initiqalise components and set datacontext
+        /// </summary>
         public ServiceModeUC()
         {
             InitializeComponent();
@@ -21,11 +28,17 @@ namespace Kros.TroubleShooterClient.View
             DataContext = model;
         }
 
+        /// <summary>
+        /// displays this control
+        /// </summary>
         public void Show()
         {
             this.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// tries to send data to to servis
+        /// </summary>
         private void SendClick()
         {
             ServisManager m = new ServisManager();
@@ -37,6 +50,11 @@ namespace Kros.TroubleShooterClient.View
             this.Visibility = Visibility.Hidden;
         }
 
+        /// <summary>
+        /// attachment file explorer icon click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void FileExplorerClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             OpenFileDialog d = new OpenFileDialog();
@@ -49,6 +67,11 @@ namespace Kros.TroubleShooterClient.View
             }
         }
 
+        /// <summary>
+        /// servis data properties marked as path has a file explorer.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SelectPath(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             OpenFileDialog d = new OpenFileDialog();

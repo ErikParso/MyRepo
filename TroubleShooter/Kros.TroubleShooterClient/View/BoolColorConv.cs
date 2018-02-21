@@ -5,8 +5,23 @@ using System.Windows.Media;
 
 namespace Kros.TroubleShooterClient.View
 {
+    /// <summary>
+    /// Converts patch execution result (bool?) into patch color
+    /// </summary>
     public class BoolColorConv : IValueConverter
     {
+        /// <summary>
+        /// Converts patch execution result (bool?) into patch color
+        /// </summary>
+        /// <param name="value">bool? patch result 
+        ///     null - nonexecuted - blue
+        ///     true - problem Fixed - green
+        ///     false - problem not fixed - red
+        /// </param>
+        /// <param name="targetType"></param>
+        /// <param name="parameter"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             bool? val = (bool?)value;
