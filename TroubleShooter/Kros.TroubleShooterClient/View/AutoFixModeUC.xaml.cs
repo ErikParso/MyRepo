@@ -44,7 +44,7 @@ namespace Kros.TroubleShooterClient.View
         }
 
         /// <summary>
-        /// Resets and displays this controller. Identifies problem using <see cref="Patch.IdentifyProblemSafe"/> method.
+        /// Resets and displays this controller. Identifies problem using <see cref="Patch.ComplexIdentifySafe"/> method.
         /// If alreadyIdentified param is set true as it is done in form mode, all passed patches will be displayed for execution.
         /// </summary>
         /// <param name="patches">available patches</param>
@@ -62,7 +62,7 @@ namespace Kros.TroubleShooterClient.View
             model.DetectProblemsProgress.Count = patches.Count();
             foreach (Patch patch in patches)
             {
-                if (alreadyIdentified || patch.IdentifyProblemSafe())
+                if (alreadyIdentified || patch.ComplexIdentifySafe() || patch.FastIdentifySafe())
                 {
                     model.ProblemsFound++;
                     Dispatcher.Invoke(() =>

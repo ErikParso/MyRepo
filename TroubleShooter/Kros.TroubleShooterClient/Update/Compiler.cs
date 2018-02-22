@@ -1,4 +1,5 @@
-﻿using Kros.TroubleShooterInput;
+﻿using Kros.TroubleShooterClient.Model;
+using Kros.TroubleShooterInput;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
@@ -53,23 +54,28 @@ namespace Kros.TroubleShooterClient.Update
                     options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
                 //emit compilation result in assembly
+                EmitResult result;
                 using (var fs = new FileStream("Patches.dll", FileMode.OpenOrCreate))
+                    result = compilation.Emit(fs);
+                //handle compilation error
+                if (!result.Success)
                 {
-                    EmitResult result = compilation.Emit(fs);
-
-                    if (!result.Success)
-                    {
-                        IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
-                            diagnostic.IsWarningAsError ||
-                            diagnostic.Severity == DiagnosticSeverity.Error);
-
-                        throw new Exception("Compilation failed");
-                    }
+                    IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
+                        diagnostic.IsWarningAsError ||
+                        diagnostic.Severity == DiagnosticSeverity.Error);
+                    //display compilation errors
+                    Logger.LogCompilationFail(failures);
+                    //delete failed dll and patches  
+                    if (File.Exists("Patches.dll"))
+                        File.Delete("Patches.dll");
+                    Directory.Delete(path, true);
                 }
             }
-
             //load patches and questions assembly
-            return Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "Patches.dll"));
+            if (!File.Exists("Patches.dll"))
+                return null;
+            else
+                return Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "Patches.dll"));
         }
     }
 }

@@ -151,7 +151,7 @@ namespace Kros.TroubleShooterClient.Update
         private void ActualizeFiles(List<SourceFileInfo> myFiles, List<SourceFileInfo> serverFiles)
         {
             //remove unactual files from directory and config
-            foreach (string file in Directory.GetFiles(_updateDir, ".cs"))
+            foreach (string file in Directory.GetFiles(_updateDir, "*.cs"))
             {
                 string fileName = Path.GetFileName(file);
                 if (serverFiles.Where(sf => sf.FileName == fileName).Count() == 0)

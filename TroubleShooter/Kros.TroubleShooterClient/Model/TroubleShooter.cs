@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Windows;
 
 namespace Kros.TroubleShooterClient.Model
 {
@@ -68,6 +67,9 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         private TroubleShooter()
         {
+            //load run data if process started using Kros.TroubleShooterInputs method
+            RunData = Runner.GetData();
+            //init web api client
             Client = new TroubleShooterClient();
             //create update dir
             if (!Directory.Exists(SOURCES_LOCATION))
@@ -78,22 +80,22 @@ namespace Kros.TroubleShooterClient.Model
             IsNewVersion = ServerOnline ? updater.Execute() : false;
             //compile if its a new version othervise use last time compiled assembly
             Assembly patchAssembly = Compiler.Compile(SOURCES_LOCATION, IsNewVersion);
-            if (patchAssembly == null)
-                throw new Exception("patch compilation failed");
-            //register all patches, create its instances
+
             Patches = new List<Patch>();
-            var compiledPatches = (from type in patchAssembly.GetTypes()
-                                   where type.IsSubclassOf(typeof(Patch))
-                                   select (Patch)Activator.CreateInstance(type)).ToList();
-            foreach (Patch patch in compiledPatches)
-                Patches.Add(patch);
-            //initialise a root question -  decorated by RootQuestionAttribute
-            RootQuestion = (from type in patchAssembly.GetTypes()
-                            where type.IsSubclassOf(typeof(Question))
-                            where type.GetCustomAttributes(typeof(RootQuestionAttribute)).Count() != 0
-                            select (Question)Activator.CreateInstance(type)).FirstOrDefault();
-            //load run data if process started using Kros.TroubleShooterInputs method
-            RunData = Runner.GetData();
+            if (patchAssembly != null)
+            {
+                //register all patches, create its instances
+                var compiledPatches = (from type in patchAssembly.GetTypes()
+                                       where type.IsSubclassOf(typeof(Patch))
+                                       select (Patch)Activator.CreateInstance(type)).ToList();
+                foreach (Patch patch in compiledPatches)
+                    Patches.Add(patch);
+                //initialise a root question -  decorated by RootQuestionAttribute
+                RootQuestion = (from type in patchAssembly.GetTypes()
+                                where type.IsSubclassOf(typeof(Question))
+                                where type.GetCustomAttributes(typeof(RootQuestionAttribute)).Count() != 0
+                                select (Question)Activator.CreateInstance(type)).FirstOrDefault();
+            }
         }
     }
 }

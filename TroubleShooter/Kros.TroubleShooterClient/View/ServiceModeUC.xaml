@@ -11,6 +11,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Border Margin="3" BorderThickness="1" BorderBrush="Black" Background="OldLace" >
             <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -24,7 +25,7 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="{Binding Name}" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Center"/>
-                                    <TextBox Text="{Binding Value}" IsEnabled="{Binding Editable}" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1">
+                                    <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding ReadOnly}" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1">
                                         <TextBox.Style>
                                             <Style TargetType="TextBox">
                                                 <Setter Property="Visibility" Value="Visible"></Setter>
@@ -76,6 +77,10 @@
                 </StackPanel>
             </ScrollViewer>
         </Border>
-        <myControls:TextButtonUC WithDescription="Visible" MainText="Odoslať" DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="3" Click="SendClick" Grid.Row="1" Source="/Kros.TroubleShooterClient;component/Resources/mail.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" MainText="Odoslať" DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="3" Click="SendClick" Grid.Row="1" 
+                                 Source="/Kros.TroubleShooterClient;component/Resources/mail.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Ukončiť" 
+                                 DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="2" Grid.ColumnSpan="2"
+                                 Click="FinishClick" Source="/Kros.TroubleShooterClient;component/Resources/exit.png"/>
     </Grid>
 </UserControl>

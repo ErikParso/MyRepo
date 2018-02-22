@@ -1,6 +1,9 @@
-﻿using Kros.TroubleShooterClient.Service;
+﻿using Kros.TroubleShooterClient.Model;
+using Kros.TroubleShooterClient.Service;
 using Kros.TroubleShooterClient.ViewModel;
 using Microsoft.Win32;
+using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,7 +18,22 @@ namespace Kros.TroubleShooterClient.View
         /// <summary>
         /// datacontext of this controll
         /// </summary>
-        private ServiceModeVM model; 
+        private ServiceModeVM model;
+
+        /// <summary>
+        /// Event fired on exit button clic
+        /// </summary>
+        public Action ExitClick;
+
+        /// <summary>
+        /// When problem is successfully sent to servis
+        /// </summary>
+        public Action ProblemSent;
+
+        /// <summary>
+        /// sending to server failed
+        /// </summary>
+        public Action ProlemSentFailed;
 
         /// <summary>
         /// initiqalise components and set datacontext
@@ -24,8 +42,11 @@ namespace Kros.TroubleShooterClient.View
         {
             InitializeComponent();
             model = new ServiceModeVM();
-            model.DefineProperties();
             DataContext = model;
+            if (TroubleShooter.Current.RunData?.Attachments != null)
+                foreach (string defAtt in TroubleShooter.Current.RunData.Attachments)
+                    if (File.Exists(defAtt))
+                        attachments.Files.Add(defAtt);
         }
 
         /// <summary>
@@ -44,10 +65,17 @@ namespace Kros.TroubleShooterClient.View
             ServisManager m = new ServisManager();
             bool result = m.SendToServis(attachments.Files, model.Properties);
             if (result == true)
-                MessageBox.Show("Problém bol úspešne odoslaný na náš server.", "Servis", MessageBoxButton.OK , icon: MessageBoxImage.Information);      
+            {
+                MessageBox.Show("Problém bol úspešne odoslaný na náš server.", "Servis", MessageBoxButton.OK, icon: MessageBoxImage.Information);
+                if (ProblemSent != null)
+                    ProblemSent();
+            }
             else
+            {
                 MessageBox.Show("Problém sa nepodarilo odoslať. Server práve nie je dostupný alebo máte problém s pripojením na internet.", "Servis", MessageBoxButton.OK, icon: MessageBoxImage.Error);
-            this.Visibility = Visibility.Hidden;
+                if (ProlemSentFailed != null)
+                    ProlemSentFailed();
+            }
         }
 
         /// <summary>
@@ -79,6 +107,12 @@ namespace Kros.TroubleShooterClient.View
             {
                 ((OptionalServiceProp)((Image)sender).DataContext).Value = d.FileName;
             }
+        }
+
+        private void FinishClick()
+        {
+            if (ExitClick != null)
+                ExitClick();
         }
     }
 }

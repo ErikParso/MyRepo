@@ -48,7 +48,7 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// <summary>
         /// patches which solves current question problem 
         /// </summary>
-        public IEnumerable<Patch> Patches { get { return QuestionLink.Last().Solutions; } }
+        public IEnumerable<Patch> Patches { get { return ((StopQuestion)QuestionLink.Last()).Solutions; } }
 
         /// <summary>
         /// 

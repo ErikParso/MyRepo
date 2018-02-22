@@ -6,14 +6,13 @@
 
   <ItemGroup>
     <Compile Remove="Servis\**" />
+    <Compile Remove="UpdateFiles\**" />
     <Content Remove="Servis\**" />
+    <Content Remove="UpdateFiles\**" />
     <EmbeddedResource Remove="Servis\**" />
+    <EmbeddedResource Remove="UpdateFiles\**" />
     <None Remove="Servis\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="UpdateFiles\p2017102600.cs" />
-    <Compile Remove="UpdateFiles\q2017121500.cs" />
+    <None Remove="UpdateFiles\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,15 +29,6 @@
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="UpdateFiles\p2017102600.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="UpdateFiles\q2017121500.cs">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
   <ItemGroup>

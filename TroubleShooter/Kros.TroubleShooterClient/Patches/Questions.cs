@@ -1,4 +1,4 @@
-﻿//version(2018020806)
+﻿//version(2018022207)
 using Kros.TroubleShooterClient.Model;
 using System.Collections.Generic;
 
@@ -8,8 +8,6 @@ namespace Kros.TroubleShooterClient.Patches
     public class RootQuestion : Question
     {
         public override string Category { get { return "Olymp"; } }
-
-        public override int Id { get { return 2017121500; } }
 
         public override string Text { get { return "V akej časti programu sa vyskytuje problém ?"; } }
 
@@ -25,20 +23,18 @@ namespace Kros.TroubleShooterClient.Patches
         {
             switch (answerIndex)
             {
-                case 0: return new Q2017121501();
-                case 2: return new Q2017121502();
+                case 0: return new Personalistika();
+                case 2: return new Tlac();
+                case 3: return new StopQuestion(new ChybaZdvihuAccessPatch());
                 // answers 1 3 unselectable.. not implemented
-                default: return null; 
-                
+                default: return null;                 
             }
         }
     }
 
-    public class Q2017121501 : Question
+    public class Personalistika : Question
     {
         public override string Category { get { return "Personalistika"; } }
-
-        public override int Id { get { return 2017121501; } }
 
         public override string Text { get { return "V akej časti personalistiky máte problém ?"; } }
 
@@ -51,16 +47,13 @@ namespace Kros.TroubleShooterClient.Patches
 
         public override Question getQuestionByAnswer(int answerIndex)
         {
-            // answers 0 1 2 unselectable.. not implemented
             return null;
         }
     }
 
-    public class Q2017121502 : Question
+    public class Tlac : Question
     {
         public override string Category { get { return "Tlač"; } }
-
-        public override int Id { get { return 2017121502; } }
 
         public override string Text { get { return "Inštalovali ste v poslednej dobe Alfu ?"; } }
 
@@ -74,30 +67,10 @@ namespace Kros.TroubleShooterClient.Patches
         {
             switch (answerIndex)
             {
-                case 0: return new Q2017121503();
+                case 0: return new StopQuestion(new PoskodeneFontyPatch());
                 // answer 1 unselectable.. not implemented
                 default: return null;
             }
-        }
-    }
-
-    public class Q2017121503 : Question
-    {
-        public override string Category { get { return "Fonty"; } }
-
-        public override int Id { get { return 2017121503; } }
-
-        public override string Text { get { return ""; } }
-
-        protected override void registerAnswers(Dictionary<int, string> possibleAnswers)
-        {
-            //na answers are defined so patches will be executed
-        }
-
-        public override Question getQuestionByAnswer(int answerIndex)
-        {
-            //answers no defined its final node
-            return null;
         }
     }
 }

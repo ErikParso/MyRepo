@@ -26,11 +26,6 @@ namespace Kros.TroubleShooterClient.Model
         public abstract string Category { get; }
 
         /// <summary>
-        /// problem identifier. Should correspond with <see cref="Patch.SolvesProblem"/>
-        /// </summary>
-        public abstract int Id { get; }
-
-        /// <summary>
         /// creates question
         /// </summary>
         public Question()
@@ -53,17 +48,6 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         /// <param name="possibleAnswers"></param>
         protected abstract void registerAnswers(Dictionary<int,string> possibleAnswers);
-
-        /// <summary>
-        /// All patches registered to this problem
-        /// </summary>
-        public IEnumerable<Patch> Solutions
-        {
-            get
-            {
-                return TroubleShooter.Current.Patches.Where(p => p.SolvesProblem == Id);
-            }
-        }
     }
 
     /// <summary>

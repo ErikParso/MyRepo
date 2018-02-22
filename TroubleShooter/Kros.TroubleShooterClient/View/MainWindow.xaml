@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kros.TroubleShooterClient.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Olymp Troubleshooter" Height="350" Width="525" 
+        Icon="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

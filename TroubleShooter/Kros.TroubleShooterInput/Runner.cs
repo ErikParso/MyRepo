@@ -12,10 +12,12 @@ namespace Kros.TroubleShooterInput
     public class Runner
     {
         /// <summary>
-        /// The relative path containing troubleshooter executable.
-        /// Run data file will be stored here as well.
+        /// The troubleShooter lazy singletton
         /// </summary>
-        private string tsLocation;
+        private static Lazy<Runner> current = new Lazy<Runner>(() => new Runner());
+        public static Runner Current { get { return current.Value; } }
+
+        public RunData RunData { get; private set; }
 
         /// <summary>
         /// The executable file name in troubleshooter location.
@@ -30,29 +32,25 @@ namespace Kros.TroubleShooterInput
         /// <summary>
         /// Runs troubleshooter and passess data to it.
         /// </summary>
-        /// <param name="tsLocation">
-        /// the relative path containing troubleshooter
-        /// </param>
-        public Runner(string tsLocation)
+        private Runner()
         {
+            RunData = new RunData();
+        }
+
+        /// <summary>
+        /// Executes troubleshooter and passess serialised run data to this.
+        /// Functional troubleshooter must be located in tsLocation directory otherwise exception is thrown
+        /// </summary>
+        /// <param name="tsLocation">the relative location of troubleshooter</param>
+        public int RunTroubleShooter(string tsLocation, StartupMode mode)
+        {
+            RunData.StartupMode = mode;
             // if executable was not found, throw an exception.
             if (!File.Exists(Path.Combine(tsLocation, EXE_FILE)))
             {
                 throw new FileNotFoundException($"Troubleshooter was not found at location specified: {tsLocation}.");
             }
-            this.tsLocation = tsLocation;
-        }
-
-        /// <summary>
-        /// Executes troubleshooter and passess serialised run data to this.
-        /// Functional troubleshooter must be located in tsLocation directory, this is validated by ctor.
-        /// </summary>
-        /// <param name="data">
-        /// data to be passed to troubleshooter
-        /// </param>
-        public void RunTroubleShooter(RunData data)
-        {
-            string serialisedData = JsonConvert.SerializeObject(data);
+            string serialisedData = JsonConvert.SerializeObject(RunData);
             File.WriteAllText(Path.Combine(tsLocation, INPUT_FILE_NAME), serialisedData);
             ProcessStartInfo _processStartInfo = new ProcessStartInfo();
             //set working directory so it can find important files like runData, patches, patchAssembly etc.
@@ -60,6 +58,8 @@ namespace Kros.TroubleShooterInput
             _processStartInfo.FileName = EXE_FILE;
             _processStartInfo.Arguments = INPUT_FILE_NAME;
             Process myProcess = Process.Start(_processStartInfo);
+            myProcess.WaitForExit();
+            return myProcess.ExitCode;
         }
 
         /// <summary>
@@ -71,8 +71,10 @@ namespace Kros.TroubleShooterInput
         public static RunData GetData(string fileName = INPUT_FILE_NAME)
         {
             if (!File.Exists(fileName))
-                return null;
-            return JsonConvert.DeserializeObject<RunData>(File.ReadAllText(fileName));
+                return new RunData();
+            RunData runData = JsonConvert.DeserializeObject<RunData>(File.ReadAllText(fileName));
+            File.Delete(fileName);
+            return runData;
         }
     }
 }

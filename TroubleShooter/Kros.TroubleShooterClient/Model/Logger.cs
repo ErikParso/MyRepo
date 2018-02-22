@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Windows;
 
 namespace Kros.TroubleShooterClient.Model
 {
@@ -30,10 +34,23 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         public enum Mode
         {
-            IDENTIFICATION, SOLVING
+            IDENTIFICATION, SOLVING, FAST_IDENTIFICATION
+        }
+
+        public static void LogCompilationFail(IEnumerable<Diagnostic> failures)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("COMPILATION FAILED");
+            foreach (Diagnostic d in failures)
+                sb.AppendLine(d.ToString());
+            sb.AppendLine("=========================================================");
+            File.AppendAllText("TSLog.txt", sb.ToString());
+            if (MessageBox.Show("Opravné súbory sa nepodarilo skompilovať. Viac informácií nájdete v príslušnom log súbore. Prajete si ho teraz otvoriť?",
+                "Chyba kompilácie", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                Process.Start("TSLog.txt");
         }
 
     }
 
-    
+
 }

@@ -40,5 +40,9 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// false - textbox - free text
         /// </summary>
         public bool SelectText { get { return possibleValues != null; } }
+        /// <summary>
+        /// Readonly ? 
+        /// </summary>
+        public bool ReadOnly { get { return !Editable; } }
     }
 }

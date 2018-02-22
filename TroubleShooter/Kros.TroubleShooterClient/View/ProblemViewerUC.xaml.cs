@@ -1,18 +1,7 @@
 ﻿using Kros.TroubleShooterClient.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Kros.TroubleShooterClient.View
 {
@@ -37,6 +26,9 @@ namespace Kros.TroubleShooterClient.View
             autoFixMode.RunFormMode += selectFixMode.Show;
             // when nothing else works, in form mode user can click to send data for servis
             selectFixMode.ServiceSelected += () => serviceMode.Show();
+            // exit app on exit click on servis mode
+            serviceMode.ExitClick += () => App.Current.MainWindow.Close();
+            serviceMode.ProblemSent += () => serviceMode.Visibility = Visibility.Hidden;
         }
 
         /// <summary>

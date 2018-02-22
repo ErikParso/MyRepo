@@ -17,6 +17,11 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -29,13 +34,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -60,6 +60,9 @@
   <PropertyGroup />
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Esent.Interop, Version=1.9.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -172,6 +175,10 @@
     <Compile Include="Model\Logger.cs" />
     <Compile Include="Model\Patch.cs" />
     <Compile Include="Model\Question.cs" />
+    <Compile Include="Model\StopQuestion.cs" />
+    <Compile Include="Patches\ChybaZdvihuAccessPatch.cs" />
+    <Compile Include="Patches\PoskodeneFontyPatch.cs" />
+    <Compile Include="Patches\Questions.cs" />
     <Compile Include="Service\ServisManager.cs" />
     <Compile Include="TroubleShooterClient.cs" />
     <Compile Include="ViewModel\OptionalServiceProp.cs" />
@@ -188,6 +195,9 @@
     </Compile>
     <Compile Include="View\BoolColorConv.cs" />
     <Compile Include="View\GuiFuncs.cs" />
+    <Compile Include="View\MiniWindow.xaml.cs">
+      <DependentUpon>MiniWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ProblemViewerUC.xaml.cs">
       <DependentUpon>ProblemViewerUC.xaml</DependentUpon>
     </Compile>
@@ -196,6 +206,9 @@
     </Compile>
     <Compile Include="View\ServiceModeUC.xaml.cs">
       <DependentUpon>ServiceModeUC.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ServisWindow.xaml.cs">
+      <DependentUpon>ServisWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="View\AutoFixModeUC.xaml">
       <SubType>Designer</SubType>
@@ -213,6 +226,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\MiniWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ProblemViewerUC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -222,6 +239,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ServiceModeUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ServisWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -320,11 +341,21 @@
   <ItemGroup>
     <Resource Include="Resources\folder.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if not exist "$(ProjectDir)..\..\beta\Olymp\bin\Debug\TroubleShooter" mkdir "$(ProjectDir)..\..\beta\Olymp\bin\Debug\TroubleShooter"
-xcopy /E /Y "$(ProjectDir)bin\Debug" "$(ProjectDir)..\..\beta\Olymp\bin\Debug\TroubleShooter"</PostBuildEvent>
+    <PostBuildEvent>del "$(SolutionDir)Kros.TroubleShooterServer\UpdateFiles\*.cs"
+xcopy /E /Y "$(ProjectDir)\Patches" "$(SolutionDir)Kros.TroubleShooterServer\UpdateFiles"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

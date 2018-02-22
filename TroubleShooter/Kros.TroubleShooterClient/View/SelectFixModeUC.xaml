@@ -51,7 +51,7 @@
 
         <myControls:TextButtonUC WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain3}" DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="3" Click="ServiceClick" Grid.Row="3" 
                                  x:Name="ServiceButton" Source="/Kros.TroubleShooterClient;component/Resources/mail.png"/>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Hotovo" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="4" Click="FinishClick" 
+        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Ukončiť" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="4" Click="FinishClick" 
                                  Source="/Kros.TroubleShooterClient;component/Resources/exit.png"/>
     </Grid>
 </UserControl>

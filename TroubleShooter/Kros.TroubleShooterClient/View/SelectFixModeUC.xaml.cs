@@ -2,6 +2,7 @@
 using Kros.TroubleShooterClient.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -38,6 +39,8 @@ namespace Kros.TroubleShooterClient.View
             model = new QuestionMode(TroubleShooter.Current.RootQuestion);
             this.DataContext = model;
             ServiceButton.IsEnabled = TroubleShooter.Current.ServerOnline;
+            if (!TroubleShooter.Current.ServerOnline)
+                ServiceButton.DescriptionText = "Nepodarilo sa nadviazať kontakt so servisným serverom.";
         }
 
         /// <summary>
@@ -77,7 +80,7 @@ namespace Kros.TroubleShooterClient.View
             //select answer in model - this will actualise a new question
             model.SelectAnswer((QuestionMode.Answer)((UserControl)sender).DataContext);
             //if there are no answers it is a final question and corresponded patches will be executed
-            if (model.Answers.Count == 0)
+            if (model.QuestionLink.Last().GetType() == typeof(StopQuestion))
             {
                 this.Visibility = Visibility.Hidden;
                 PatchesSelected(model.Patches);

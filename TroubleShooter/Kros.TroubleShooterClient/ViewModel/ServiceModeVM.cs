@@ -1,6 +1,9 @@
 ﻿using Kros.TroubleShooterClient.Model;
+using Kros.TroubleShooterInput;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Kros.TroubleShooterClient.ViewModel
@@ -21,78 +24,31 @@ namespace Kros.TroubleShooterClient.ViewModel
         public ServiceModeVM()
         {
             Properties = new List<OptionalServiceProp>();
-        }
-
-        /// <summary>
-        /// defines servis data
-        /// </summary>
-        public void DefineProperties()
-        {
-            Properties.Add(new OptionalServiceProp()
+            foreach (ServisObject o in TroubleShooter.Current.RunData.ServisObjects.Values)
             {
-                Name = "Kontakt"
-            });
-
-            Properties.Add(new OptionalServiceProp()
-            {
-                Name = "Popis chyby"
-            });
-
-            Properties.Add(new OptionalServiceProp()
-            {
-                Name = "Cesta k Olympu",
-                Value = Environment.CurrentDirectory,
-                IsPath = true,
-                Editable = false
-            });
-
-            Properties.Add(new OptionalServiceProp()
-            {
-                Name = "Cesta k databáze",
-                Value = Environment.CurrentDirectory + "\\data\\...",
-                IsPath = true
-            });
-
-            Properties.Add(new OptionalServiceProp()
-            {
-                Name = "Typ databázy",
-                PossibleValues = new List<string>() { "Neznámy", "Access", "SQL" },
-                Value = "Neznámy"
-            });
-
-            Properties.Add(new OptionalServiceProp()
-            {
-                Name = "Operačný systém",
-                Value = Environment.OSVersion.VersionString,
-                Editable = false
-            });
-
-            Properties.Add(new OptionalServiceProp()
-            {
-                Name = "Log",
-                Value = FlattenException(TroubleShooter.Current.RunData?.Exception),
-                Editable = false
-            });
-        }
-
-        /// <summary>
-        /// gets log
-        /// </summary>
-        /// <param name="exception"></param>
-        /// <returns></returns>
-        public static string FlattenException(Exception exception)
-        {
-            var stringBuilder = new StringBuilder();
-
-            while (exception != null)
-            {
-                stringBuilder.AppendLine(exception.Message);
-                stringBuilder.AppendLine(exception.StackTrace);
-
-                exception = exception.InnerException;
+                Properties.Add(new OptionalServiceProp
+                {
+                    Name = o.Title,
+                    Editable = o.Editable,
+                    IsPath = o.IsPath,
+                    PossibleValues = o.PossibleValues?.ToList(),
+                    Value = o.Value
+                });
             }
 
-            return stringBuilder.ToString();
-        }
+            if (Properties.Count == 0)
+            {
+                //ak neboli properties nastavene aplikaciou nastav defaultne
+                //zobrazia sa ked spustis apku standalone
+                Properties.Add(new OptionalServiceProp()
+                {
+                    Name = "Kontakt",
+                });
+                Properties.Add(new OptionalServiceProp()
+                {
+                    Name = "Popis problému",
+                });
+            }
+        }        
     }
 }

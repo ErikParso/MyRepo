@@ -1,8 +1,5 @@
 ﻿using Kros.TroubleShooterInput;
 using System;
-using System.Collections.Generic;
-using System.Security.Principal;
-using System.Windows;
 
 namespace Kros.TroubleShooterClient.Model
 {
@@ -29,33 +26,30 @@ namespace Kros.TroubleShooterClient.Model
         public abstract string HtmlInfo { get; }
 
         /// <summary>
-        /// The id of problem which this patch solves.
-        /// Should correspond with <see cref="Question.Id"/>.
-        /// </summary>
-        public abstract int SolvesProblem { get; }
-
-        /// <summary>
         /// The execution result
         /// </summary>
         public string ExecutionResult { get; set; }
 
         /// <summary>
-        /// Identifies, if the patch can solve the problem.
+        /// Identifies, the prolem on computer
+        /// Somes problems identifications lasts longer and neednt data from hosting app.
+        /// If uou want identify problem using input data, use <see cref="FastIdentify(RunData)"/> method.
+        /// Identifications will be used only in complex mode troubleshooter. 
         /// </summary>
-        protected abstract bool IdentifyProblem(RunData runData);
+        protected abstract bool ComplexIdentify();
 
         /// <summary>
-        /// Runs problem identification with exception handling.
+        /// runs <see cref="ComplexIdentify(RunData)"/> but also handles exceptions
         /// </summary>
         /// <returns>
-        /// true - problem identified and this patch can solve it
-        /// false - problem unidetified or identification failed
+        /// true - problem identified and this patch should be used to solve it
+        /// false - problem unidentified or identification failed
         /// </returns>
-        public bool IdentifyProblemSafe()
+        public bool ComplexIdentifySafe()
         {
             try
             {
-                return IdentifyProblem(TroubleShooter.Current.RunData);
+                return ComplexIdentify();
             }
             catch (Exception e)
             {
@@ -67,7 +61,7 @@ namespace Kros.TroubleShooterClient.Model
         /// <summary>
         /// Tries to solve the problem.
         /// </summary>
-        protected abstract bool SolveProblem();
+        protected abstract bool SolveProblem(RunData runData);
 
         /// <summary>
         /// Runs problem solving with exception handling.
@@ -80,11 +74,38 @@ namespace Kros.TroubleShooterClient.Model
         {
             try
             {
-                return SolveProblem();
+                return SolveProblem(TroubleShooter.Current.RunData);
             }
             catch (Exception e)
             {
                 Logger.LogIdentifyException(e, this, Logger.Mode.SOLVING);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Identifies problem realy fast from input data defined by hosting app.
+        /// Will be used in both modes complex and minimalistic. 
+        /// Its Prefered type of problem identification.
+        /// </summary>
+        protected abstract bool FastIdentify(RunData runData);
+
+        /// <summary>
+        /// runs <see cref="FastIdentify(RunData)"/> but also handles exceptions
+        /// </summary>
+        /// <returns>
+        /// true - problem identified and this patch should be used to solve it
+        /// false - problem unidentified or identification failed
+        /// </returns>
+        public bool FastIdentifySafe()
+        {
+            try
+            {
+                return FastIdentify(TroubleShooter.Current.RunData);
+            }
+            catch (Exception e)
+            {
+                Logger.LogIdentifyException(e, this, Logger.Mode.FAST_IDENTIFICATION);
                 return false;
             }
         }
