@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,8 +24,10 @@ namespace Kros.TroubleShooterClient.Update
         {
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
             MetadataReference.CreateFromFile(typeof(Compiler).Assembly.Location),
-            MetadataReference.CreateFromFile(typeof(RunData).Assembly.Location)
+            MetadataReference.CreateFromFile(typeof(RunData).Assembly.Location),
+            MetadataReference.CreateFromFile(typeof(Component).Assembly.Location)
         };
+
 
         /// <summary>
         /// Compiles .cs source files located in update folder

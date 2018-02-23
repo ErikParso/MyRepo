@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyControls", "..\MyControls\MyControls\MyControls.csproj", "{AEE992F3-C609-43CF-B161-1311B72CB0B1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.TroubleShooterClient", "Kros.TroubleShooterClient\Kros.TroubleShooterClient.csproj", "{6BF8A4E1-F84C-4F11-8F07-1574D5C834D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.TroubleShooterServer", "Kros.TroubleShooterServer\Kros.TroubleShooterServer.csproj", "{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElipticCurves", "..\ElipticCryptography\ElipticCurves\ElipticCurves.csproj", "{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModuloExtensions", "..\ModuloExtensions\ModuloExtensions\ModuloExtensions.csproj", "{9CE60921-9866-4A74-B7D2-D237FB61CB8E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElipticCryptoTest", "..\ElipticCryptography\ElipticCryptoTest\ElipticCryptoTest.csproj", "{A0F7353A-B565-4859-8D58-A7FB58CEA583}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kros.TroubleShooterCommon", "Kros.TroubleShooterCommon\Kros.TroubleShooterCommon.csproj", "{D472CCF6-E654-4B9F-B9E0-6727E1EA0C24}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.TroubleShooterInput", "Kros.TroubleShooterInput\Kros.TroubleShooterInput.csproj", "{2BF96687-AD17-4742-BF0F-0255D9DD9294}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyControls", "MyControls\MyControls\MyControls.csproj", "{AEE992F3-C609-43CF-B161-1311B72CB0B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.ModuloExtensions", "Kros.ModuloExtensions\Kros.ModuloExtensions.csproj", "{8228E90D-5357-4BB1-982A-06ECE81EADDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.ElipticCryptography", "Kros.ElipticCryptography\Kros.ElipticCryptography.csproj", "{B48DD5BE-F89E-4BDA-A048-E2200AC1B9A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.TroubleShooterCom", "Kros.TroubleShooterCom\Kros.TroubleShooterCom.csproj", "{4B2096E6-2BBE-43A8-9AA7-C2D58C1B7FC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElipticCryptoTest", "ElipticCryptoTest\ElipticCryptoTest.csproj", "{A0F7353A-B565-4859-8D58-A7FB58CEA583}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AEE992F3-C609-43CF-B161-1311B72CB0B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AEE992F3-C609-43CF-B161-1311B72CB0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AEE992F3-C609-43CF-B161-1311B72CB0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AEE992F3-C609-43CF-B161-1311B72CB0B1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6BF8A4E1-F84C-4F11-8F07-1574D5C834D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6BF8A4E1-F84C-4F11-8F07-1574D5C834D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BF8A4E1-F84C-4F11-8F07-1574D5C834D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -37,31 +33,50 @@ Global
 		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9A2D9E9-ADDD-4620-9F24-D6A113AD298B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5095DA36-9FAF-4123-8A99-A5B3935DA2D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9CE60921-9866-4A74-B7D2-D237FB61CB8E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D472CCF6-E654-4B9F-B9E0-6727E1EA0C24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D472CCF6-E654-4B9F-B9E0-6727E1EA0C24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D472CCF6-E654-4B9F-B9E0-6727E1EA0C24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D472CCF6-E654-4B9F-B9E0-6727E1EA0C24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2BF96687-AD17-4742-BF0F-0255D9DD9294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2BF96687-AD17-4742-BF0F-0255D9DD9294}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BF96687-AD17-4742-BF0F-0255D9DD9294}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BF96687-AD17-4742-BF0F-0255D9DD9294}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEE992F3-C609-43CF-B161-1311B72CB0B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEE992F3-C609-43CF-B161-1311B72CB0B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEE992F3-C609-43CF-B161-1311B72CB0B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEE992F3-C609-43CF-B161-1311B72CB0B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8228E90D-5357-4BB1-982A-06ECE81EADDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8228E90D-5357-4BB1-982A-06ECE81EADDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8228E90D-5357-4BB1-982A-06ECE81EADDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8228E90D-5357-4BB1-982A-06ECE81EADDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B48DD5BE-F89E-4BDA-A048-E2200AC1B9A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B48DD5BE-F89E-4BDA-A048-E2200AC1B9A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B48DD5BE-F89E-4BDA-A048-E2200AC1B9A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B48DD5BE-F89E-4BDA-A048-E2200AC1B9A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B2096E6-2BBE-43A8-9AA7-C2D58C1B7FC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B2096E6-2BBE-43A8-9AA7-C2D58C1B7FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B2096E6-2BBE-43A8-9AA7-C2D58C1B7FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B2096E6-2BBE-43A8-9AA7-C2D58C1B7FC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {935F83F1-8E20-4A4A-8E10-57D4332ED1EC}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 2
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://krosfs:8080/tfs/kros
+		SccProjectUniqueName0 = Kros.TroubleShooterClient\\Kros.TroubleShooterClient.csproj
+		SccProjectName0 = Kros.TroubleShooterClient
+		SccAuxPath0 = http://krosfs:8080/tfs/kros
+		SccLocalPath0 = Kros.TroubleShooterClient
+		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccProjectUniqueName1 = Kros.TroubleShooterInput\\Kros.TroubleShooterInput.csproj
+		SccProjectName1 = Kros.TroubleShooterInput
+		SccAuxPath1 = http://krosfs:8080/tfs/kros
+		SccLocalPath1 = Kros.TroubleShooterInput
+		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
 EndGlobal

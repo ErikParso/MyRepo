@@ -1,4 +1,4 @@
-﻿//version(2018022203)
+﻿//version(2018022204)
 using Kros.TroubleShooterClient.Model;
 using Microsoft.Win32;
 using System.Threading;

@@ -52,6 +52,8 @@ namespace Kros.TroubleShooterInput
             }
             string serialisedData = JsonConvert.SerializeObject(RunData);
             File.WriteAllText(Path.Combine(tsLocation, INPUT_FILE_NAME), serialisedData);
+            RunData.ClearFlags();
+            //tu si hod breakpoint ak si chces debugovat troubleshooter so vstupnymi datami
             ProcessStartInfo _processStartInfo = new ProcessStartInfo();
             //set working directory so it can find important files like runData, patches, patchAssembly etc.
             _processStartInfo.WorkingDirectory = Path.Combine(Environment.CurrentDirectory, tsLocation);
@@ -73,7 +75,8 @@ namespace Kros.TroubleShooterInput
             if (!File.Exists(fileName))
                 return new RunData();
             RunData runData = JsonConvert.DeserializeObject<RunData>(File.ReadAllText(fileName));
-            File.Delete(fileName);
+            //pri debugovani si to tam chcem ponechat z olympu
+            //File.Delete(fileName);
             return runData;
         }
     }

@@ -28,7 +28,7 @@ namespace Kros.TroubleShooterClient.Model
         /// <summary>
         /// The execution result
         /// </summary>
-        public string ExecutionResult { get; set; }
+        public string ExecutionResult { get; protected set; }
 
         /// <summary>
         /// Identifies, the prolem on computer

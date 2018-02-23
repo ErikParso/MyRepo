@@ -1,6 +1,4 @@
-﻿using ElipticCurves;
-using Kros.TroubleShooterClient.Model;
-using Kros.TroubleShooterCommon;
+﻿using Kros.TroubleShooterCommon;
 using Kros.TroubleShooterCommon.Models;
 using Newtonsoft.Json;
 using System;
@@ -8,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using ElipticCurves;
 
 namespace Kros.TroubleShooterClient.Update
 {

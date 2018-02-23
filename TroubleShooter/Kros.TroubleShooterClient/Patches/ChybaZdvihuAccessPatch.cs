@@ -1,4 +1,4 @@
-﻿//version(2018022209)
+﻿//version(2018022304)
 using Kros.TroubleShooterClient.Model;
 using Kros.TroubleShooterInput;
 using System.IO;
@@ -7,7 +7,7 @@ namespace Kros.TroubleShooterClient.Patches
 {
     public class ChybaZdvihuAccessPatch : Patch
     {
-        public override string Description { get { return "Nastala chyba pri zdvihu databázy."; } }
+        public override string Description { get { return "Počas poslednej úpravy verzie databázy nastala chyba. Databáza je poškodená a troubleshooter sa pokúsi obnoviť ju zo zálohy."; } }
 
         public override string PatchName { get { return "Poškodená databáza"; } }
 
@@ -16,19 +16,28 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool FastIdentify(RunData data)
         {
-            //return data.ErrNumber > 1700 && data.ErrNumber < 1780;
-            return true;
+            return data.HasFlag("zdvih_nedobehol_access");
         }
 
         protected override bool ComplexIdentify()
         {
-            //problem can be identified only from run data 
+            //problem can be identified only from run data provided by olymp
             return false;
         }
 
         protected override bool SolveProblem(RunData data)
         {
-            return false;
+            string zal = Path.ChangeExtension(data.Get("broken_db"),".zal");
+            if (!File.Exists(zal))
+            {
+                ExecutionResult = "Troubleshooter nenašiel zálohu";
+                return false;
+            }
+            ExecutionResult = "Databázu sa nepodarilo obnoviť zo zálohy";
+            File.Delete(data.Get("broken_db"));
+            File.Copy(zal, Path.ChangeExtension(zal, ".mdb"));
+            ExecutionResult = "Databáza bola úspešne obnovená zo zálohy.";
+            return true;
         }
     }
 }

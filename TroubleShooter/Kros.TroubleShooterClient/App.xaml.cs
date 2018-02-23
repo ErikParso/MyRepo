@@ -40,13 +40,27 @@ namespace Kros.TroubleShooterClient
                     w.ShowDialog();
                     if (w.ProblemFixed == MiniWindow.Result.Success)
                     {
-                        MessageBox.Show("Oprava problému prebehla úspešne.", "Chyba programu", MessageBoxButton.OK, MessageBoxImage.Information);
+                        StringBuilder sb = new StringBuilder();
+                        sb.AppendLine("Oprava problému prebehla úspešne.");
+                        if (!string.IsNullOrEmpty(p.ExecutionResult))
+                        {
+                            sb.AppendLine();
+                            sb.AppendLine(p.ExecutionResult);
+                        }
+                        MessageBox.Show(sb.ToString(), "Oprava chyby", MessageBoxButton.OK, MessageBoxImage.Information);
                         Environment.ExitCode = 0;
                         return;
                     }
                     else if (w.ProblemFixed == MiniWindow.Result.Fail)
                     {
-                        MessageBox.Show("Problém sa nepodarilo opraviť automaticky.", "Chyba programu", MessageBoxButton.OK, MessageBoxImage.Error);
+                        StringBuilder sb = new StringBuilder();
+                        sb.AppendLine("Problém sa nepodarilo opraviť automaticky.");
+                        if (!string.IsNullOrEmpty(p.ExecutionResult))
+                        {
+                            sb.AppendLine();
+                            sb.AppendLine(p.ExecutionResult);
+                        }
+                        MessageBox.Show(sb.ToString(), "Chyba programu", MessageBoxButton.OK, MessageBoxImage.Error);
                         break;
                     }
                     else
@@ -80,25 +94,36 @@ namespace Kros.TroubleShooterClient
                     {
                         if (p.SolveProblemSafe())
                         {
-                            MessageBox.Show("Oprava problému prebehla úspešne.", "Chyba programu", MessageBoxButton.OK, MessageBoxImage.Information);
-                            Environment.ExitCode = 0;
-                            break;
+                            StringBuilder sb2 = new StringBuilder();
+                            sb2.AppendLine("Oprava problému prebehla úspešne.");
+                            if (!string.IsNullOrEmpty(p.ExecutionResult))
+                            {
+                                sb2.AppendLine();
+                                sb2.AppendLine(p.ExecutionResult);
+                            }
+                            MessageBox.Show(sb2.ToString(), "Oprava chyby", MessageBoxButton.OK, MessageBoxImage.Information);
+                            Shutdown(0);
                         }
                         else
                         {
-                            MessageBox.Show("Problém sa nepodarilo opraviť automaticky.", "Chyba programu", MessageBoxButton.OK, MessageBoxImage.Error);
-                            Environment.ExitCode = 1;
-                            break;
+                            StringBuilder sb2 = new StringBuilder();
+                            sb2.AppendLine("Problém sa nepodarilo opraviť automaticky.");
+                            if (!string.IsNullOrEmpty(p.ExecutionResult))
+                            {
+                                sb2.AppendLine();
+                                sb2.AppendLine(p.ExecutionResult);
+                            }
+                            MessageBox.Show(sb2.ToString(), "Chyba programu", MessageBoxButton.OK, MessageBoxImage.Error);
+                            Shutdown(1);
                         }
                     }
                     else
                     {
-                        Environment.ExitCode = 1;
-                        break;
+                        Shutdown(1);
                     }
                 }
             }
-            this.Shutdown();
+            this.Shutdown(1);
         }
 
     }

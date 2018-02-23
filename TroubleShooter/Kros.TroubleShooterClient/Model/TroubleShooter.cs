@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
 
 namespace Kros.TroubleShooterClient.Model
 {
@@ -80,10 +81,14 @@ namespace Kros.TroubleShooterClient.Model
             IsNewVersion = ServerOnline ? updater.Execute() : false;
             //compile if its a new version othervise use last time compiled assembly
             Assembly patchAssembly = Compiler.Compile(SOURCES_LOCATION, IsNewVersion);
-
             Patches = new List<Patch>();
             if (patchAssembly != null)
             {
+#if DEBUG
+                //patche sa podarilo skompilovat ale ak ich chcem debugovat pozijeme tie v tejto assembly
+                //tiez by bolo fajn mat v priecinku runData subor
+                patchAssembly = this.GetType().Assembly;
+#endif
                 //register all patches, create its instances
                 var compiledPatches = (from type in patchAssembly.GetTypes()
                                        where type.IsSubclassOf(typeof(Patch))

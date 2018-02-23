@@ -55,6 +55,16 @@ namespace Kros.TroubleShooterInput
             Flags.AddRange(flags);
         }
 
+        internal void ClearFlags()
+        {
+            Flags.Clear();
+        }
+
+        public bool HasFlag(string flag)
+        {
+            return Flags.Contains(flag);
+        }
+
         public string Get(string name)
         {
             if (Data.ContainsKey(name))

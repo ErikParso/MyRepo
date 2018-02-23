@@ -19,7 +19,7 @@ namespace Kros.TroubleShooterClient
         public TroubleShooterClient()
             : base()
         {
-            BaseAddress = new Uri("http://localhost:51131/");
+            BaseAddress = new Uri("http://localhost:12345/");
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Kros.TroubleShooterClient
                 else
                     return false;
             }
-            catch (HttpRequestException e)
+            catch (HttpRequestException)
             {
                 return false;
             }
