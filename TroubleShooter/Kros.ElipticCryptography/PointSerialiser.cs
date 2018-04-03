@@ -25,7 +25,7 @@ namespace ElipticCurves
         /// see class description
         /// </summary>
         /// <param name="curve"></param>
-        internal PointSerialiser(ElipticCurve curve)
+        public PointSerialiser(ElipticCurve curve)
         {
             this.curve = curve;
             this.calc = new PointCalculator(curve);
@@ -42,7 +42,7 @@ namespace ElipticCurves
         /// <param name="point">point to serialise</param>
         /// <param name="comprimend">serialised point</param>
         /// <returns></returns>
-        internal byte[] SerialisePoint(ElipticCurvePoint point, bool comprimend)
+        public byte[] SerialisePoint(ElipticCurvePoint point, bool comprimend)
         {
             int size = curve.P.ToByteArray().Length;
             if (comprimend)

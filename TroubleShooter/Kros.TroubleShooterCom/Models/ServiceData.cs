@@ -14,6 +14,7 @@ namespace Kros.TroubleShooterCommon.Models
             ServiceParams = new List<ServiceParam>();
             Attachments = new List<IFormFile>();
         }
+         
      }
 
     public class ServiceParam

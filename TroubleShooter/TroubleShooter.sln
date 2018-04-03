@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kros.TroubleShooterCom", "K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElipticCryptoTest", "ElipticCryptoTest\ElipticCryptoTest.csproj", "{A0F7353A-B565-4859-8D58-A7FB58CEA583}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example1", "Example1\Example1.csproj", "{131FF0F8-1A8A-47CE-A8B7-58968ECE4482}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,26 +59,15 @@ Global
 		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0F7353A-B565-4859-8D58-A7FB58CEA583}.Release|Any CPU.Build.0 = Release|Any CPU
+		{131FF0F8-1A8A-47CE-A8B7-58968ECE4482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{131FF0F8-1A8A-47CE-A8B7-58968ECE4482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{131FF0F8-1A8A-47CE-A8B7-58968ECE4482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{131FF0F8-1A8A-47CE-A8B7-58968ECE4482}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {935F83F1-8E20-4A4A-8E10-57D4332ED1EC}
-	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://krosfs:8080/tfs/kros
-		SccProjectUniqueName0 = Kros.TroubleShooterClient\\Kros.TroubleShooterClient.csproj
-		SccProjectName0 = Kros.TroubleShooterClient
-		SccAuxPath0 = http://krosfs:8080/tfs/kros
-		SccLocalPath0 = Kros.TroubleShooterClient
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = Kros.TroubleShooterInput\\Kros.TroubleShooterInput.csproj
-		SccProjectName1 = Kros.TroubleShooterInput
-		SccAuxPath1 = http://krosfs:8080/tfs/kros
-		SccLocalPath1 = Kros.TroubleShooterInput
-		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 	EndGlobalSection
 EndGlobal
