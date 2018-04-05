@@ -63,7 +63,7 @@ namespace ElipticCurves
             ElipticCurvePoint publicKeyPoint = serialiser.DeserialisePoint(publicKey);
             if (publicKeyPoint == null)
                 return false;
-            //3. N x publicKey != O
+            //3. N x publicKey == O
             ElipticCurvePoint zero = calculator.Multiply(curve.N, publicKeyPoint);
             if (zero != null)
                 return false;

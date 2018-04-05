@@ -29,7 +29,7 @@ namespace ElipticCurves
         /// <param name="p">point 1</param>
         /// <param name="q">point 2</param>
         /// <returns>eliptic curve point or null if identitt element O</returns>
-        internal ElipticCurvePoint Add(ElipticCurvePoint p, ElipticCurvePoint q)
+        public ElipticCurvePoint Add(ElipticCurvePoint p, ElipticCurvePoint q)
         {
             if (p == null)
                 return q;
@@ -68,7 +68,7 @@ namespace ElipticCurves
         /// </summary>
         /// <param name="point">eliptic curve point</param>
         /// <returns>inverse point</returns>
-        internal ElipticCurvePoint Inverse(ElipticCurvePoint point)
+        public ElipticCurvePoint Inverse(ElipticCurvePoint point)
         {
             if (point == null)
             {
@@ -129,7 +129,7 @@ namespace ElipticCurves
         /// </summary>
         /// <param name="x">the x coordinate of point</param>
         /// <returns>Found point or null.</returns>
-        internal ElipticCurvePoint FindPointByX(BigInteger x)
+        public ElipticCurvePoint FindPointByX(BigInteger x)
         {
             //BigInteger ySquare = x.ModPow(3, curve.P).ModAdd(x.ModMul(curve.A, curve.P), curve.P).ModAdd(curve.B, curve.P);
             BigInteger ySquare = (BigInteger.ModPow(x, 3, curve.P) + curve.A * x + curve.B).Mod(curve.P);

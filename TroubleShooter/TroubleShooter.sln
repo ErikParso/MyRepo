@@ -64,19 +64,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {935F83F1-8E20-4A4A-8E10-57D4332ED1EC}
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://krosfs:8080/tfs/kros
-		SccProjectUniqueName0 = Kros.TroubleShooterClient\\Kros.TroubleShooterClient.csproj
-		SccProjectName0 = Kros.TroubleShooterClient
-		SccAuxPath0 = http://krosfs:8080/tfs/kros
-		SccLocalPath0 = Kros.TroubleShooterClient
-		SccProvider0 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccProjectUniqueName1 = Kros.TroubleShooterInput\\Kros.TroubleShooterInput.csproj
-		SccProjectName1 = Kros.TroubleShooterInput
-		SccAuxPath1 = http://krosfs:8080/tfs/kros
-		SccLocalPath1 = Kros.TroubleShooterInput
-		SccProvider1 = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-	EndGlobalSection
 EndGlobal
