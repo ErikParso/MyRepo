@@ -23,7 +23,7 @@ namespace Kros.TroubleShooterClient.Model
         /// Detail information to this patch. Supports html tags.
         /// Detail is not provided if is HtmlInfo null.
         /// </summary>
-        public abstract string HtmlInfo { get; }
+        public abstract string Instruction { get; }
 
         /// <summary>
         /// The execution result
@@ -53,7 +53,7 @@ namespace Kros.TroubleShooterClient.Model
             }
             catch (Exception e)
             {
-                Logger.LogIdentifyException(e, this, Logger.Mode.IDENTIFICATION);
+                Logger.LogPatchException(e, this, Logger.Mode.IDENTIFICATION);
                 return false;
             }
         }
@@ -78,7 +78,7 @@ namespace Kros.TroubleShooterClient.Model
             }
             catch (Exception e)
             {
-                Logger.LogIdentifyException(e, this, Logger.Mode.SOLVING);
+                Logger.LogPatchException(e, this, Logger.Mode.SOLVING);
                 return false;
             }
         }
@@ -105,7 +105,34 @@ namespace Kros.TroubleShooterClient.Model
             }
             catch (Exception e)
             {
-                Logger.LogIdentifyException(e, this, Logger.Mode.FAST_IDENTIFICATION);
+                Logger.LogPatchException(e, this, Logger.Mode.FAST_IDENTIFICATION);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// controls if user repairs problem using instructions
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool ControlProblem(RunData runData)
+        {
+            //verime ze mzdarka je sikovna 
+            return true;
+        }
+
+        /// <summary>
+        /// controls if user repairs problem using instructions
+        /// </summary>
+        /// <returns></returns>
+        public bool ControlProblemSafe()
+        {
+            try
+            {
+                return ControlProblem(TroubleShooter.Current.RunData);
+            }
+            catch (Exception e)
+            {
+                Logger.LogPatchException(e, this, Logger.Mode.CONTROL_INSTRUCTIONS_RESULT);
                 return false;
             }
         }

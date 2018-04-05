@@ -42,7 +42,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\!projekt\Olymp\beta\Olymp\bin\Debug\TroubleShooter\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -51,7 +51,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\beta\Olymp\bin\Debug\TroubleShooter\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -104,6 +104,9 @@
     <Reference Include="PresentationFramework">
       <Private>False</Private>
     </Reference>
+    <Reference Include="WpfAnimatedGif, Version=1.4.15.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WpfAnimatedGif.1.4.15\lib\net\WpfAnimatedGif.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -115,9 +118,14 @@
     <Compile Include="Model\Question.cs" />
     <Compile Include="Model\StopQuestion.cs" />
     <Compile Include="Patches\ChybaZdvihuAccessPatch.cs" />
-    <Compile Include="Patches\TestPatch.cs" />
+    <Compile Include="Patches\ServicePackPatch.cs" />
+    <Compile Include="Patches\FrameworkVersionPatch.cs" />
+    <Compile Include="Patches\InstructionBuilder.cs" />
     <Compile Include="Patches\PoskodeneFontyPatch.cs" />
     <Compile Include="Patches\Questions.cs" />
+    <Compile Include="Patches\AdobeSecurityPatch.cs" />
+    <Compile Include="Patches\PravaManZostPatch.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Service\ServisManager.cs" />
     <Compile Include="TroubleShooterClient.cs" />
     <Compile Include="ViewModel\OptionalServiceProp.cs" />
@@ -132,8 +140,15 @@
     <Compile Include="View\AutoFixModeUC.xaml.cs">
       <DependentUpon>AutoFixModeUC.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\BoolColorConv.cs" />
+    <Compile Include="View\BrowserWindow.xaml.cs">
+      <DependentUpon>BrowserWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PatchColorConverterText.cs" />
+    <Compile Include="View\PatchColorConverter.cs" />
     <Compile Include="View\GuiFuncs.cs" />
+    <Compile Include="View\LoadingWindow.xaml.cs">
+      <DependentUpon>LoadingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MiniWindow.xaml.cs">
       <DependentUpon>MiniWindow.xaml</DependentUpon>
     </Compile>
@@ -150,6 +165,14 @@
       <DependentUpon>ServisWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="View\AutoFixModeUC.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\BrowserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoadingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -286,7 +309,21 @@
   <ItemGroup>
     <Resource Include="icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\tenor.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\tumbDown.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fixed.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(SolutionDir)Kros.TroubleShooterServer\UpdateFiles" mkdir "$(SolutionDir)Kros.TroubleShooterServer\UpdateFiles"

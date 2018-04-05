@@ -19,7 +19,7 @@ namespace Kros.TroubleShooterClient.Model
         /// <param name="e">the exception</param>
         /// <param name="patche">failed patch</param>
         /// <param name="occuredInMode">patch failed when identifiing problem or fixing problem.. </param>
-        public static void LogIdentifyException(Exception e, Patch patche, Mode occuredInMode)
+        public static void LogPatchException(Exception e, Patch patche, Mode occuredInMode)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(occuredInMode.ToString() + " on " + DateTime.Now + " patch " + patche.PatchName + "(" + patche.GetType().Name + ")");
@@ -34,7 +34,7 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         public enum Mode
         {
-            IDENTIFICATION, SOLVING, FAST_IDENTIFICATION
+            IDENTIFICATION, SOLVING, FAST_IDENTIFICATION, CONTROL_INSTRUCTIONS_RESULT
         }
 
         public static void LogCompilationFail(IEnumerable<Diagnostic> failures)
@@ -47,6 +47,18 @@ namespace Kros.TroubleShooterClient.Model
             File.AppendAllText("TSLog.txt", sb.ToString());
             if (MessageBox.Show("Opravné súbory sa nepodarilo skompilovať. Viac informácií nájdete v príslušnom log súbore. Prajete si ho teraz otvoriť?",
                 "Chyba kompilácie", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                Process.Start("TSLog.txt");
+        }
+
+        public static void LogAssemblyLoadFail(Exception e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("PATCH ASSEMBLY LOADING FAILED");
+            sb.Append(e);
+            sb.AppendLine("=========================================================");
+            File.AppendAllText("TSLog.txt", sb.ToString());
+            if (MessageBox.Show("Nepodarilo sa načítať knižnicu s opravnými súbormi. Viac informácií nájdete v príslušnom log súbore. Prajete si ho teraz otvoriť?",
+                    "Chyba kompilácie", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
                 Process.Start("TSLog.txt");
         }
 

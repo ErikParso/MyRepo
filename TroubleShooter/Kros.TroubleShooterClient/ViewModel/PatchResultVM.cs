@@ -32,10 +32,11 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// true - patch fixed a problem
         /// false - patch didnt fix a problem
         /// </summary>
-        private bool? _problemFixed;
-        public bool? ProblemFixed {
-            get { return _problemFixed; }
-            set { _problemFixed = value; RaisePropertyChanged("ProblemFixed"); }
+        private ExecutionResult _executionResult;
+        public ExecutionResult ExecutionResult
+        {
+            get { return _executionResult; }
+            set { _executionResult = value; RaisePropertyChanged("ExecutionResult"); }
         }
 
         /// <summary>
@@ -48,8 +49,8 @@ namespace Kros.TroubleShooterClient.ViewModel
             _patch = patch;
             Name = patch.PatchName;
             Description = patch.Description;
-            HelpHtml = patch.HtmlInfo ;
-            ProblemFixed = null;
+            HelpHtml = patch.Instruction;
+            ExecutionResult = ExecutionResult.NOT_EXECUTED;
         }
 
         /// <summary>
@@ -57,7 +58,22 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// </summary>
         public void ExecutePatch()
         {
-            ProblemFixed = _patch.SolveProblemSafe();
+            if (_patch.SolveProblemSafe())
+                ExecutionResult = ExecutionResult.FIXED;
+            else if (HelpHtml != null)
+                ExecutionResult = ExecutionResult.INSTRUCTOR;
+            else
+                ExecutionResult = ExecutionResult.NOT_FIXED;
         }
+
+        public bool InstructionsResult()
+        {
+            return _patch.ControlProblemSafe();
+        }
+    }
+
+    public enum ExecutionResult
+    {
+        NOT_EXECUTED, FIXED, NOT_FIXED, INSTRUCTOR
     }
 }

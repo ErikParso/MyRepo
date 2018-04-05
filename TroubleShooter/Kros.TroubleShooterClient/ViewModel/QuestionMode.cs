@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System;
 using Kros.TroubleShooterClient.Model;
 
 namespace Kros.TroubleShooterClient.ViewModel
@@ -90,12 +89,13 @@ namespace Kros.TroubleShooterClient.ViewModel
             }
             ActualQuestion = rootQuestion.Text;
             //actualise answers by current question
-            foreach (KeyValuePair<int, string> answ in rootQuestion.PossibleAnswers)
+            foreach (KeyValuePair<int, Model.Answer> answ in rootQuestion.PossibleAnswers)
                 Answers.Add(new Answer()
                 {
                     Id = answ.Key,
-                    Text = answ.Value,
-                    //answer is available if has defined subquestion
+                    Text = answ.Value.MainText,
+                    Detail = answ.Value.Detail,
+                    //answer is available if has defined subquestion or stopQuestion
                     Available = rootQuestion.getQuestionByAnswer(answ.Key) != null
                 });
         }
@@ -120,14 +120,28 @@ namespace Kros.TroubleShooterClient.ViewModel
             /// answer identificator
             /// </summary>
             public int Id { get; set; }
+
             /// <summary>
             /// answer text
             /// </summary>
             public string Text { get; set; }
+
+            /// <summary>
+            /// Some answers can be morte complex
+            /// </summary>
+            public string Detail { get; set; }
+
             /// <summary>
             /// if answer is available
             /// </summary>
             public bool Available { get; set; }
+
+            /// <summary>
+            /// determine if answer is detailed
+            /// </summary>
+            public bool HasDetail {
+                get { return !string.IsNullOrEmpty(Detail); }
+            }
         }
     }
 }

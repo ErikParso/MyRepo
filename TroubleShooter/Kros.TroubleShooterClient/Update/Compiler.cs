@@ -28,57 +28,70 @@ namespace Kros.TroubleShooterClient.Update
             MetadataReference.CreateFromFile(typeof(Component).Assembly.Location)
         };
 
+        private const string PatchesAssembly = "Patches.dll";
+
 
         /// <summary>
-        /// Compiles .cs source files located in update folder
+        /// Compiles .cs source files located in update folder into Patches.dll assembly.
+        /// If compilation is unsuccessfull, sources are damaged and dll is inapplicable so this is why i delete this.
         /// </summary>
         /// <param name="path">update folder</param>
-        /// <param name="recompile">if its a new version</param>
-        /// <returns></returns>
-        public static Assembly Compile(string path, bool recompile)
+        public static void Compile(string path)
         {
-            //if version changed we need to recompile files.
-            if (recompile)
+            //load sources 
+            List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
+            if (Directory.Exists(path))
             {
-                List<SyntaxTree> syntaxTrees = new List<SyntaxTree>();
-                if (Directory.Exists(path))
+                foreach (string file in Directory.GetFiles(path, "*.cs"))
                 {
-                    foreach (string file in Directory.GetFiles(path, "*.cs"))
-                    {
-                        SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText(file));
-                        syntaxTrees.Add(syntaxTree);
-                    }
-                }
-
-                CSharpCompilation compilation = CSharpCompilation.Create(
-                    Path.GetRandomFileName(),
-                    syntaxTrees: syntaxTrees,
-                    references: supportedReferences,
-                    options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-
-                //emit compilation result in assembly
-                EmitResult result;
-                using (var fs = new FileStream("Patches.dll", FileMode.OpenOrCreate))
-                    result = compilation.Emit(fs);
-                //handle compilation error
-                if (!result.Success)
-                {
-                    IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
-                        diagnostic.IsWarningAsError ||
-                        diagnostic.Severity == DiagnosticSeverity.Error);
-                    //display compilation errors
-                    Logger.LogCompilationFail(failures);
-                    //delete failed dll and patches  
-                    if (File.Exists("Patches.dll"))
-                        File.Delete("Patches.dll");
-                    Directory.Delete(path, true);
+                    SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText(file));
+                    syntaxTrees.Add(syntaxTree);
                 }
             }
-            //load patches and questions assembly
-            if (!File.Exists("Patches.dll"))
+
+            //init compilation
+            CSharpCompilation compilation = CSharpCompilation.Create(
+                Path.GetRandomFileName(),
+                syntaxTrees: syntaxTrees,
+                references: supportedReferences,
+                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+            //emit compilation result in assembly
+            EmitResult result;
+            using (var fs = new FileStream(PatchesAssembly, FileMode.OpenOrCreate))
+                result = compilation.Emit(fs);
+            //handle compilation error, write it in log and delete failed dll and sources
+            if (!result.Success)
+            {
+                IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
+                    diagnostic.IsWarningAsError ||
+                    diagnostic.Severity == DiagnosticSeverity.Error);
+                //display compilation errors
+                Logger.LogCompilationFail(failures);
+                //delete failed dll and patches  
+                if (File.Exists(PatchesAssembly))
+                    File.Delete(PatchesAssembly);
+                Directory.Delete(path, true);
+            }
+        }
+
+        /// <summary>
+        /// tries to load patches assembly compiled by <see cref="Compile"/> method.
+        /// </summary>
+        /// <returns>
+        /// loaded assembly - successfull load
+        /// null - load failed for some reason (see log)
+        /// </returns>
+        public static Assembly LoadPatchAssembly()
+        {
+            try
+            {
+                return Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, PatchesAssembly));
+            }
+            catch (Exception e)
+            {
+                Logger.LogAssemblyLoadFail(e);
                 return null;
-            else
-                return Assembly.LoadFile(Path.Combine(Environment.CurrentDirectory, "Patches.dll"));
+            }
         }
     }
 }

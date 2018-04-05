@@ -20,7 +20,7 @@ namespace Kros.TroubleShooterClient.Model
             return null;
         }
 
-        protected override void registerAnswers(Dictionary<int, string> possibleAnswers)
+        protected override void registerAnswers(Dictionary<int, Answer> possibleAnswers)
         {
 
         }

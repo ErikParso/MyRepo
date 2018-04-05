@@ -1,5 +1,6 @@
 ﻿using Kros.TroubleShooterClient.Model;
 using System.Windows;
+using Kros.TroubleShooterClient.View;
 
 
 namespace Kros.TroubleShooterClient

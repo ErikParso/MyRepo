@@ -1,4 +1,4 @@
-﻿//version(2018022304)
+﻿//version(2018022305)
 using Kros.TroubleShooterClient.Model;
 using Kros.TroubleShooterInput;
 using System.IO;
@@ -7,11 +7,11 @@ namespace Kros.TroubleShooterClient.Patches
 {
     public class ChybaZdvihuAccessPatch : Patch
     {
-        public override string Description { get { return "Počas poslednej úpravy verzie databázy nastala chyba. Databáza je poškodená a troubleshooter sa pokúsi obnoviť ju zo zálohy."; } }
+        public override string Description => "Počas poslednej úpravy verzie databázy nastala chyba. Databáza je poškodená a troubleshooter sa pokúsi obnoviť ju zo zálohy.";
 
-        public override string PatchName { get { return "Poškodená databáza"; } }
+        public override string PatchName => "Poškodená databáza";
 
-        public override string HtmlInfo { get { return null; } }
+        public override string Instruction => null;
 
 
         protected override bool FastIdentify(RunData data)

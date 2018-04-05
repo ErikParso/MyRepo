@@ -2,13 +2,14 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
+using Kros.TroubleShooterClient.ViewModel;
 
 namespace Kros.TroubleShooterClient.View
 {
     /// <summary>
     /// Converts patch execution result (bool?) into patch color
     /// </summary>
-    public class BoolColorConv : IValueConverter
+    public class PatchColorConverter : IValueConverter
     {
         /// <summary>
         /// Converts patch execution result (bool?) into patch color
@@ -24,13 +25,19 @@ namespace Kros.TroubleShooterClient.View
         /// <returns></returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool? val = (bool?)value;
-            if (val == null)
-                return new SolidColorBrush(Colors.AliceBlue);
-            else if (val == true)
-                return new SolidColorBrush(Colors.LightGreen);
-            else
-                return new SolidColorBrush(Colors.LightPink);
+            switch ((ExecutionResult)value)
+            {
+                case ExecutionResult.NOT_EXECUTED:
+                    return new SolidColorBrush(Colors.AliceBlue);
+                case ExecutionResult.FIXED:
+                    return new SolidColorBrush(Colors.LightGreen);
+                case ExecutionResult.NOT_FIXED:
+                    return new SolidColorBrush(Colors.LightPink);
+                case ExecutionResult.INSTRUCTOR:
+                    return new SolidColorBrush(Colors.LightPink);
+                default:
+                    return new SolidColorBrush(Colors.Transparent);
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

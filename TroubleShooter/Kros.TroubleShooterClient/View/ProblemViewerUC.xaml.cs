@@ -36,7 +36,17 @@ namespace Kros.TroubleShooterClient.View
         /// </summary>
         public void detectProblem()
         {
-            Task.Run(() => autoFixMode.Show(TroubleShooter.Current.Patches));
+            Task.Run(() =>
+            {
+                if (!autoFixMode.Show(TroubleShooter.Current.Patches))
+                    if (MessageBox.Show(
+                            "Nepodarilo sa identifikovať žiadne problémy vo vašom počítači. Prajete si zobraziť sprievodcu na vyhľadanie problému?",
+                            "Troubleshooter", MessageBoxButton.YesNo, MessageBoxImage.Information) ==
+                        MessageBoxResult.Yes)
+                    {
+                        selectFixMode.Dispatcher.Invoke(() => selectFixMode.Show());
+                    }
+            });
         }
     }
 }

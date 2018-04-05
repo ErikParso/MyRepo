@@ -28,7 +28,11 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// max value
         /// </summary>
         private int count = 0;
-        public int Count { set { count = value; RaisePropertyChanged("Progress", "ProgressPercentage"); } }
+        public int Count
+        {
+            get => count;
+            set { count = value; RaisePropertyChanged("Progress", "ProgressPercentage"); }
+        }
 
         /// <summary>
         /// actual value

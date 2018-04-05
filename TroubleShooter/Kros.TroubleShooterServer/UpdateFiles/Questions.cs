@@ -1,4 +1,4 @@
-﻿//version(2018022206)
+﻿//version(2018022217)
 using Kros.TroubleShooterClient.Model;
 using System.Collections.Generic;
 
@@ -7,26 +7,21 @@ namespace Kros.TroubleShooterClient.Patches
     [RootQuestion]
     public class RootQuestion : Question
     {
-        public override string Category { get { return "Olymp"; } }
-
-        public override string Text { get { return "V akej časti programu sa vyskytuje problém ?"; } }
-
-        protected override void registerAnswers(Dictionary<int, string> possibleAnswers)
+        public override string Category => "Olymp";
+        public override string Text => "V akej časti programu sa vyskytuje problém ?";
+        protected override void registerAnswers(Dictionary<int, Answer> possibleAnswers)
         {
-            possibleAnswers.Add(0, "Personalistika");
-            possibleAnswers.Add(1, "Mzdy");
-            possibleAnswers.Add(2, "Tlač");
-            possibleAnswers.Add(3, "Spustenie Olympu");
+            possibleAnswers.Add(0, new Answer("Personalistika"));
+            possibleAnswers.Add(1, new Answer("Mzdy"));
+            possibleAnswers.Add(2, new Answer("Tlač"));
+            possibleAnswers.Add(3, new Answer("Spustenie Olympu"));
         }
-
         public override Question getQuestionByAnswer(int answerIndex)
         {
             switch (answerIndex)
             {
                 case 0: return new Personalistika();
-                case 2: return new Tlac();
-                case 3: return new StopQuestion(new ChybaZdvihuAccessPatch());
-                // answers 1 3 unselectable.. not implemented
+                case 2: return new TlacChybyPopis();
                 default: return null;                 
             }
         }
@@ -34,43 +29,37 @@ namespace Kros.TroubleShooterClient.Patches
 
     public class Personalistika : Question
     {
-        public override string Category { get { return "Personalistika"; } }
-
-        public override string Text { get { return "V akej časti personalistiky máte problém ?"; } }
-
-        protected override void registerAnswers(Dictionary<int, string> possibleAnswers)
+        public override string Category => "Personalistika";
+        public override string Text => "V akej časti personalistiky máte problém ?";
+        protected override void registerAnswers(Dictionary<int, Answer> possibleAnswers)
         {
-            possibleAnswers.Add(0, "Grid");
-            possibleAnswers.Add(1, "Bočná karta");
-            possibleAnswers.Add(2, "Pridávanie zamestnanca");
+            possibleAnswers.Add(0, new Answer("Grid"));
+            possibleAnswers.Add(1, new Answer("Bočná karta"));
+            possibleAnswers.Add(2, new Answer("Pridávanie zamestnanca"));
         }
-
         public override Question getQuestionByAnswer(int answerIndex)
         {
             return null;
         }
     }
 
-    public class Tlac : Question
+    public class TlacChybyPopis : Question
     {
-        public override string Category { get { return "Tlač"; } }
-
-        public override string Text { get { return "Inštalovali ste v poslednej dobe Alfu ?"; } }
-
-        protected override void registerAnswers(Dictionary<int, string> possibleAnswers)
+        public override string Text => "V ktorej časti tlače sa prejavuje problém ?";
+        public override string Category => "Oblasť tlače";
+        public override Question getQuestionByAnswer(int answer)
         {
-            possibleAnswers.Add(0, "Áno");
-            possibleAnswers.Add(1, "Nie");
-        }
-
-        public override Question getQuestionByAnswer(int answerIndex)
-        {
-            switch (answerIndex)
+            switch (answer)
             {
-                case 0: return new StopQuestion(new PoskodeneFontyPatch());
-                // answer 1 unselectable.. not implemented
+                case 1: return new StopQuestion(new AdobeSecurityPatch());
+                case 2: return new StopQuestion(new PravaManZostPatch());
                 default: return null;
             }
+        }
+        protected override void registerAnswers(Dictionary<int, Answer> possibleAnswers)
+        {
+            possibleAnswers.Add(1, new Answer("Chybová hláška programu Adobe Reader.", "V prípade originálnych pdf tlačív sa mi zobrazuje hláška \"Užívateľ operáciu zrušil\"."));
+            possibleAnswers.Add(2, new Answer("Tlač manažérskych zostáv.", "Mám chybové hlásenie 710-3554-x1006-1004 Office has detected a problem with this file."));
         }
     }
 }

@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Metadata;
+using System.Threading;
+using Kros.TroubleShooterClient.View;
 
 namespace Kros.TroubleShooterClient.Model
 {
@@ -61,6 +62,11 @@ namespace Kros.TroubleShooterClient.Model
         public TroubleShooterClient Client { get; private set; }
 
         /// <summary>
+        /// compiled assembly containing sources and questuions+
+        /// </summary>
+        private Assembly sourcesAssembly;
+
+        /// <summary>
         /// - gets a new version of patches and questions
         /// - tries to compile patches and questions if update was successfull
         ///   otherwise the latest compiled dll is used "Patches.dll"
@@ -68,6 +74,7 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         private TroubleShooter()
         {
+            Thread.Sleep(2000);
             //load run data if process started using Kros.TroubleShooterInputs method
             RunData = Runner.GetData();
             //init web api client
@@ -78,25 +85,29 @@ namespace Kros.TroubleShooterClient.Model
             //get latest source files if server is online... check if its a new version
             Updater updater = new Updater(SOURCES_LOCATION, Client);
             ServerOnline = Client.TryConnection();
-            IsNewVersion = ServerOnline ? updater.Execute() : false;
-            //compile if its a new version othervise use last time compiled assembly
-            Assembly patchAssembly = Compiler.Compile(SOURCES_LOCATION, IsNewVersion);
+            IsNewVersion = ServerOnline && updater.Execute();
+            //recompile if its a new version
+            if (IsNewVersion)
+                Compiler.Compile(SOURCES_LOCATION);
+            //load last time compiled assembly
+            sourcesAssembly = Compiler.LoadPatchAssembly();
+            //init triubleshooter
             Patches = new List<Patch>();
-            if (patchAssembly != null)
+            if (sourcesAssembly != null)
             {
 #if DEBUG
                 //patche sa podarilo skompilovat ale ak ich chcem debugovat pozijeme tie v tejto assembly
-                //tiez by bolo fajn mat v priecinku runData subor
-                patchAssembly = this.GetType().Assembly;
+                //tiez by bolo fajn mat v priecinku s troubleshooterom aj runData subor pre debugovanie...
+                sourcesAssembly = this.GetType().Assembly;
 #endif
                 //register all patches, create its instances
-                var compiledPatches = (from type in patchAssembly.GetTypes()
+                var compiledPatches = (from type in sourcesAssembly.GetTypes()
                                        where type.IsSubclassOf(typeof(Patch))
                                        select (Patch)Activator.CreateInstance(type)).ToList();
                 foreach (Patch patch in compiledPatches)
                     Patches.Add(patch);
                 //initialise a root question -  decorated by RootQuestionAttribute
-                RootQuestion = (from type in patchAssembly.GetTypes()
+                RootQuestion = (from type in sourcesAssembly.GetTypes()
                                 where type.IsSubclassOf(typeof(Question))
                                 where type.GetCustomAttributes(typeof(RootQuestionAttribute)).Count() != 0
                                 select (Question)Activator.CreateInstance(type)).FirstOrDefault();

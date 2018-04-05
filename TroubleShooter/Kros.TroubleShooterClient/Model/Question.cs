@@ -11,7 +11,7 @@ namespace Kros.TroubleShooterClient.Model
         /// <summary>
         /// the dictionary of possible answers
         /// </summary>
-        public Dictionary<int,string> PossibleAnswers;
+        public Dictionary<int,Answer> PossibleAnswers;
         
         /// <summary>
         /// Question text.
@@ -29,7 +29,7 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         public Question()
         {
-            PossibleAnswers = new Dictionary<int, string>();
+            PossibleAnswers = new Dictionary<int, Answer>();
             registerAnswers(PossibleAnswers);
         }
 
@@ -46,7 +46,7 @@ namespace Kros.TroubleShooterClient.Model
         /// If no answers are registered its final question and corespondich patches will be executed.
         /// </summary>
         /// <param name="possibleAnswers"></param>
-        protected abstract void registerAnswers(Dictionary<int,string> possibleAnswers);
+        protected abstract void registerAnswers(Dictionary<int, Answer> possibleAnswers);
     }
 
     /// <summary>
@@ -55,5 +55,17 @@ namespace Kros.TroubleShooterClient.Model
     public class RootQuestionAttribute : Attribute
     {
 
+    }
+
+    public class Answer
+    {
+        public string MainText { get; }
+        public string Detail { get; }
+
+        public Answer(string mainText, string detail = null)
+        {
+            MainText = mainText;
+            Detail = detail;
+        }
     }
 }

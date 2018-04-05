@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
+using Microsoft.Net.Http.Headers;
 
 namespace Kros.TroubleShooterServer.Controllers
 {
@@ -106,8 +107,8 @@ namespace Kros.TroubleShooterServer.Controllers
 
         [HttpPost("service")]
         public IActionResult Post()
-        {      
-                 
+        {
+
             if (!Directory.Exists(SERVIS_DIR))
                 Directory.CreateDirectory(SERVIS_DIR);
 
@@ -122,7 +123,7 @@ namespace Kros.TroubleShooterServer.Controllers
             }
             Directory.CreateDirectory(Path.Combine(SERVIS_DIR, attachmentDir));
 
-            IFormCollection form  = Request.Form;
+            IFormCollection form = Request.Form;
             foreach (IFormFile file in form.Files)
             {
                 using (FileStream fs = new FileStream(Path.Combine(SERVIS_DIR, attachmentDir, file.FileName), FileMode.OpenOrCreate))
@@ -146,7 +147,7 @@ namespace Kros.TroubleShooterServer.Controllers
                 {
                     Title = key,
                     Value = val.ToString(),
-                    Servis = s     
+                    Servis = s
                 };
                 ctx.ServisInformations.Add(inf);
             }
@@ -180,6 +181,20 @@ namespace Kros.TroubleShooterServer.Controllers
         public IActionResult TestConn()
         {
             return Ok("server fine");
+        }
+
+        /// <summary>
+        /// gets actual file info
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("faq/{id}")]
+        public IActionResult TestConn(int id)
+        {
+            string faqFile = $@"FAQ\{id}.pdf";
+            if (!System.IO.File.Exists(faqFile))
+                return BadRequest("Faq file with number specified was not found");
+            else      
+                return new FileContentResult(System.IO.File.ReadAllBytes($@"FAQ\{id}.pdf"), "application/pdf");
         }
     }
 }

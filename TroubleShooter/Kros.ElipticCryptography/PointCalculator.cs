@@ -120,7 +120,7 @@ namespace ElipticCurves
         /// <returns></returns>
         internal bool AreInverse(ElipticCurvePoint point1, ElipticCurvePoint point2)
         {
-            return point1.X == point2.X && point1.Y + point2.Y == curve.P;
+            return point1.X == point2.X && (point1.Y + point2.Y).Mod(curve.P) == 0;
         }
 
         /// <summary>

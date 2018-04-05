@@ -32,6 +32,7 @@ namespace Kros.TroubleShooterServer
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

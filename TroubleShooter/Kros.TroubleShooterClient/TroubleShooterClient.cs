@@ -14,12 +14,17 @@ namespace Kros.TroubleShooterClient
         public const string SERVICE_PATH = "api/updateFiles";
 
         /// <summary>
+        /// the service uri
+        /// </summary>
+        public const string URI = "http://localhost:12345/";
+
+        /// <summary>
         /// init this client
         /// </summary>
         public TroubleShooterClient()
             : base()
         {
-            BaseAddress = new Uri("http://localhost:12345/");
+            BaseAddress = new Uri(URI);
         }
 
         /// <summary>
