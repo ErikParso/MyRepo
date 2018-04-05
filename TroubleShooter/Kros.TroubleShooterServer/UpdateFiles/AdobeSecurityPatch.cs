@@ -1,6 +1,7 @@
 ﻿//version(2018022721)
 
 using System.IO;
+using System.Threading;
 using Kros.TroubleShooterClient.Model;
 using Kros.TroubleShooterInput;
 
@@ -32,11 +33,13 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool ComplexIdentify()
         {
+            Thread.Sleep(1000);
             return true;
         }
 
         protected override bool SolveProblem(RunData data)
         {
+            Thread.Sleep(1000);
             return true;
         }
 
@@ -47,7 +50,7 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool ControlProblem(RunData runData)
         {
-            return false;
+            return true;
         }
     }
 }

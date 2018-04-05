@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Kros.TroubleShooterClient.View.AutoFixModeUC"
+﻿<Window x:Class="Kros.TroubleShooterClient.View.FixWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,9 +7,10 @@
              xmlns:myControls="clr-namespace:MyControls;assembly=MyControls"
              xmlns:vm="clr-namespace:Kros.TroubleShooterClient.ViewModel"
              xmlns:res="clr-namespace:Kros.TroubleShooterClient.Properties"
-             mc:Ignorable="d">
+        mc:Ignorable="d"
+        Title="FixWindow" Height="450" Width="800">
 
-    <UserControl.Resources>
+    <Window.Resources>
         <local:PatchColorConverter x:Key="boolToColor"/>
         <local:PatchColorConverterText x:Key="boolToColorText"/>
         <Style x:Key="infoButtonStyle" TargetType="{x:Type Image}">
@@ -28,7 +29,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-    </UserControl.Resources>
+    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -38,13 +39,11 @@
         <Grid.RowDefinitions>
             <RowDefinition MinHeight="180"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
         <!--progres bars-->
         <Grid Background="White" Margin="3">
-            <myControls:CircularProgress Name="inner" Width="130" Height="130" StrokeThickness="20" FromColor="Pink" ToColor="LightGreen" Value="{Binding DetectProblemsProgress.Progress}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"/>
-            <myControls:CircularProgress Name="outer" Width="172" Height="172" StrokeThickness="20" FromColor="Pink" ToColor="LightGreen" Value="{Binding SolveProblemsProgress.Progress}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"/>
+            <myControls:CircularProgress Name="outer" Width="150" Height="150" StrokeThickness="20" FromColor="Pink" ToColor="LightGreen" Value="{Binding Progress.Progress}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"/>
             <StackPanel Name="SpProgressContext" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
                 <TextBlock Text="{Binding ActualWork}" FontSize="20" HorizontalAlignment="Center"/>
                 <TextBlock Text="{Binding ProgressPercentage}" FontSize="20" HorizontalAlignment="Center"/>
@@ -118,30 +117,29 @@
         <Grid Name="modeButton" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3">
             <Image Source="/Kros.TroubleShooterClient;component/Resources/zoom.png" Width="20" Height="20" MouseLeftButtonUp="modeChange"/>
         </Grid>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="formModeButton" MainText="Problémy pretrvávajú ?" DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="3" Grid.Row="1" Grid.ColumnSpan="2" Click="formModeClick" Source="/Kros.TroubleShooterClient;component/Resources/form.png"/>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="executePatchesButton" Margin="3" MainText="Oprav všetko" DescriptionText="{x:Static res:Resources.buttonDesc5}" Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick" Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png"/>
-        <myControls:TextButtonUC WithDescription="Visible" x:Name="finishButton" Margin="3" MainText="Ukončiť" DescriptionText="{x:Static res:Resources.buttonDesc4}" Grid.Row="2" Grid.ColumnSpan="2" Click="FinishClick" Source="/Kros.TroubleShooterClient;component/Resources/exit.png"/>
-
-        <!--html instruction web browser-->
-        <Grid Background="White" Grid.RowSpan="2" Name="HtmlInfo"  Visibility="Hidden" Grid.ColumnSpan="2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <myControls:TextButtonUC WithDescription="Collapsed" MainText="Späť" Margin="3" Grid.Column="0" 
-                                         Click="CloseHtmlClick" Source="/Kros.TroubleShooterClient;component/Resources/back.png"/>
-                <myControls:TextButtonUC x:Name="markFixedButton" WithDescription="Collapsed" MainText="Označ ako opravené" Margin="3" Grid.Column="1"
-                                         Source="/Kros.TroubleShooterClient;component/Resources/fixed.png" />
-                <Border BorderThickness="1" BorderBrush="Black" Grid.Row="1" Margin ="3" Grid.ColumnSpan="2">
-                    <WebBrowser Name="WebBrowser"/>
-                </Border>
-            </Grid>
-        </Grid>
-
+        <myControls:TextButtonUC WithDescription="Visible" IsEnabled="{Binding ButtonsEnabled}" MainText="Problémy pretrvávajú ?" DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="3" Grid.Row="1" Grid.ColumnSpan="2" Click="formModeClick" Source="/Kros.TroubleShooterClient;component/Resources/form.png">
+            <myControls:TextButtonUC.Style>
+                <Style TargetType="{x:Type myControls:TextButtonUC}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CanRunForm}" Value="False">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </myControls:TextButtonUC.Style>
+        </myControls:TextButtonUC>
+        <myControls:TextButtonUC WithDescription="Visible" IsEnabled="{Binding ButtonsEnabled}" Margin="3" MainText="Oprav všetko" DescriptionText="{x:Static res:Resources.buttonDesc5}" Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick" Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png">
+            <myControls:TextButtonUC.Style>
+                <Style TargetType="{x:Type myControls:TextButtonUC}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CanExecute}" Value="False">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </myControls:TextButtonUC.Style>
+        </myControls:TextButtonUC>
     </Grid>
-</UserControl>
+</Window>

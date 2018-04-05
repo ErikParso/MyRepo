@@ -2,6 +2,7 @@
 using Kros.TroubleShooterClient.Model;
 using Kros.TroubleShooterInput;
 using System.IO;
+using System.Threading;
 
 namespace Kros.TroubleShooterClient.Patches
 {
@@ -21,12 +22,15 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool ComplexIdentify()
         {
+            Thread.Sleep(1000);
             //problem can be identified only from run data provided by olymp
-            return false;
+            return true;
         }
 
         protected override bool SolveProblem(RunData data)
         {
+            Thread.Sleep(1000);
+            return false;
             string zal = Path.ChangeExtension(data.Get("broken_db"),".zal");
             if (!File.Exists(zal))
             {

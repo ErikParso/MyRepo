@@ -1,6 +1,7 @@
 ﻿//version(2018022620)
 
 using System;
+using System.Threading;
 using Kros.TroubleShooterClient.Model;
 using Kros.TroubleShooterInput;
 
@@ -29,6 +30,8 @@ namespace Kros.TroubleShooterClient.Patches
         /// <returns></returns>
         protected override bool ComplexIdentify()
         {
+            return true;
+            Thread.Sleep(1000);
             //ak ma win 7
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
                 return false;
@@ -50,6 +53,7 @@ namespace Kros.TroubleShooterClient.Patches
         /// <returns></returns>
         protected override bool SolveProblem(RunData data)
         {
+            Thread.Sleep(1000);
             return false;
         }
 
@@ -61,6 +65,7 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool ControlProblem(RunData runData)
         {
+            return false;
             return !ComplexIdentify();
         }
     }

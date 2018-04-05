@@ -10,10 +10,9 @@ using System.Windows.Input;
 namespace Kros.TroubleShooterClient.View
 {
     /// <summary>
-    /// Interaction logic for SelectFixModeUC.xaml
-    /// The form mode (question tree for identify problem solving patches)
+    /// Interaction logic for QuestionWindow.xaml
     /// </summary>
-    public partial class SelectFixModeUC : UserControl
+    public partial class QuestionWindow : Window
     {
         /// <summary>
         /// model toi this control
@@ -33,7 +32,7 @@ namespace Kros.TroubleShooterClient.View
         /// <summary>
         /// initialises components, set datacontext, enable servis button if server is online
         /// </summary>
-        public SelectFixModeUC()
+        public QuestionWindow()
         {
             InitializeComponent();
             model = new QuestionMode(TroubleShooter.Current.RootQuestion);
@@ -41,15 +40,6 @@ namespace Kros.TroubleShooterClient.View
             ServiceButton.IsEnabled = TroubleShooter.Current.ServerOnline;
             if (!TroubleShooter.Current.ServerOnline)
                 ServiceButton.DescriptionText = "Nepodarilo sa nadviazať kontakt so servisným serverom.";
-        }
-
-        /// <summary>
-        /// displays this control
-        /// </summary>
-        public void Show()
-        {
-            model.Reset();
-            GuiFuncs.SetVisibility(this, Visibility.Visible);
         }
 
         /// <summary>
@@ -82,8 +72,9 @@ namespace Kros.TroubleShooterClient.View
             //if there are no answers it is a final question and corresponded patches will be executed
             if (model.QuestionLink.Last().GetType() == typeof(StopQuestion))
             {
-                this.Visibility = Visibility.Hidden;
-                PatchesSelected(model.Patches);
+                FixWindow fixWindow = new FixWindow();
+                Close();
+                fixWindow.Run(model.Patches, true);
             }
         }
 

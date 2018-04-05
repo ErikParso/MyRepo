@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,9 +12,9 @@ using System.Windows.Input;
 namespace Kros.TroubleShooterClient.View
 {
     /// <summary>
-    /// Interaction logic for AutoFixModeUC.xaml
+    /// Interaction logic for FixWindow.xaml
     /// </summary>
-    public partial class AutoFixModeUC : UserControl
+    public partial class FixWindow : Window
     {
         /// <summary>
         /// this controls model
@@ -33,14 +34,12 @@ namespace Kros.TroubleShooterClient.View
         /// <summary>
         /// initialises controller
         /// </summary>
-        public AutoFixModeUC()
+        public FixWindow()
         {
             InitializeComponent();
             model = new AutoFixVm();
             DataContext = model;
-            mode = Mode.SUMMARY;
-            //this display detail 
-            modeChange(this, null);
+            SpProgressContext.DataContext = model.Progress;
         }
 
         /// <summary>
@@ -50,49 +49,41 @@ namespace Kros.TroubleShooterClient.View
         /// <param name="patches">available patches</param>
         /// <param name="alreadyIdentified">if problems are already identified - used from form mode</param>
         /// <returns>if no problem was identified return false</returns>
-        public bool Show(IEnumerable<Patch> patches, bool alreadyIdentified = false)
+        public void Run(IEnumerable<Patch> patches, bool alreadyIdentified = false)
         {
-            bool ret = false;
-            GuiFuncs.SetVisibility(this, Visibility.Visible);
-            GuiFuncs.SetEnabled(executePatchesButton, false);
-            GuiFuncs.SetVisibility(executePatchesButton, Visibility.Visible);
-            GuiFuncs.SetEnabled(finishButton, false);
-            GuiFuncs.SetVisibility(formModeButton, Visibility.Hidden);
-            GuiFuncs.ChangeDataContext(SpProgressContext, model.DetectProblemsProgress);
             model.Reset();
-            model.DetectProblemsProgress.ActualWork = "Identifikácia problémov";
-            model.DetectProblemsProgress.Count = patches.Count();
-            foreach (Patch patch in patches)
-            {
-                if (alreadyIdentified || patch.ComplexIdentifySafe() || patch.FastIdentifySafe())
-                {
-                    //identified at least 1 problem to return success
-                    ret = true;
-                    model.ProblemsFound++;
-                    Dispatcher.Invoke(() =>
-                    {
-                        model.PatchResults.Add(new PatchResultVM(patch));
-                    });
-                }
-                model.DetectProblemsProgress.Add();
-            }
-            if (model.ProblemsFound == 0)
-            {
-                GuiFuncs.SetVisibility(formModeButton, Visibility.Visible);
-                GuiFuncs.SetVisibility(executePatchesButton, Visibility.Hidden);
-            }
-            model.DetectProblemsProgress.Set100();
-            GuiFuncs.SetEnabled(finishButton, true);
-            GuiFuncs.SetEnabled(executePatchesButton, true);
+            model.ButtonsEnabled = false;
+            model.CanExecute = true;
+            model.CanRunForm = false;
+            model.Progress.ActualWork = "Identifikácia problémov";
+            model.Progress.Count = patches.Count();
 
-            //init solving progress
-            GuiFuncs.ChangeDataContext(SpProgressContext, model.SolveProblemsProgress);
-            model.SolveProblemsProgress.ActualWork = "Oprava problémov";
-            model.SolveProblemsProgress.Count = model.PatchResults.Count(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED);
-            //nie je co opravovat tak nastavim 100%
-            if (model.SolveProblemsProgress.Count == 0)
-                model.SolveProblemsProgress.Set100();
-            return ret;
+            Task.Run(() =>
+            {
+                foreach (Patch patch in patches)
+                {
+                    if (alreadyIdentified || patch.ComplexIdentifySafe() || patch.FastIdentifySafe())
+                    {
+                        //identified at least 1 problem to return success
+                        model.ProblemsFound++;
+                        App.Current.Dispatcher.Invoke(() => model.PatchResults.Add(new PatchResultVM(patch)));
+                    }
+                    model.Progress.Add();
+                }
+                if (model.ProblemsFound == 0)
+                {
+                    model.CanRunForm = true;
+                    model.CanExecute = false;
+                }
+                else
+                {
+                    model.Progress.Reset();
+                    model.Progress.Count = model.PatchResults.Count(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED);
+                    model.Progress.ActualWork = "Oprava problémov";
+                }
+
+                model.ButtonsEnabled = true;
+            });
         }
 
         /// <summary>
@@ -105,13 +96,12 @@ namespace Kros.TroubleShooterClient.View
         }
 
         /// <summary>
-        /// Executes all patches which was selectet in process <see cref="Show(IEnumerable{Patch}, bool)"/>.
+        /// Executes all patches which was selectet in process <see cref="Run(IEnumerable{Patch}, bool)"/>.
         /// </summary>
         private void ExecutePatchesClick()
         {
-            GuiFuncs.SetEnabled(finishButton, false);
-            GuiFuncs.SetEnabled(executePatchesButton, false);
-            new Thread(() =>
+            model.ButtonsEnabled = false;
+            Task.Run(() =>
             {
                 foreach (PatchResultVM patchVm in model.PatchResults.Where(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED))
                 {
@@ -119,13 +109,13 @@ namespace Kros.TroubleShooterClient.View
                     if (patchVm.ExecutionResult == ExecutionResult.FIXED)
                     {
                         model.ProblemsFixed++;
-                        model.SolveProblemsProgress.Add();
+                        model.Progress.Add();
                     }
                 }
-                GuiFuncs.SetEnabled(finishButton, true);
-                GuiFuncs.SetVisibility(executePatchesButton, Visibility.Hidden);
-                GuiFuncs.SetVisibility(formModeButton, Visibility.Visible);
-            }).Start();
+                model.ButtonsEnabled = true;
+                model.CanExecute = false;
+                model.CanRunForm = true;
+            });
         }
 
         /// <summary>
@@ -140,13 +130,13 @@ namespace Kros.TroubleShooterClient.View
             if (patchVm.ExecutionResult == ExecutionResult.FIXED)
             {
                 model.ProblemsFixed++;
-                model.SolveProblemsProgress.Add();
+                model.Progress.Add();
             }
             //run all patches is unescessary if there is no patches to run O.o
             if (model.PatchResults.Count(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED) == 0)
             {
-                formModeButton.Visibility = Visibility.Visible;
-                executePatchesButton.Visibility = Visibility.Collapsed;
+                model.CanExecute = false;
+                model.CanRunForm = true;
             }
         }
 
@@ -155,9 +145,8 @@ namespace Kros.TroubleShooterClient.View
         /// </summary>
         private void formModeClick()
         {
-            model.Reset();
-            this.Visibility = Visibility.Hidden;
-            RunFormMode();
+            new QuestionWindow().Show();
+            Close();
         }
 
         /// <summary>
@@ -169,15 +158,6 @@ namespace Kros.TroubleShooterClient.View
         {
             PatchResultVM patch = ((Image)sender).DataContext as PatchResultVM;
             model.PatchResults.Remove(patch);
-            model.SolveProblemsProgress.Add();
-        }
-
-        /// <summary>
-        /// hides patch detail
-        /// </summary>
-        private void CloseHtmlClick()
-        {
-            HtmlInfo.Visibility = Visibility.Hidden;
         }
 
         /// <summary>
@@ -225,24 +205,15 @@ namespace Kros.TroubleShooterClient.View
         /// <param name="e"></param>
         private void displayHtmlDetail(object sender, MouseButtonEventArgs e)
         {
-            PatchResultVM patch = (PatchResultVM) ((Image) sender).DataContext;
-            this.WebBrowser.NavigateToString(patch.HelpHtml);
-            HtmlInfo.Visibility = Visibility.Visible;
-            markFixedButton.Click = () =>
+            PatchResultVM patch = (PatchResultVM)((Image)sender).DataContext;
+            ComplexBrowserWindow browserWindow = new ComplexBrowserWindow(patch);
+            browserWindow.ShowDialog();
+            if (browserWindow.Success)
             {
-                if (patch.InstructionsResult())
-                {
-                    patch.ExecutionResult = ExecutionResult.FIXED;
-                    model.SolveProblemsProgress.Add();
-                    model.ProblemsFixed++;
-                    HtmlInfo.Visibility = Visibility.Hidden;
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "Problém stále pretrváva. Ak máte problém s použitím inštrukcií, prosím kontaktujte podporu.");
-                }
-            };
+                patch.ExecutionResult = ExecutionResult.FIXED;
+                model.Progress.Add();
+                model.ProblemsFixed++;
+            }
         }
     }
 }

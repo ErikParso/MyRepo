@@ -2,6 +2,7 @@
 using Kros.TroubleShooterClient.Model;
 using Microsoft.Win32;
 using Kros.TroubleShooterInput;
+using System.Threading;
 
 namespace Kros.TroubleShooterClient.Patches
 {
@@ -34,7 +35,9 @@ namespace Kros.TroubleShooterClient.Patches
         /// </summary>
         /// <returns></returns>
         protected override bool ComplexIdentify()
-        {          
+        {
+            Thread.Sleep(1000);
+            return true;
             int version = (int)Registry.GetValue(key, "Release", "0");
             return version < 393295;
         }
@@ -46,7 +49,8 @@ namespace Kros.TroubleShooterClient.Patches
         /// <returns></returns>
         protected override bool SolveProblem(RunData data)
         {
-            return false;
+            Thread.Sleep(1000);
+            return true;
         }
 
         protected override bool FastIdentify(RunData runData)
@@ -57,6 +61,7 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool ControlProblem(RunData runData)
         {
+            return false;
             return !ComplexIdentify();
         }
     }

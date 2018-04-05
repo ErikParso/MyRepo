@@ -25,7 +25,7 @@ namespace Kros.TroubleShooterClient.Patches
         }
 
         //problem sa neda identifikovat, iba na zaklade otazok a vyriesit si ho vie len uzivatel
-        protected override bool ComplexIdentify() => false;
+        protected override bool ComplexIdentify() => true;
         protected override bool SolveProblem(RunData data) => false;
         protected override bool FastIdentify(RunData runData) => false;
     }

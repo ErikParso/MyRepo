@@ -1,7 +1,7 @@
 ﻿using Kros.TroubleShooterClient.Model;
 using System.Windows;
 using Kros.TroubleShooterClient.View;
-
+using System.Threading.Tasks;
 
 namespace Kros.TroubleShooterClient
 {
@@ -16,6 +16,14 @@ namespace Kros.TroubleShooterClient
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public void detectProblem()
+        {
+            FixWindow fixWindow = new FixWindow();
+            fixWindow.Show();
+            Close();
+            fixWindow.Run(TroubleShooter.Current.Patches);
         }
     }
 }

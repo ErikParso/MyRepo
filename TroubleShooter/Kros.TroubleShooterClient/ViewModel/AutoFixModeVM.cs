@@ -19,12 +19,7 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// <summary>
         /// inner progres model - shows problem identification
         /// </summary>
-        public ProgressVM DetectProblemsProgress { get; private set; }
-
-        /// <summary>
-        /// outer progress model - shows fixing progress
-        /// </summary>
-        public ProgressVM SolveProblemsProgress { get; private set; }
+        public ProgressVM Progress { get; private set; }
 
         /// <summary>
         /// number of found problems
@@ -37,6 +32,27 @@ namespace Kros.TroubleShooterClient.ViewModel
         {
             get { return _problemsFound; }
             set { _problemsFound = value; RaisePropertyChanged("ProblemsFound"); }
+        }
+
+        private bool _canExecute;
+        public bool CanExecute
+        {
+            get { return _canExecute; }
+            set { _canExecute = value; RaisePropertyChanged("CanExecute"); }
+        }
+
+        private bool _canRunForm;
+        public bool CanRunForm
+        {
+            get { return _canRunForm; }
+            set { _canRunForm = value; RaisePropertyChanged("CanRunForm"); }
+        }
+
+        private bool _buttonsEnabled;
+        public bool ButtonsEnabled
+        {
+            get { return _buttonsEnabled; }
+            set { _buttonsEnabled = value; RaisePropertyChanged("ButtonsEnabled"); }
         }
 
         /// <summary>
@@ -58,8 +74,7 @@ namespace Kros.TroubleShooterClient.ViewModel
         public AutoFixVm()
         {
             PatchResults = new ObservableCollection<PatchResultVM>();
-            DetectProblemsProgress = new ProgressVM();
-            SolveProblemsProgress = new ProgressVM();
+            Progress = new ProgressVM();
         }
 
         /// <summary>
@@ -67,8 +82,7 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// </summary>
         internal void Reset()
         {
-            DetectProblemsProgress.Reset();
-            SolveProblemsProgress.Reset();
+            Progress.Reset();
             ProblemsFound = 0;
             ProblemsFixed = 0;
             App.Current.Dispatcher.Invoke(() => PatchResults.Clear());

@@ -1,13 +1,15 @@
-﻿<UserControl x:Class="Kros.TroubleShooterClient.View.ProblemViewerUC"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+﻿<Window x:Class="Kros.TroubleShooterClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:Kros.TroubleShooterClient.View"
+             xmlns:myControls="clr-namespace:MyControls;assembly=MyControls"
+             xmlns:vm="clr-namespace:Kros.TroubleShooterClient.ViewModel"
              xmlns:res="clr-namespace:Kros.TroubleShooterClient.Properties"
-             xmlns:myControls="clr-namespace:MyControls;assembly=MyControls" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+        mc:Ignorable="d"
+        Title="Olymp Troubleshooter" Height="300" Width="700" 
+        Icon="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -17,7 +19,7 @@
         </Grid.RowDefinitions>
         <TextBlock x:Name="problemName" Text="Troubleshooter" Margin="3" FontSize="20" Grid.Row="0"/>
         <TextBlock x:Name="problemDesc" Text="{x:Static res:Resources.troubleshoderDesc}" Margin="3" TextWrapping="Wrap" TextAlignment="Justify" Grid.Row="1"/>
-        <Border Margin="5" BorderBrush="Black" BorderThickness="1" Grid.Row="2" Background="OldLace" HorizontalAlignment="Center" VerticalAlignment="Center"> 
+        <Border Margin="5" BorderBrush="Black" BorderThickness="1" Grid.Row="2" Background="OldLace" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Border.Style>
                 <Style TargetType="Border">
                     <Style.Triggers>
@@ -37,8 +39,5 @@
             </Grid>
         </Border>
         <myControls:TextButtonUC Grid.Row="3" WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain1}" DescriptionText="{x:Static res:Resources.buttonDesc1}" Margin="3" Click="detectProblem" x:Name="findProblemsButton" Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png"/>
-        <local:AutoFixModeUC x:Name="autoFixMode" Grid.Row="0" Grid.RowSpan="4" Background="White" Visibility="Hidden"/>
-        <local:SelectFixModeUC x:Name="selectFixMode" Grid.Row="0" Grid.RowSpan="4" Background="White" Visibility="Hidden"/>
-        <local:ServiceModeUC x:Name="serviceMode" Grid.Row="0" Grid.RowSpan="4" Background="White" Visibility="Hidden"/>
     </Grid>
-</UserControl>
+</Window>
