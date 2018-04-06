@@ -8,7 +8,7 @@
              xmlns:vm="clr-namespace:Kros.TroubleShooterClient.ViewModel"
              xmlns:res="clr-namespace:Kros.TroubleShooterClient.Properties"
         mc:Ignorable="d"
-        Title="FixWindow" Height="450" Width="800">
+        Title="FixWindow" Height="450" Width="700">
 
     <Window.Resources>
         <local:PatchColorConverter x:Key="boolToColor"/>
@@ -117,7 +117,10 @@
         <Grid Name="modeButton" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3">
             <Image Source="/Kros.TroubleShooterClient;component/Resources/zoom.png" Width="20" Height="20" MouseLeftButtonUp="modeChange"/>
         </Grid>
-        <myControls:TextButtonUC WithDescription="Visible" IsEnabled="{Binding ButtonsEnabled}" MainText="Problémy pretrvávajú ?" DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="3" Grid.Row="1" Grid.ColumnSpan="2" Click="formModeClick" Source="/Kros.TroubleShooterClient;component/Resources/form.png">
+        <myControls:TextButtonUC WithDescription="Visible" IsEnabled="{Binding ButtonsEnabled}" MainText="Problémy pretrvávajú ?"
+                                 DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="10" Grid.Row="1" Grid.ColumnSpan="2" 
+                                 Click="formModeClick" Source="/Kros.TroubleShooterClient;component/Resources/form.png"
+                                 UseLayoutRounding="True">
             <myControls:TextButtonUC.Style>
                 <Style TargetType="{x:Type myControls:TextButtonUC}">
                     <Setter Property="Visibility" Value="Visible"/>
@@ -129,7 +132,11 @@
                 </Style>
             </myControls:TextButtonUC.Style>
         </myControls:TextButtonUC>
-        <myControls:TextButtonUC WithDescription="Visible" IsEnabled="{Binding ButtonsEnabled}" Margin="3" MainText="Oprav všetko" DescriptionText="{x:Static res:Resources.buttonDesc5}" Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick" Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png">
+        <myControls:TextButtonUC WithDescription="Visible" IsEnabled="{Binding ButtonsEnabled}" Margin="10" 
+                                 MainText="Oprav všetko" DescriptionText="{x:Static res:Resources.buttonDesc5}" 
+                                 Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick" 
+                                 Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png"
+                                 BackColor="Gainsboro"  HoverColor="WhiteSmoke" UseLayoutRounding="True">
             <myControls:TextButtonUC.Style>
                 <Style TargetType="{x:Type myControls:TextButtonUC}">
                     <Setter Property="Visibility" Value="Visible"/>

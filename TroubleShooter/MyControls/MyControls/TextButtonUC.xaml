@@ -22,13 +22,18 @@
         <TextBlock Text="{Binding DescriptionText, ElementName=control}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Visibility="{Binding WithDescription, ElementName=control}"/>
         <Grid.Style>
             <Style TargetType="Grid">
-                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Background" Value="{Binding BackColor, ElementName=control}"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="Wheat"/>
+                        <Setter Property="Background" Value="{Binding HoverColor, ElementName=control}"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
         </Grid.Style>
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="5" Direction="-90" RenderingBias="Quality" ShadowDepth="2" 
+                              Color="{Binding ShadowColor, ElementName=control}">
+            </DropShadowEffect>
+        </Grid.Effect>
     </Grid>
 </UserControl>

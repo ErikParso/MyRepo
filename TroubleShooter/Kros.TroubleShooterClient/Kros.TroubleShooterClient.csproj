@@ -113,11 +113,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MinimalisticMode.cs" />
     <Compile Include="Model\Logger.cs" />
     <Compile Include="Model\Patch.cs" />
     <Compile Include="Model\Question.cs" />
     <Compile Include="Model\StopQuestion.cs" />
     <Compile Include="Patches\ChybaZdvihuAccessPatch.cs" />
+    <Compile Include="Patches\TestPatch.cs" />
     <Compile Include="Patches\ServicePackPatch.cs" />
     <Compile Include="Patches\FrameworkVersionPatch.cs" />
     <Compile Include="Patches\InstructionBuilder.cs" />
@@ -137,39 +139,26 @@
     <Compile Include="ViewModel\ProgressVM.cs" />
     <Compile Include="ViewModel\QuestionMode.cs" />
     <Compile Include="ViewModel\ServiceModeVM.cs" />
-    <Compile Include="View\Windows\BrowserWindow.xaml.cs">
-      <DependentUpon>BrowserWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\PatchColorConverterText.cs" />
     <Compile Include="View\PatchColorConverter.cs" />
     <Compile Include="View\GuiFuncs.cs" />
-    <Compile Include="View\Windows\ComplexBrowserWindow.xaml.cs">
-      <DependentUpon>ComplexBrowserWindow.xaml</DependentUpon>
+    <Compile Include="View\BrowserWindow.xaml.cs">
+      <DependentUpon>BrowserWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Windows\MiniWindow.xaml.cs">
-      <DependentUpon>MiniWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\ServiceModeUC.xaml.cs">
-      <DependentUpon>ServiceModeUC.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\UserControls\ServisWindow.xaml.cs">
+    <Compile Include="View\ServisWindow.xaml.cs">
       <DependentUpon>ServisWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Windows\FixWindow.xaml.cs">
+    <Compile Include="View\FixWindow.xaml.cs">
       <DependentUpon>FixWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Windows\QuestionWindow.xaml.cs">
+    <Compile Include="View\QuestionWindow.xaml.cs">
       <DependentUpon>QuestionWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\Windows\BrowserWindow.xaml">
+    <Page Include="View\BrowserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Windows\ComplexBrowserWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Windows\MainWindow.xaml">
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -177,27 +166,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="View\Windows\MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Windows\MiniWindow.xaml">
+    <Page Include="View\ServisWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\ServiceModeUC.xaml">
+    <Page Include="View\FixWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserControls\ServisWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Windows\FixWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Windows\QuestionWindow.xaml">
+    <Page Include="View\QuestionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -36,8 +36,6 @@ namespace Kros.TroubleShooterClient.Patches
         /// <returns></returns>
         protected override bool ComplexIdentify()
         {
-            Thread.Sleep(1000);
-            return true;
             int version = (int)Registry.GetValue(key, "Release", "0");
             return version < 393295;
         }
@@ -49,8 +47,7 @@ namespace Kros.TroubleShooterClient.Patches
         /// <returns></returns>
         protected override bool SolveProblem(RunData data)
         {
-            Thread.Sleep(1000);
-            return true;
+            return false;
         }
 
         protected override bool FastIdentify(RunData runData)
@@ -61,7 +58,6 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool ControlProblem(RunData runData)
         {
-            return false;
             return !ComplexIdentify();
         }
     }

@@ -89,14 +89,12 @@ namespace Kros.TroubleShooterClient.ViewModel
             }
             ActualQuestion = rootQuestion.Text;
             //actualise answers by current question
-            foreach (KeyValuePair<int, Model.Answer> answ in rootQuestion.PossibleAnswers)
+            foreach (KeyValuePair<int, Model.Answer> answ in rootQuestion.PossibleAnswers.Where(a=> rootQuestion.getQuestionByAnswer(a.Key) != null))
                 Answers.Add(new Answer()
                 {
                     Id = answ.Key,
                     Text = answ.Value.MainText,
-                    Detail = answ.Value.Detail,
-                    //answer is available if has defined subquestion or stopQuestion
-                    Available = rootQuestion.getQuestionByAnswer(answ.Key) != null
+                    Detail = answ.Value.Detail
                 });
         }
 
@@ -130,11 +128,6 @@ namespace Kros.TroubleShooterClient.ViewModel
             /// Some answers can be morte complex
             /// </summary>
             public string Detail { get; set; }
-
-            /// <summary>
-            /// if answer is available
-            /// </summary>
-            public bool Available { get; set; }
 
             /// <summary>
             /// determine if answer is detailed

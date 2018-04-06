@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:myControls="clr-namespace:MyControls;assembly=MyControls" 
              xmlns:res="clr-namespace:Kros.TroubleShooterClient.Properties"  
-             mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="800">
+             mc:Ignorable="d" Height="450" Width="700">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -19,7 +19,8 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <myControls:TextButtonUC MainText="{Binding Category}" MouseLeftButtonUp="ProblemLinkClick" 
-                                             Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"/>
+                                             Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"
+                                             BackColor="White" HoverColor="AliceBlue" ShadowColor="Transparent" UseLayoutRounding="True"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
@@ -29,16 +30,18 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
 
-        <TextBlock Text="{Binding ActualQuestion}" Margin="3" FontSize="20" Grid.Row="1"/>
+        <Separator Grid.Row="1"/>
 
-        <Border Margin="3" BorderThickness="1" BorderBrush="Black" Grid.Row="2"  Background="OldLace">
-            <ScrollViewer>
+        <TextBlock Text="{Binding ActualQuestion}" Margin="3" FontSize="20" Grid.Row="2"/>
+
+        <Border Margin="10" BorderThickness="0" Grid.Row="3">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl Grid.Column="3" ItemsSource="{Binding Answers}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <myControls:TextButtonUC MainText="{Binding Text}" MouseLeftButtonUp="ProblemSelected" IsEnabled="{Binding Available}" 
+                            <myControls:TextButtonUC MainText="{Binding Text}" MouseLeftButtonUp="ProblemSelected" Visibility="{Binding Available}" 
                                                      Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"
-                                                     DescriptionText="{Binding Detail}" Margin="2">
+                                                     DescriptionText="{Binding Detail}" Margin="10" UseLayoutRounding="True">
                                 <myControls:TextButtonUC.Style>
                                     <Style TargetType="myControls:TextButtonUC">
                                         <Style.Triggers>
@@ -55,7 +58,9 @@
             </ScrollViewer>
         </Border>
 
-        <myControls:TextButtonUC WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain3}" DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="3" Click="ServiceClick" Grid.Row="3" 
-                                 x:Name="ServiceButton" Source="/Kros.TroubleShooterClient;component/Resources/mail.png"/>
+        <myControls:TextButtonUC WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain3}" 
+                                 DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="10" Click="ServiceClick" Grid.Row="4" 
+                                 x:Name="ServiceButton" Source="/Kros.TroubleShooterClient;component/Resources/mail.png"
+                                 UseLayoutRounding="True"/>
     </Grid>
 </Window>

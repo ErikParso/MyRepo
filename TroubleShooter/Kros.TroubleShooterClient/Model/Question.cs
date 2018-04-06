@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Kros.TroubleShooterClient.Model
 {
@@ -9,10 +10,17 @@ namespace Kros.TroubleShooterClient.Model
     public abstract class Question
     {
         /// <summary>
-        /// the dictionary of possible answers
+        /// all answers.
         /// </summary>
-        public Dictionary<int,Answer> PossibleAnswers;
-        
+        private Dictionary<int, Answer> _answers;
+
+        /// <summary>
+        /// the dictionary of possible answers.
+        /// </summary>
+        public Dictionary<int, Answer> PossibleAnswers =>
+            _answers.Where((kp) => AnyPatchUnderAnswer(kp.Key))
+            .ToDictionary(p => p.Key, p => p.Value);
+
         /// <summary>
         /// Question text.
         /// </summary>
@@ -29,8 +37,26 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         public Question()
         {
-            PossibleAnswers = new Dictionary<int, Answer>();
-            registerAnswers(PossibleAnswers);
+            _answers = new Dictionary<int, Answer>();
+            registerAnswers(_answers);
+        }
+
+        /// <summary>
+        /// determines if there are usable patches somewhere under answer.
+        /// </summary>
+        /// <param name="answerId"></param>
+        /// <returns></returns>
+        private bool AnyPatchUnderAnswer(int answerId)
+        {
+            Question subquestion = getQuestionByAnswer(answerId);
+            if (subquestion == null)
+                return false;
+            if (subquestion is StopQuestion)
+                return true;
+            foreach (int answer in subquestion.PossibleAnswers.Keys)
+                if (subquestion.AnyPatchUnderAnswer(answer))
+                    return true;
+            return false;
         }
 
         /// <summary>

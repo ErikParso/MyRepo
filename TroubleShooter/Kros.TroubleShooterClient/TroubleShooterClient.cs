@@ -16,7 +16,7 @@ namespace Kros.TroubleShooterClient
         /// <summary>
         /// the service uri
         /// </summary>
-        public const string URI = "http://localhost:12345/";
+        public const string URI = "http://localhost:10001/";
 
         /// <summary>
         /// init this client

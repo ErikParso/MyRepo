@@ -33,24 +33,17 @@ namespace Kros.TroubleShooterClient.Patches
 
         protected override bool ComplexIdentify()
         {
-            Thread.Sleep(1000);
-            return true;
+            return false;
         }
 
         protected override bool SolveProblem(RunData data)
         {
-            Thread.Sleep(1000);
-            return true;
+            return false;
         }
 
         protected override bool FastIdentify(RunData runData)
         {
             return false;
-        }
-
-        protected override bool ControlProblem(RunData runData)
-        {
-            return true;
         }
     }
 }

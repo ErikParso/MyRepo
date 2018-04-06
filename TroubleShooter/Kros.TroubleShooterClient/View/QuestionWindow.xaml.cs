@@ -24,10 +24,7 @@ namespace Kros.TroubleShooterClient.View
         /// </summary>
         public Action<IEnumerable<Patch>> PatchesSelected;
 
-        /// <summary>
-        /// when user clicks to send data for servis this action will be executed
-        /// </summary>
-        public Action ServiceSelected;
+
 
         /// <summary>
         /// initialises components, set datacontext, enable servis button if server is online
@@ -56,8 +53,8 @@ namespace Kros.TroubleShooterClient.View
         /// </summary>
         private void ServiceClick()
         {
-            this.Visibility = Visibility.Hidden;
-            ServiceSelected();
+            new ServisWindow().Show();
+            Close();
         }
 
         /// <summary>
@@ -73,6 +70,7 @@ namespace Kros.TroubleShooterClient.View
             if (model.QuestionLink.Last().GetType() == typeof(StopQuestion))
             {
                 FixWindow fixWindow = new FixWindow();
+                fixWindow.Show();
                 Close();
                 fixWindow.Run(model.Patches, true);
             }

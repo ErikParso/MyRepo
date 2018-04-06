@@ -21,10 +21,16 @@ namespace MyControls
             DependencyProperty.Register("DescriptionText", typeof(string), typeof(TextButtonUC), new UIPropertyMetadata(null));
         public static readonly DependencyProperty WithDescriptionProperty =
             DependencyProperty.Register("WithDescription", typeof(Visibility), typeof(TextButtonUC), new UIPropertyMetadata(Visibility.Collapsed));
-        // Using a DependencyProperty as the backing store for Source.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.Register("Source", typeof(ImageSource), typeof(TextButtonUC));
-
+        public static readonly DependencyProperty BackColorProperty =
+            DependencyProperty.Register("BackColor", typeof(Brush), typeof(TextButtonUC), 
+                new UIPropertyMetadata(Brushes.WhiteSmoke));
+        public static readonly DependencyProperty HoverColorProperty =
+            DependencyProperty.Register("HoverColor", typeof(Brush), typeof(TextButtonUC),
+                new UIPropertyMetadata(Brushes.Snow));
+        public static readonly DependencyProperty ShadowColorProperty =
+            DependencyProperty.Register("ShadowColor", typeof(Color), typeof(TextButtonUC), new UIPropertyMetadata(Colors.Black));
 
         public ImageSource Source
         {
@@ -56,6 +62,24 @@ namespace MyControls
         {
             get { return (Visibility)GetValue(WithDescriptionProperty); }
             set { SetValueDP(WithDescriptionProperty, value); }
+        }
+
+        public Brush BackColor
+        {
+            get { return (Brush)GetValue(BackColorProperty); }
+            set { SetValueDP(BackColorProperty, value); }
+        }
+
+        public Color ShadowColor
+        {
+            get { return (Color)GetValue(ShadowColorProperty); }
+            set { SetValueDP(ShadowColorProperty, value); }
+        }
+
+        public Brush HoverColor
+        {
+            get { return (Brush)GetValue(HoverColorProperty); }
+            set { SetValueDP(HoverColorProperty, value); }
         }
 
         public Action Click { get; set; }

@@ -206,7 +206,7 @@ namespace Kros.TroubleShooterClient.View
         private void displayHtmlDetail(object sender, MouseButtonEventArgs e)
         {
             PatchResultVM patch = (PatchResultVM)((Image)sender).DataContext;
-            ComplexBrowserWindow browserWindow = new ComplexBrowserWindow(patch);
+            BrowserWindow browserWindow = new BrowserWindow(patch);
             browserWindow.ShowDialog();
             if (browserWindow.Success)
             {

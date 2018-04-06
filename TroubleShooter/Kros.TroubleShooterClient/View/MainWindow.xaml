@@ -1,0 +1,24 @@
+﻿<Window x:Class="Kros.TroubleShooterClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:myControls="clr-namespace:MyControls;assembly=MyControls"
+        xmlns:res="clr-namespace:Kros.TroubleShooterClient.Properties"
+        mc:Ignorable="d"
+        Title="Olymp Troubleshooter" Height="300" Width="400" 
+        Icon="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png" ResizeMode="NoResize">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="problemName" Text="Troubleshooter" Margin="3" FontSize="20" Grid.Row="0"/>
+        <TextBlock x:Name="problemDesc" Text="{x:Static res:Resources.troubleshoderDesc}" Margin="3" TextWrapping="Wrap" TextAlignment="Justify" Grid.Row="1"/>
+        <myControls:TextButtonUC Grid.Row="3" WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain1}" 
+                                 DescriptionText="{x:Static res:Resources.buttonDesc1}" Click="detectProblem" 
+                                 x:Name="findProblemsButton" VerticalAlignment="Center" Margin="30" UseLayoutRounding="True"
+                                 Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png"/>
+    </Grid>
+</Window>

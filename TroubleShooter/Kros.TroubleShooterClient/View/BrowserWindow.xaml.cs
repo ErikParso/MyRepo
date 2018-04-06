@@ -4,15 +4,15 @@ using System.Windows;
 namespace Kros.TroubleShooterClient.View
 {
     /// <summary>
-    /// Interaction logic for ComplexBrowserWindow.xaml
+    /// Interaction logic for BrowserWindow.xaml
     /// </summary>
-    public partial class ComplexBrowserWindow : Window
+    public partial class BrowserWindow : Window
     {
         public bool Success { get; private set; }
 
         private PatchResultVM patchResult;
 
-        public ComplexBrowserWindow(PatchResultVM patchResult)
+        public BrowserWindow(PatchResultVM patchResult)
         {
             InitializeComponent();
             this.patchResult = patchResult;
