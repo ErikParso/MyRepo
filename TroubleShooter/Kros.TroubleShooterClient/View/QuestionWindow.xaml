@@ -9,8 +9,6 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
@@ -20,7 +18,7 @@
                 <DataTemplate>
                     <myControls:TextButtonUC MainText="{Binding Category}" MouseLeftButtonUp="ProblemLinkClick" 
                                              Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"
-                                             BackColor="White" HoverColor="AliceBlue" ShadowColor="Transparent" UseLayoutRounding="True"/>
+                                             ShadowColor="LightGray" UseLayoutRounding="True" Margin="3"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
@@ -30,37 +28,35 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
 
-        <Separator Grid.Row="1"/>
-
-        <TextBlock Text="{Binding ActualQuestion}" Margin="3" FontSize="20" Grid.Row="2"/>
-
-        <Border Margin="10" BorderThickness="0" Grid.Row="3">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl Grid.Column="3" ItemsSource="{Binding Answers}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <myControls:TextButtonUC MainText="{Binding Text}" MouseLeftButtonUp="ProblemSelected" Visibility="{Binding Available}" 
+        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="3">
+            <StackPanel VerticalAlignment="Stretch">
+                <TextBlock Text="{Binding ActualQuestion}" Margin="10" FontSize="20"/>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl Grid.Column="3" ItemsSource="{Binding Answers}" UseLayoutRounding="True">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <myControls:TextButtonUC MainText="{Binding Text}" MouseLeftButtonUp="ProblemSelected" Visibility="{Binding Available}" 
                                                      Source="/Kros.TroubleShooterClient;component/Resources/greenArrow.png"
-                                                     DescriptionText="{Binding Detail}" Margin="10" UseLayoutRounding="True">
-                                <myControls:TextButtonUC.Style>
-                                    <Style TargetType="myControls:TextButtonUC">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding HasDetail}" Value="true">
-                                                <Setter Property="WithDescription" Value="Visible"></Setter>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </myControls:TextButtonUC.Style>
-                            </myControls:TextButtonUC>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                                                     DescriptionText="{Binding Detail}" Margin="10">
+                                    <myControls:TextButtonUC.Style>
+                                        <Style TargetType="myControls:TextButtonUC">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HasDetail}" Value="true">
+                                                    <Setter Property="WithDescription" Value="Visible"></Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </myControls:TextButtonUC.Style>
+                                </myControls:TextButtonUC>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </StackPanel>
         </Border>
-
-        <myControls:TextButtonUC WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain3}" 
-                                 DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="10" Click="ServiceClick" Grid.Row="4" 
+        <myControls:TextButtonUC WithDescription="Visible" MainText="{x:Static res:Resources.buttonMain3}" Grid.Row="3" 
+                                 DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="10" Click="ServiceClick" 
                                  x:Name="ServiceButton" Source="/Kros.TroubleShooterClient;component/Resources/mail.png"
-                                 UseLayoutRounding="True"/>
+                                 UseLayoutRounding="True" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>

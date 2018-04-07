@@ -3,11 +3,9 @@ using Kros.TroubleShooterClient.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace Kros.TroubleShooterClient.View
 {
@@ -20,16 +18,6 @@ namespace Kros.TroubleShooterClient.View
         /// this controls model
         /// </summary>
         private AutoFixVm model;
-
-        /// <summary>
-        /// if is displayed detail or summary
-        /// </summary>
-        private Mode mode;
-
-        /// <summary>
-        /// the question form mode click
-        /// </summary>
-        public Action RunFormMode { get; set; }
 
         /// <summary>
         /// initialises controller
@@ -64,25 +52,24 @@ namespace Kros.TroubleShooterClient.View
                 {
                     if (alreadyIdentified || patch.ComplexIdentifySafe() || patch.FastIdentifySafe())
                     {
-                        //identified at least 1 problem to return success
-                        model.ProblemsFound++;
                         App.Current.Dispatcher.Invoke(() => model.PatchResults.Add(new PatchResultVM(patch)));
+                        model.HasProblems = true;
                     }
                     model.Progress.Add();
                 }
-                if (model.ProblemsFound == 0)
-                {
-                    model.CanRunForm = true;
-                    model.CanExecute = false;
-                }
-                else
+                if (model.PatchResults.Any())
                 {
                     model.Progress.Reset();
                     model.Progress.Count = model.PatchResults.Count(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED);
                     model.Progress.ActualWork = "Oprava problémov";
                 }
-
+                else
+                {
+                    model.CanRunForm = true;
+                    model.CanExecute = false;
+                }
                 model.ButtonsEnabled = true;
+                model.RefreshCheck();
             });
         }
 
@@ -108,36 +95,17 @@ namespace Kros.TroubleShooterClient.View
                     patchVm.ExecutePatch();
                     if (patchVm.ExecutionResult == ExecutionResult.FIXED)
                     {
-                        model.ProblemsFixed++;
                         model.Progress.Add();
                     }
                 }
+                if (!model.PatchResults.Where(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED).Any())
+                {
+                    model.CanExecute = false;
+                    model.CanRunForm = true;
+                }
                 model.ButtonsEnabled = true;
-                model.CanExecute = false;
-                model.CanRunForm = true;
+                model.RefreshCheck();
             });
-        }
-
-        /// <summary>
-        /// Remove selected patch so it wont be executed.
-        /// </summary>
-        /// <param name="sender">the patch detail controll</param>
-        /// <param name="e"></param>
-        private void runSinglePatch(object sender, MouseButtonEventArgs e)
-        {
-            PatchResultVM patchVm = ((Image)sender).DataContext as PatchResultVM;
-            patchVm.ExecutePatch();
-            if (patchVm.ExecutionResult == ExecutionResult.FIXED)
-            {
-                model.ProblemsFixed++;
-                model.Progress.Add();
-            }
-            //run all patches is unescessary if there is no patches to run O.o
-            if (model.PatchResults.Count(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED) == 0)
-            {
-                model.CanExecute = false;
-                model.CanRunForm = true;
-            }
         }
 
         /// <summary>
@@ -150,70 +118,25 @@ namespace Kros.TroubleShooterClient.View
         }
 
         /// <summary>
-        /// Remove selected patch so it wont be executed.
-        /// </summary>
-        /// <param name="sender">the patch detail controll</param>
-        /// <param name="e"></param>
-        private void removePatchResult(object sender, MouseButtonEventArgs e)
-        {
-            PatchResultVM patch = ((Image)sender).DataContext as PatchResultVM;
-            model.PatchResults.Remove(patch);
-        }
-
-        /// <summary>
-        /// display mode
-        /// </summary>
-        private enum Mode
-        {
-            /// <summary>
-            /// colored list of patches
-            /// </summary>
-            DETAIL,
-            /// <summary>
-            /// idetified and fixed counts
-            /// </summary>
-            SUMMARY
-        }
-
-        /// <summary>
-        /// change 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void modeChange(object sender, MouseButtonEventArgs e)
-        {
-            if (mode == Mode.SUMMARY)
-            {
-                mode = Mode.DETAIL;
-                Detail.Visibility = Visibility.Visible;
-                modeButton.Opacity = 0.3;
-                Summary.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                mode = Mode.SUMMARY;
-                Detail.Visibility = Visibility.Hidden;
-                modeButton.Opacity = 1;
-                Summary.Visibility = Visibility.Visible;
-            }
-        }
-
-        /// <summary>
         /// displays html detial for selected patch
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void displayHtmlDetail(object sender, MouseButtonEventArgs e)
+        private void DisplayHtmlDetail(object sender, RoutedEventArgs e)
         {
-            PatchResultVM patch = (PatchResultVM)((Image)sender).DataContext;
+            PatchResultVM patch = (PatchResultVM)((Button)sender).DataContext;
             BrowserWindow browserWindow = new BrowserWindow(patch);
             browserWindow.ShowDialog();
             if (browserWindow.Success)
             {
                 patch.ExecutionResult = ExecutionResult.FIXED;
                 model.Progress.Add();
-                model.ProblemsFixed++;
             }
+        }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            model.RefreshCheck();
         }
     }
 }

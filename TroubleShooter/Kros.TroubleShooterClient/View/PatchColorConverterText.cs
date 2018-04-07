@@ -30,13 +30,13 @@ namespace Kros.TroubleShooterClient.View
                 switch ((ExecutionResult)value)
                 {
                     case ExecutionResult.NOT_EXECUTED:
-                        return "Oprava ešte neprebehla. Pre spustenie kliknite na tlačidlo oprav.";
+                        return "Oprava ešte neprebehla. Označte problém a spustite opravu.";
                     case ExecutionResult.FIXED:
-                        return "Zdá sa, že oprava chyby prebehla úspešne.";
+                        return "Oprava prebehla úspešne.";
                     case ExecutionResult.NOT_FIXED:
                         return "Problém sa nepodarilo opraviť.";
                     case ExecutionResult.INSTRUCTOR:
-                        return "Troubleshooter nedokáže tento problém vyriešiť ale poskytne návod na jeho odstránenie.";
+                        return "Problém sa nepodarilo opraviť automaticky. K dispozícii je návod na jeho odstránenie.";
                     default:
                         return "...";
                 }
@@ -52,7 +52,7 @@ namespace Kros.TroubleShooterClient.View
                     case ExecutionResult.NOT_FIXED:
                         return new SolidColorBrush(Colors.DarkRed);
                     case ExecutionResult.INSTRUCTOR:
-                        return new SolidColorBrush(Colors.DarkRed);
+                        return new SolidColorBrush(Colors.DarkGoldenrod);
                     default:
                         return new SolidColorBrush(Colors.Black);
                 }

@@ -139,6 +139,7 @@
     <Compile Include="ViewModel\ProgressVM.cs" />
     <Compile Include="ViewModel\QuestionMode.cs" />
     <Compile Include="ViewModel\ServiceModeVM.cs" />
+    <Compile Include="View\BoolToVisibilityConverter.cs" />
     <Compile Include="View\PatchColorConverterText.cs" />
     <Compile Include="View\PatchColorConverter.cs" />
     <Compile Include="View\GuiFuncs.cs" />

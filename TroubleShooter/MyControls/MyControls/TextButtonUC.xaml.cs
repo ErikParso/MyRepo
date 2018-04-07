@@ -24,13 +24,11 @@ namespace MyControls
         public static readonly DependencyProperty SourceProperty =
             DependencyProperty.Register("Source", typeof(ImageSource), typeof(TextButtonUC));
         public static readonly DependencyProperty BackColorProperty =
-            DependencyProperty.Register("BackColor", typeof(Brush), typeof(TextButtonUC), 
-                new UIPropertyMetadata(Brushes.WhiteSmoke));
+            DependencyProperty.Register("BackColor", typeof(Brush), typeof(TextButtonUC), new UIPropertyMetadata(SystemColors.ControlBrush));
         public static readonly DependencyProperty HoverColorProperty =
-            DependencyProperty.Register("HoverColor", typeof(Brush), typeof(TextButtonUC),
-                new UIPropertyMetadata(Brushes.Snow));
+            DependencyProperty.Register("HoverColor", typeof(Brush), typeof(TextButtonUC), new UIPropertyMetadata(SystemColors.ControlLightBrush));
         public static readonly DependencyProperty ShadowColorProperty =
-            DependencyProperty.Register("ShadowColor", typeof(Color), typeof(TextButtonUC), new UIPropertyMetadata(Colors.Black));
+            DependencyProperty.Register("ShadowColor", typeof(Color), typeof(TextButtonUC), new UIPropertyMetadata(Colors.LightGray));
 
         public ImageSource Source
         {

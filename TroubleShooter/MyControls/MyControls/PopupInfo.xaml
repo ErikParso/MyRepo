@@ -17,9 +17,9 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Image Name="ImgArrowDown" Visibility="Visible" Width="20" Height="20" Grid.Row="0" Grid.Column="0" Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeftButtonUp="ImgArrowDown_MouseLeftButtonUp" Source="Resources/greenArrowDown.png" />
-        <Image Name="ImgArrowUp" Visibility="Hidden" Width="20" Height="20" Grid.Row="0" Grid.Column="0" Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeftButtonUp="ImgArrowUp_MouseLeftButtonUp" Source="Resources/greenArrowUp.png"/>
+        <Image Name="ImgArrowDown" Visibility="Hidden" Width="20" Height="20" Grid.Row="0" Grid.Column="0" Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeftButtonUp="ImgArrowDown_MouseLeftButtonUp" Source="Resources/greenArrowDown.png" />
+        <Image Name="ImgArrowUp" Visibility="Visible" Width="20" Height="20" Grid.Row="0" Grid.Column="0" Margin="3" HorizontalAlignment="Center" VerticalAlignment="Center" MouseLeftButtonUp="ImgArrowUp_MouseLeftButtonUp" Source="Resources/greenArrowUp.png"/>
         <TextBlock Text="{Binding MainText, ElementName=control}" Grid.Row="0" Grid.Column="1" FontSize="20"/>
-        <ContentControl Content="{Binding PlaceHolder, ElementName=control}" Name="TbDetail" Grid.Row="1" Grid.Column="0" Visibility="Collapsed" Grid.ColumnSpan="2" Margin="3"/>
+        <ContentControl Content="{Binding PlaceHolder, ElementName=control}" Name="TbDetail" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="3"/>
     </Grid>
 </UserControl>

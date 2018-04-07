@@ -34,7 +34,7 @@ namespace Kros.TroubleShooterClient.View
                 case ExecutionResult.NOT_FIXED:
                     return new SolidColorBrush(Colors.LightPink);
                 case ExecutionResult.INSTRUCTOR:
-                    return new SolidColorBrush(Colors.LightPink);
+                    return new SolidColorBrush(Colors.LightYellow);
                 default:
                     return new SolidColorBrush(Colors.Transparent);
             }

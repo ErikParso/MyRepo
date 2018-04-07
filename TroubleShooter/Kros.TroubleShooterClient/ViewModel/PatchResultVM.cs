@@ -7,10 +7,18 @@ namespace Kros.TroubleShooterClient.ViewModel
     /// </summary>
     public class PatchResultVM : ObservableObject
     {
-        /// <summary>
-        /// model
-        /// </summary>
         private Patch _patch;
+        private bool _canExecute;
+        private ExecutionResult _executionResult;
+
+        /// <summary>
+        /// Execute checkbox value to bind.
+        /// </summary>
+        public bool CanExecute
+        {
+            get { return _canExecute; }
+            set { _canExecute = value; RaisePropertyChanged("CanExecute"); }
+        }
 
         /// <summary>
         /// Patch name
@@ -32,7 +40,6 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// true - patch fixed a problem
         /// false - patch didnt fix a problem
         /// </summary>
-        private ExecutionResult _executionResult;
         public ExecutionResult ExecutionResult
         {
             get { return _executionResult; }
@@ -51,6 +58,7 @@ namespace Kros.TroubleShooterClient.ViewModel
             Description = patch.Description;
             HelpHtml = patch.Instruction;
             ExecutionResult = ExecutionResult.NOT_EXECUTED;
+            CanExecute = true;
         }
 
         /// <summary>
@@ -58,12 +66,15 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// </summary>
         public void ExecutePatch()
         {
-            if (_patch.SolveProblemSafe())
-                ExecutionResult = ExecutionResult.FIXED;
-            else if (HelpHtml != null)
-                ExecutionResult = ExecutionResult.INSTRUCTOR;
-            else
-                ExecutionResult = ExecutionResult.NOT_FIXED;
+            if (CanExecute)
+            {
+                if (_patch.SolveProblemSafe())
+                    ExecutionResult = ExecutionResult.FIXED;
+                else if (HelpHtml != null)
+                    ExecutionResult = ExecutionResult.INSTRUCTOR;
+                else
+                    ExecutionResult = ExecutionResult.NOT_FIXED;
+            }
         }
 
         public bool InstructionsResult()

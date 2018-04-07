@@ -13,7 +13,8 @@
     <Window.Resources>
         <local:PatchColorConverter x:Key="boolToColor"/>
         <local:PatchColorConverterText x:Key="boolToColorText"/>
-        <Style x:Key="infoButtonStyle" TargetType="{x:Type Image}">
+        <local:BoolToVisibilityConverter x:Key="boolToVisibility"/>
+        <Style x:Key="infoButtonStyle" TargetType="{x:Type Button}">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding ExecutionResult}" Value="{x:Static vm:ExecutionResult.INSTRUCTOR}">
@@ -21,7 +22,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="cancelButtonStyle" TargetType="{x:Type Image}">
+        <Style x:Key="checkStyle" TargetType="{x:Type CheckBox}">
             <Setter Property="Visibility" Value="Collapsed"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding ExecutionResult}" Value="{x:Static vm:ExecutionResult.NOT_EXECUTED}">
@@ -43,26 +44,46 @@
 
         <!--progres bars-->
         <Grid Background="White" Margin="3">
-            <myControls:CircularProgress Name="outer" Width="150" Height="150" StrokeThickness="20" FromColor="Pink" ToColor="LightGreen" Value="{Binding Progress.Progress}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"/>
+            <myControls:CircularProgress Name="outer" Width="150" Height="150" StrokeThickness="20" FromColor="Pink" 
+                                         ToColor="LightGreen" Value="{Binding Progress.Progress}" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+                <myControls:CircularProgress.Effect>
+                    <DropShadowEffect BlurRadius="5" Direction="-90" RenderingBias="Quality" ShadowDepth="2" 
+                              Color="LightGray">
+                    </DropShadowEffect>
+                </myControls:CircularProgress.Effect>
+            </myControls:CircularProgress>
             <StackPanel Name="SpProgressContext" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
                 <TextBlock Text="{Binding ActualWork}" FontSize="20" HorizontalAlignment="Center"/>
                 <TextBlock Text="{Binding ProgressPercentage}" FontSize="20" HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>
 
+        <!--no problems foun message-->
+        <Label Content="Nenašli sa žiadne problémy." HorizontalAlignment="Center" 
+               VerticalAlignment="Center" Grid.Column="1" FontSize="20" Margin="30">
+        </Label>
+
         <!--right panel detail-->
-        <Border BorderBrush="Black" BorderThickness="1" Margin="3" Grid.Row="0" Grid.Column="1" Name="Detail"  Visibility="Hidden">
+        <Border BorderBrush="Black" BorderThickness="1" Margin="3" Grid.Row="0" Grid.Column="1" Background="White"
+                Visibility="{Binding HasProblems, Converter={StaticResource boolToVisibility}}">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Label Content="Identifikované problémy:" FontSize="18" Margin="3" Grid.Row="0"/>
+                <CheckBox Content="Označ všetko" Margin="10" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                          IsChecked="{Binding CheckedAll}" IsEnabled="{Binding CheckEnabled}"/>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
                     <ItemsControl Grid.Column="3" ItemsSource="{Binding PatchResults}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
+                                    <Grid.Effect>
+                                        <DropShadowEffect BlurRadius="5" Direction="-90" RenderingBias="Quality" ShadowDepth="2" Color="LightGray">
+                                        </DropShadowEffect>
+                                    </Grid.Effect>
                                     <myControls:PopupInfo MainText="{Binding Name}" ContentContext="{Binding .}" Margin="0,3,0,3" Background="{Binding ExecutionResult, Converter={StaticResource boolToColor}}">
                                         <myControls:PopupInfo.PlaceHolder>
                                             <StackPanel>
@@ -73,17 +94,12 @@
                                             </StackPanel>
                                         </myControls:PopupInfo.PlaceHolder>
                                     </myControls:PopupInfo>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
-                                        <Image Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png"
-                                               MouseLeftButtonUp="runSinglePatch" ToolTip="Spustiť opravu"
-                                               Width="20" Margin="3,6,3,6" Style="{StaticResource cancelButtonStyle}"/>
-                                        <Image Source="/Kros.TroubleShooterClient;component/Resources/cancel.png"
-                                               MouseLeftButtonUp="removePatchResult" ToolTip="Neaplikovať túto opravu"
-                                               Width="20" Margin="3,6,3,6" Style="{StaticResource cancelButtonStyle}"/>
-                                        <Image Source="/Kros.TroubleShooterClient;component/Resources/info.png"
-                                               MouseLeftButtonUp="displayHtmlDetail"  ToolTip="Návod na odstránenie problému"
-                                               Width="20"  Margin="3,6,3,6" Style="{StaticResource infoButtonStyle}"/>
-                                    </StackPanel>
+                                    <CheckBox IsChecked="{Binding CanExecute}" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                                              Margin="3,6,3,6" Style="{StaticResource checkStyle}" ToolTip="Označiť problém" Click="CheckBox_Click"/>
+                                    <Button HorizontalAlignment="Right" VerticalAlignment="Top" Click="DisplayHtmlDetail"
+                                            ToolTip="Návod na odstránenie problému" Margin="3,6,3,6" Style="{StaticResource infoButtonStyle}">
+                                        <Image Source="/Kros.TroubleShooterClient;component/Resources/info.png" Width="20" Height="20"/>
+                                    </Button>
                                 </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -92,31 +108,7 @@
             </Grid>
         </Border>
 
-        <!--right panel summary-->
-        <Border BorderBrush="Black" BorderThickness="1" Margin="3" Grid.Row="0" Grid.Column="1" Name="Summary">
-            <Grid>
-                <Grid  HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <TextBlock Text="Identifikovaných:" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" FontSize="20" Margin="3"/>
-                    <TextBlock Text="Opravených:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" FontSize="20" Margin="3"/>
-                    <TextBlock Text="{Binding ProblemsFound}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" FontSize="20" Margin="3"/>
-                    <TextBlock Text="{Binding ProblemsFixed}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" FontSize="20" Margin="3"/>
-                </Grid>
-            </Grid>
-        </Border>
-
         <!--bottom control buttons-->
-        <Grid Name="modeButton" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="3">
-            <Image Source="/Kros.TroubleShooterClient;component/Resources/zoom.png" Width="20" Height="20" MouseLeftButtonUp="modeChange"/>
-        </Grid>
         <myControls:TextButtonUC WithDescription="Visible" IsEnabled="{Binding ButtonsEnabled}" MainText="Problémy pretrvávajú ?"
                                  DescriptionText="{x:Static res:Resources.buttonDesc2}" Margin="10" Grid.Row="1" Grid.ColumnSpan="2" 
                                  Click="formModeClick" Source="/Kros.TroubleShooterClient;component/Resources/form.png"
@@ -133,10 +125,10 @@
             </myControls:TextButtonUC.Style>
         </myControls:TextButtonUC>
         <myControls:TextButtonUC WithDescription="Visible" IsEnabled="{Binding ButtonsEnabled}" Margin="10" 
-                                 MainText="Oprav všetko" DescriptionText="{x:Static res:Resources.buttonDesc5}" 
+                                 MainText="Oprav označené" DescriptionText="{x:Static res:Resources.buttonDesc5}" 
                                  Grid.Row="1" Grid.ColumnSpan="2" Click="ExecutePatchesClick" 
                                  Source="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png"
-                                 BackColor="Gainsboro"  HoverColor="WhiteSmoke" UseLayoutRounding="True">
+                                 UseLayoutRounding="True">
             <myControls:TextButtonUC.Style>
                 <Style TargetType="{x:Type myControls:TextButtonUC}">
                     <Setter Property="Visibility" Value="Visible"/>

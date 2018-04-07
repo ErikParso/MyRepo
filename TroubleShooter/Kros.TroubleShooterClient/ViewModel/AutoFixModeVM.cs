@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
@@ -11,106 +12,79 @@ namespace Kros.TroubleShooterClient.ViewModel
     /// </summary>
     public class AutoFixVm : ObservableObject
     {
-        /// <summary>
-        /// displayed patches - patches which idetified problem
-        /// </summary>
+        private bool _canRunForm;
+        private bool _canExecute;
+        private bool _buttonsEnabled;
+        private bool _hasProblems;
+
         public ObservableCollection<PatchResultVM> PatchResults { get; set; }
 
-        /// <summary>
-        /// inner progres model - shows problem identification
-        /// </summary>
         public ProgressVM Progress { get; private set; }
 
-        /// <summary>
-        /// number of found problems
-        /// </summary>
-        private int _problemsFound;
-        /// <summary>
-        /// number of found problems
-        /// </summary>
-        public int ProblemsFound
-        {
-            get { return _problemsFound; }
-            set { _problemsFound = value; RaisePropertyChanged("ProblemsFound"); }
-        }
-
-        private bool _canExecute;
         public bool CanExecute
         {
-            get { return _canExecute; }
+            get { return _canExecute && CheckedAll != false; }
             set { _canExecute = value; RaisePropertyChanged("CanExecute"); }
         }
 
-        private bool _canRunForm;
         public bool CanRunForm
         {
             get { return _canRunForm; }
             set { _canRunForm = value; RaisePropertyChanged("CanRunForm"); }
         }
 
-        private bool _buttonsEnabled;
+        public bool? CheckedAll
+        {
+            get
+            {
+                if (PatchResults.Where(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED).All(p => p.CanExecute))
+                    return true;
+                else if (PatchResults.Where(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED).All(p => !p.CanExecute))
+                    return false;
+                else
+                    return null;
+            }
+            set
+            {
+                foreach (PatchResultVM p in PatchResults)
+                    p.CanExecute = (bool)value;
+                RaisePropertyChanged("CheckedAll");
+            }
+        }
+
+        public bool CheckEnabled
+        {
+            get { return PatchResults.Any(p => p.ExecutionResult == ExecutionResult.NOT_EXECUTED); }
+        }
+
+        public bool HasProblems
+        {
+            get { return _hasProblems; }
+            set { _hasProblems = value; RaisePropertyChanged("HasProblems"); }
+        }
+
         public bool ButtonsEnabled
         {
             get { return _buttonsEnabled; }
             set { _buttonsEnabled = value; RaisePropertyChanged("ButtonsEnabled"); }
         }
 
-        /// <summary>
-        /// number of fixed problems
-        /// </summary>
-        private int _problemsFixed;
-        /// <summary>
-        /// number of fixed problems
-        /// </summary>
-        public int ProblemsFixed
-        {
-            get { return _problemsFixed; }
-            set { _problemsFixed = value; RaisePropertyChanged("ProblemsFixed"); }
-        }
-
-        /// <summary>
-        /// init this model and progress models
-        /// </summary>
         public AutoFixVm()
         {
             PatchResults = new ObservableCollection<PatchResultVM>();
             Progress = new ProgressVM();
         }
 
-        /// <summary>
-        /// reset this model
-        /// </summary>
         internal void Reset()
         {
             Progress.Reset();
-            ProblemsFound = 0;
-            ProblemsFixed = 0;
             App.Current.Dispatcher.Invoke(() => PatchResults.Clear());
         }
-    }
 
-    /// <summary>
-    /// displays decimal as a percentage vale - used in xaml as value converter
-    /// </summary>
-    public class PercentageConverter : IValueConverter
-    {
-        /// <summary>
-        /// converts double to percentage
-        /// </summary>
-        /// <param name="value"></param>
-        /// <param name="targetType"></param>
-        /// <param name="parameter"></param>
-        /// <param name="culture"></param>
-        /// <returns></returns>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public void RefreshCheck()
         {
-            double val = (double)value;
-            return string.Format("{0}%", (int)(val * 100));
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
+            RaisePropertyChanged("CheckedAll");
+            RaisePropertyChanged("CheckEnabled");
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿//version(2018022620)
 
 using System;
-using System.Threading;
 using Kros.TroubleShooterClient.Model;
 using Kros.TroubleShooterInput;
 

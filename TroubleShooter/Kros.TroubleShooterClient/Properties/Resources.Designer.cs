@@ -91,7 +91,7 @@ namespace Kros.TroubleShooterClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Klikom spustíte automatické vyhľadanie problémov a vykonajú sa opravy.
+        ///   Looks up a localized string similar to Klikom spustíte automatické vyhľadanie problémov..
         /// </summary>
         public static string buttonDesc1 {
             get {
@@ -100,7 +100,7 @@ namespace Kros.TroubleShooterClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Niektoré problémy Troubleshooter nedokáže sám vyhľadať a preto je potrebné zodpovedať na pár otázok.
+        ///   Looks up a localized string similar to Niektoré problémy Troubleshooter nedokáže sám identifikovať. Prajete si vyhľadať problém ručne ?.
         /// </summary>
         public static string buttonDesc2 {
             get {
@@ -127,7 +127,7 @@ namespace Kros.TroubleShooterClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Budú vykonané všetky opravy zobrazené v podrobnom výpise. Kliknite na tlačidlo lupy pre zobrazenie podrobného výpisu..
+        ///   Looks up a localized string similar to Budú vykonané opravy všetkých označených problémov..
         /// </summary>
         public static string buttonDesc5 {
             get {
