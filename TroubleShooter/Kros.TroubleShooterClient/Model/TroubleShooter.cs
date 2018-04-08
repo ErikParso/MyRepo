@@ -74,7 +74,6 @@ namespace Kros.TroubleShooterClient.Model
         /// </summary>
         private TroubleShooter()
         {
-            Thread.Sleep(2000);
             //load run data if process started using Kros.TroubleShooterInputs method
             RunData = Runner.GetData();
             //init web api client
@@ -83,7 +82,7 @@ namespace Kros.TroubleShooterClient.Model
             if (!Directory.Exists(SOURCES_LOCATION))
                 Directory.CreateDirectory(SOURCES_LOCATION);
             //get latest source files if server is online... check if its a new version
-            Updater updater = new Updater(SOURCES_LOCATION, Client);
+            UpdateController updater = new UpdateController(SOURCES_LOCATION, Client);
             ServerOnline = Client.TryConnection();
             IsNewVersion = ServerOnline && updater.Execute();
             //recompile if its a new version

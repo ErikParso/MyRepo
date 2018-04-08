@@ -130,9 +130,9 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Service\ServisManager.cs" />
     <Compile Include="TroubleShooterClient.cs" />
+    <Compile Include="Update\UpdateController.cs" />
     <Compile Include="ViewModel\OptionalServiceProp.cs" />
     <Compile Include="Update\Ecxeptions.cs" />
-    <Compile Include="Update\Updater.cs" />
     <Compile Include="ViewModel\ObservableObject.cs" />
     <Compile Include="ViewModel\AutoFixModeVM.cs" />
     <Compile Include="ViewModel\PatchResultVM.cs" />
@@ -142,7 +142,6 @@
     <Compile Include="View\BoolToVisibilityConverter.cs" />
     <Compile Include="View\PatchColorConverterText.cs" />
     <Compile Include="View\PatchColorConverter.cs" />
-    <Compile Include="View\GuiFuncs.cs" />
     <Compile Include="View\BrowserWindow.xaml.cs">
       <DependentUpon>BrowserWindow.xaml</DependentUpon>
     </Compile>

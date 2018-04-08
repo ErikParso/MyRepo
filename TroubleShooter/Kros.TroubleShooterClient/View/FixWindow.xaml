@@ -1,14 +1,14 @@
 ﻿<Window x:Class="Kros.TroubleShooterClient.View.FixWindow"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Kros.TroubleShooterClient.View"
              xmlns:myControls="clr-namespace:MyControls;assembly=MyControls"
              xmlns:vm="clr-namespace:Kros.TroubleShooterClient.ViewModel"
              xmlns:res="clr-namespace:Kros.TroubleShooterClient.Properties"
-        mc:Ignorable="d"
-        Title="FixWindow" Height="450" Width="700">
+        mc:Ignorable="d" Icon="/Kros.TroubleShooterClient;component/Resources/find_and_repair.png"
+        Title="Troubleshooter" Height="450" Width="700">
 
     <Window.Resources>
         <local:PatchColorConverter x:Key="boolToColor"/>

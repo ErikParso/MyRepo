@@ -13,7 +13,7 @@ namespace Kros.TroubleShooterClient.Update
     /// <summary>
     /// Compares server files with clients files and updates changes.
     /// </summary>
-    public class Updater
+    public class UpdateController
     {
         /// <summary>
         /// The update directory
@@ -28,40 +28,40 @@ namespace Kros.TroubleShooterClient.Update
         /// <summary>
         /// Provider used to verify EcSignature.
         /// </summary>
-        private ECSignature verifier;
+        private ECSignature _verifier;
 
         /// <summary>
         /// Provider used to generate keypair. keypair is used in EcDiffieHelman key Exchange
         /// </summary>
-        private ECKeysGenerator keyGen;
+        private ECKeysGenerator _keyGen;
 
         /// <summary>
         /// Provider used to derive common secret. See Eliptic Curve Diffie-Helman key Exchange
         /// </summary>
-        private ECDiffieHelman diffieHelman;
+        private ECDiffieHelman _diffieHelman;
 
         /// <summary>
         /// The servers public key used to verify source file signature.
         /// </summary>
-        private byte[] signatureKey = Convert.FromBase64String("A0mbdQ20EsLzFyiFwr58QrdLFqmIAA==");
+        private byte[] _signatureKey = Convert.FromBase64String("A0mbdQ20EsLzFyiFwr58QrdLFqmIAA==");
 
         /// <summary>
         /// Troubleshooter client
         /// </summary>
-        private TroubleShooterClient client;
+        private TroubleShooterClient _client;
 
         /// <summary>
         /// initialise updater.
         /// </summary>
         /// <param name="updateDir"></param>
-        public Updater(string updateDir, TroubleShooterClient client)
+        public UpdateController(string updateDir, TroubleShooterClient client)
         {
-            this.client = client;
+            this._client = client;
             _updateDir = updateDir;
             ElipticCurve curve = ElipticCurve.secp160r1();
-            keyGen = new ECKeysGenerator(curve);
-            verifier = new ECSignature(curve);
-            diffieHelman = new ECDiffieHelman(curve);
+            _keyGen = new ECKeysGenerator(curve);
+            _verifier = new ECSignature(curve);
+            _diffieHelman = new ECDiffieHelman(curve);
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace Kros.TroubleShooterClient.Update
         private IEnumerable<SourceFileInfo> GetServerFiles()
         {
             string uri = (TroubleShooterClient.SERVICE_PATH + "/updateInfo");
-            HttpResponseMessage response = client.GetAsync(uri).GetAwaiter().GetResult();
+            HttpResponseMessage response = _client.GetAsync(uri).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)
                 return response.Content.ReadAsAsync<IEnumerable<SourceFileInfo>>().GetAwaiter().GetResult();
             else
@@ -207,17 +207,17 @@ namespace Kros.TroubleShooterClient.Update
         {
             byte[] dhClientPublic;
             byte[] dhClientPrivate;
-            keyGen.GenerateKeyPair(out dhClientPrivate, out dhClientPublic);
+            _keyGen.GenerateKeyPair(out dhClientPrivate, out dhClientPublic);
 
             string uri = (TroubleShooterClient.SERVICE_PATH + "/sources");
             ProtectedSourceRequest request = new ProtectedSourceRequest() { DhClientPublic = dhClientPublic, FileName = sourceFileInfo.FileName };
-            HttpResponseMessage response = client.PostAsJsonAsync(uri, request).GetAwaiter().GetResult();
+            HttpResponseMessage response = _client.PostAsJsonAsync(uri, request).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)
             {
                 ProtectedSource source = response.Content.ReadAsAsync<ProtectedSource>().GetAwaiter().GetResult();
-                byte[] sharedSecret = diffieHelman.SharedSecret(dhClientPrivate, source.DhPublicServer);
+                byte[] sharedSecret = _diffieHelman.SharedSecret(dhClientPrivate, source.DhPublicServer);
                 string decryptedSource = AesHandler.DecryptStringFromBytes_Aes(source.SourceCode, sharedSecret);
-                if (verifier.VerifySignature(decryptedSource, source.Signature, signatureKey))
+                if (_verifier.VerifySignature(decryptedSource, source.Signature, _signatureKey))
                     return decryptedSource;
                 else
                     return null;

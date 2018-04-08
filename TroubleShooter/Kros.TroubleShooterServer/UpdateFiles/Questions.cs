@@ -46,7 +46,7 @@ namespace Kros.TroubleShooterClient.Patches
     public class TlacChybyPopis : Question
     {
         public override string Text => "V ktorej časti tlače sa prejavuje problém ?";
-        public override string Category => "Oblasť tlače";
+        public override string Category => "Tlač";
         public override Question getQuestionByAnswer(int answer)
         {
             switch (answer)

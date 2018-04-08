@@ -35,10 +35,10 @@ namespace Kros.TroubleShooterInput
             Data = new Dictionary<string, string>();
             Flags = new List<string>();
             Exception = null;
-            ErrorMessage = null;
+            ErrorMessage = "Znenie chyby";
             Attachments = new List<string>();
             ServisObjects = new Dictionary<string, ServisObject>();
-            StartupMode = StartupMode.COMPLEX;
+            StartupMode = StartupMode.MINIMALISTIC;
         }
 
         public void Set(string name, string value)

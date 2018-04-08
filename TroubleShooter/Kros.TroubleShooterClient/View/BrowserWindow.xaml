@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:myControls="clr-namespace:MyControls;assembly=MyControls"
         mc:Ignorable="d"
-        Title="ComplexBrowserWindow" Height="450" Width="800">
+        Title="Troubleshooter" Height="450" Width="800">
     <Grid Background="White" Grid.RowSpan="2" Name="HtmlInfo" Grid.ColumnSpan="2">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

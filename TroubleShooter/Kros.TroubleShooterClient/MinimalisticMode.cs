@@ -36,6 +36,7 @@ namespace Kros.TroubleShooterClient
                         {
                             sb.AppendLine("Automatická prava problému prebehla úspešne.");
                             MessageBox.Show(sb.ToString(), "Oprava chyby", MessageBoxButton.OK, MessageBoxImage.Information);
+                            return true;
                         }
                         else if (p.Instruction != null)
                         {
@@ -52,10 +53,10 @@ namespace Kros.TroubleShooterClient
                             }
                         }
                     }
-                    break;
+                    MessageBox.Show("Problém sa nepodarilo odstrániť.", "Chyba rogramu", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
                 }
             }
-            MessageBox.Show("Problém sa nepodarilo odstrániť.", "Chyba rogramu", MessageBoxButton.OK, MessageBoxImage.Error);
             return false;
         }
     }

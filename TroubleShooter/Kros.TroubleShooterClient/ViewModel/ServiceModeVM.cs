@@ -42,11 +42,27 @@ namespace Kros.TroubleShooterClient.ViewModel
                 //zobrazia sa ked spustis apku standalone
                 Properties.Add(new OptionalServiceProp()
                 {
+                    Name = "Zákaznícke číslo",
+                    Value = "1234567890",
+                    Editable = false
+                });
+                Properties.Add(new OptionalServiceProp()
+                {
                     Name = "Kontakt",
                 });
                 Properties.Add(new OptionalServiceProp()
                 {
                     Name = "Popis problému",
+                });
+                Properties.Add(new OptionalServiceProp()
+                {
+                    Name = "Typ databázy",
+                    PossibleValues = new List<string>() { "Access", "SQL" }
+                });
+                Properties.Add(new OptionalServiceProp()
+                {
+                    Name = "Cesta k Olympu",
+                    IsPath = true
                 });
             }
         }        
