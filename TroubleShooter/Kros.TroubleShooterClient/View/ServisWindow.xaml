@@ -24,7 +24,9 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="{Binding Name}" HorizontalAlignment="Left" Grid.Row="0" VerticalAlignment="Center"/>
-                                    <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding Editable}" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1">
+                                    <TextBlock Text="{Binding Path=(Validation.Errors)[0].ErrorContent, ElementName=txtValue}"
+                                               HorizontalAlignment="Center" Grid.Row="0" VerticalAlignment="Center" Foreground="Red"/>
+                                    <TextBox Name="txtValue" IsEnabled="{Binding Editable}" AcceptsReturn="True" TextWrapping="Wrap" Grid.Row="1" Validation.Error="txtValue_Error">
                                         <TextBox.Style>
                                             <Style TargetType="TextBox">
                                                 <Setter Property="Visibility" Value="Visible"></Setter>
@@ -32,11 +34,28 @@
                                                     <DataTrigger Binding="{Binding SelectText}" Value="True">
                                                         <Setter Property="Visibility" Value="Hidden"></Setter>
                                                     </DataTrigger>
+                                                    <DataTrigger Binding="{Binding LargeText}" Value="True">
+                                                        <Setter Property="MinHeight" Value="100"></Setter>
+                                                    </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </TextBox.Style>
+                                        <TextBox.Resources>
+                                            <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                                        </TextBox.Resources>
+                                        <TextBox.Text>
+                                            <Binding Path="Value" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" ValidatesOnNotifyDataErrors="True" ValidatesOnDataErrors="True">
+                                                <Binding.ValidationRules>
+                                                    <local:MandatoryValidationRule ValidatesOnTargetUpdated="True">
+                                                        <local:MandatoryValidationRule.Mandatory>
+                                                            <local:ValidationCondition ValidationEnabled="{Binding Data.Mandatory, Source={StaticResource proxy}}"/>
+                                                        </local:MandatoryValidationRule.Mandatory>
+                                                    </local:MandatoryValidationRule>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
                                     </TextBox>
-                                    <ComboBox SelectedValue="{Binding Value}" ItemsSource="{Binding PossibleValues}" IsEnabled="{Binding Editable}" Grid.Row="1">
+                                    <ComboBox ItemsSource="{Binding PossibleValues}" IsEnabled="{Binding Editable}" Grid.Row="1">
                                         <ComboBox.Style>
                                             <Style TargetType="ComboBox">
                                                 <Setter Property="Visibility" Value="Hidden"></Setter>
@@ -47,6 +66,20 @@
                                                 </Style.Triggers>
                                             </Style>
                                         </ComboBox.Style>
+                                        <ComboBox.Resources>
+                                            <local:BindingProxy x:Key="proxy" Data="{Binding}"/>
+                                        </ComboBox.Resources>
+                                        <ComboBox.SelectedValue>
+                                            <Binding Path="Value" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True" ValidatesOnNotifyDataErrors="True" ValidatesOnDataErrors="True">
+                                                <Binding.ValidationRules>
+                                                    <local:MandatoryValidationRule ValidatesOnTargetUpdated="True">
+                                                        <local:MandatoryValidationRule.Mandatory>
+                                                            <local:ValidationCondition ValidationEnabled="{Binding Data.Mandatory, Source={StaticResource proxy}}"/>
+                                                        </local:MandatoryValidationRule.Mandatory>
+                                                    </local:MandatoryValidationRule>
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </ComboBox.SelectedValue>
                                     </ComboBox>
                                     <Image Margin="3" MouseLeftButtonUp="SelectPath" IsEnabled="{Binding Editable}" HorizontalAlignment="Right" Grid.Row="0" Stretch="None" Source="/Kros.TroubleShooterClient;component/Resources/folder.png">
                                         <Image.Style>
@@ -77,6 +110,6 @@
             </ScrollViewer>
         </Border>
         <myControls:TextButtonUC WithDescription="Visible" MainText="Odoslať" DescriptionText="{x:Static res:Resources.buttonDesc3}" Margin="10" Click="SendClick" Grid.Row="1" 
-                                 Source="/Kros.TroubleShooterClient;component/Resources/mail.png" UseLayoutRounding="True"/>
+                                 Source="/Kros.TroubleShooterClient;component/Resources/mail.png" UseLayoutRounding="True" IsEnabled="{Binding ButtonEnabled}"/>
     </Grid>
 </Window>

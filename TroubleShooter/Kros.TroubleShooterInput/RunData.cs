@@ -38,7 +38,7 @@ namespace Kros.TroubleShooterInput
             ErrorMessage = "Znenie chyby";
             Attachments = new List<string>();
             ServisObjects = new Dictionary<string, ServisObject>();
-            StartupMode = StartupMode.MINIMALISTIC;
+            StartupMode = StartupMode.COMPLEX;
         }
 
         public void Set(string name, string value)
@@ -92,6 +92,7 @@ namespace Kros.TroubleShooterInput
         public bool Editable { get; set; } 
         public bool IsPath { get; set; }
         public string[] PossibleValues { get; set; }
+        public bool LargeText { get; set; }
     }
 
     public enum StartupMode

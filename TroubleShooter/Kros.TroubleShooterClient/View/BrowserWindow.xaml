@@ -11,10 +11,16 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <myControls:TextButtonUC x:Name="markFixedButton" WithDescription="Collapsed" MainText="Označ ako opravené" Margin="10" Grid.Row="1"
-                                         Source="/Kros.TroubleShooterClient;component/Resources/fixed.png" Click="MarkSolvedClick" UseLayoutRounding="True"/>
-        <Border BorderThickness="1" BorderBrush="Black" Margin ="3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderThickness="1" BorderBrush="Black" Margin ="3" Grid.ColumnSpan="2">
             <WebBrowser Name="WebBrowser"/>
         </Border>
+        <myControls:TextButtonUC x:Name="markFixedButton" WithDescription="Collapsed" MainText="Označ ako opravené" Margin="10" Grid.Row="1"
+                                         Source="/Kros.TroubleShooterClient;component/Resources/fixed.png" Click="MarkSolvedClick" UseLayoutRounding="True"/>
+        <myControls:TextButtonUC x:Name="exitButton" WithDescription="Collapsed" MainText="Ignorovať" Margin="10" Grid.Row="1" Grid.Column="1"
+                                         Source="/Kros.TroubleShooterClient;component/Resources/cancel.png" Click="IgnoreClick" UseLayoutRounding="True"/>
     </Grid>
 </Window>

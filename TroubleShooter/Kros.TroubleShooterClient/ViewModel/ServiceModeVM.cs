@@ -13,27 +13,42 @@ namespace Kros.TroubleShooterClient.ViewModel
     /// </summary>
     public class ServiceModeVM : ObservableObject
     {
+        private bool _buttonEnabled;
+
         /// <summary>
         /// the list of servis parameters
         /// </summary>
         public List<OptionalServiceProp> Properties { get; private set; }
 
         /// <summary>
+        /// Button send should be enablen only if all info is valid.
+        /// </summary>
+        public bool ButtonEnabled { get => _buttonEnabled; set { _buttonEnabled = value; RaisePropertyChanged("ButtonEnabled"); } }
+
+        public void RefreshButton()
+        {
+            RaisePropertyChanged("ButtonEnabled");
+        }
+
+        /// <summary>
         /// init view model 
         /// </summary>
         public ServiceModeVM()
         {
+            ButtonEnabled = true;
             Properties = new List<OptionalServiceProp>();
             foreach (ServisObject o in TroubleShooter.Current.RunData.ServisObjects.Values)
             {
-                Properties.Add(new OptionalServiceProp
+                OptionalServiceProp prop = new OptionalServiceProp()
                 {
                     Name = o.Title,
                     Editable = o.Editable,
                     IsPath = o.IsPath,
                     PossibleValues = o.PossibleValues?.ToList(),
-                    Value = o.Value
-                });
+                    Value = o.Value,
+                    LargeText = o.LargeText
+                };
+                Properties.Add(prop);
             }
 
             if (Properties.Count == 0)
@@ -49,15 +64,19 @@ namespace Kros.TroubleShooterClient.ViewModel
                 Properties.Add(new OptionalServiceProp()
                 {
                     Name = "Kontakt",
+                    Mandatory = true
                 });
                 Properties.Add(new OptionalServiceProp()
                 {
                     Name = "Popis problému",
+                    LargeText = true,
+                    Mandatory = true
                 });
                 Properties.Add(new OptionalServiceProp()
                 {
                     Name = "Typ databázy",
-                    PossibleValues = new List<string>() { "Access", "SQL" }
+                    PossibleValues = new List<string>() { "Access", "SQL" },
+                    Mandatory = true
                 });
                 Properties.Add(new OptionalServiceProp()
                 {
@@ -65,6 +84,7 @@ namespace Kros.TroubleShooterClient.ViewModel
                     IsPath = true
                 });
             }
-        }        
+                
+        }
     }
 }

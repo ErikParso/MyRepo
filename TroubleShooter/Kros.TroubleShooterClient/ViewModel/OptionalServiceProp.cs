@@ -13,6 +13,7 @@ namespace Kros.TroubleShooterClient.ViewModel
         private bool editable = true;
         private bool isPath = false;
         private List<string> possibleValues;
+        private bool isValid;
 
         /// <summary>
         /// property name will be displayed as a label on form
@@ -44,5 +45,16 @@ namespace Kros.TroubleShooterClient.ViewModel
         /// Readonly ? 
         /// </summary>
         public bool ReadOnly { get { return !Editable; } }
+        /// <summary>
+        /// True if it is large text.
+        /// </summary>
+        public bool LargeText { get; set; }
+        /// <summary>
+        /// True, if the value is mandatory.
+        /// </summary>
+        public bool Mandatory {
+            get;
+            set;
+        }
     }
 }

@@ -44,7 +44,10 @@
 
         <!--progres bars-->
         <Grid Background="White" Margin="3">
-            <myControls:CircularProgress Name="outer" Width="150" Height="150" StrokeThickness="20" FromColor="Pink" 
+            <myControls:CircularProgress Name="filler" Width="150" Height="150" StrokeThickness="20" FromColor="Pink"  
+                                         ToColor="Pink" Value="1" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0"/>
+            <myControls:CircularProgress Name="outer" Width="150" Height="150" StrokeThickness="20" FromColor="LightGreen" 
                                          ToColor="LightGreen" Value="{Binding Progress.Progress}" 
                                          HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
                 <myControls:CircularProgress.Effect>
@@ -74,7 +77,18 @@
                 </Grid.RowDefinitions>
                 <Label Content="Identifikované problémy:" FontSize="18" Margin="3" Grid.Row="0"/>
                 <CheckBox Content="Označ všetko" Margin="10" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                          IsChecked="{Binding CheckedAll}" IsEnabled="{Binding CheckEnabled}"/>
+                          IsChecked="{Binding CheckedAll}">
+                    <CheckBox.Style>
+                        <Style TargetType="CheckBox">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CheckEnabled}" Value="False">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+                </CheckBox>
                 <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
                     <ItemsControl Grid.Column="3" ItemsSource="{Binding PatchResults}">
                         <ItemsControl.ItemTemplate>

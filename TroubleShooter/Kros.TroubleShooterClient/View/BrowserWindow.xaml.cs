@@ -36,9 +36,17 @@ namespace Kros.TroubleShooterClient.View
             }
             else
             {
-                MessageBox.Show(
-                    "Problém stále pretrváva. Ak máte problém s použitím inštrukcií, prosím kontaktujte podporu.");
+                MessageBox.Show("Problém naďalej pretrváva. Ak máte problém s použitím inštrukcií, prosím kontaktujte oddelenie podpory.", 
+                    "Troubleshooter", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        /// <summary>
+        /// hides patch detail
+        /// </summary>
+        private void IgnoreClick()
+        {
+            Close();
         }
     }
 }

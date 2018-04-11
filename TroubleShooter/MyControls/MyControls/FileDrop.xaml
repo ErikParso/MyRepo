@@ -10,7 +10,7 @@
         <local:FileNameValueConverter x:Key="conv"/>
     </UserControl.Resources>
     <Grid>
-        <TextBlock Text="Tu umiestnite súbory na odoslanie" FontSize="20" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="Nepridali ste žiadne prílohy" FontSize="20" Opacity="0.2" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock.Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Visibility" Value="Hidden"></Setter>

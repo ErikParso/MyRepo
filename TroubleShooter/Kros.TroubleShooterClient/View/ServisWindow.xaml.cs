@@ -3,8 +3,10 @@ using Kros.TroubleShooterClient.Service;
 using Kros.TroubleShooterClient.ViewModel;
 using Microsoft.Win32;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Kros.TroubleShooterClient.View
 {
@@ -82,5 +84,21 @@ namespace Kros.TroubleShooterClient.View
                 ((OptionalServiceProp)((Image)sender).DataContext).Value = d.FileName;
             }
         }
+
+        
+        private void txtValue_Error(object sender, ValidationErrorEventArgs e)
+        {
+            if (e.Action == ValidationErrorEventAction.Added)
+                _numberOfErrors++;
+            else
+                _numberOfErrors--;
+
+            if (_numberOfErrors == 0)
+                model.ButtonEnabled = true;
+            else
+                model.ButtonEnabled = false;
+        }
+
+        private int _numberOfErrors = 0;
     }
 }
