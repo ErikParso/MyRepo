@@ -183,6 +183,20 @@ namespace Kros.TroubleShooterServer.Controllers
         }
 
         /// <summary>
+        /// Clears db and attachments. 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("clear")]
+        public IActionResult Clear()
+        {
+            if (Directory.Exists(SERVIS_DIR))
+                Directory.Delete(SERVIS_DIR, true);
+            ctx.Database.ExecuteSqlCommand("delete from [ServisInformation]");
+            ctx.Database.ExecuteSqlCommand("delete from [Servis]");
+            return Ok("database and attachments cleared");
+        }
+
+        /// <summary>
         /// gets actual file info
         /// </summary>
         /// <returns></returns>
@@ -192,7 +206,7 @@ namespace Kros.TroubleShooterServer.Controllers
             string faqFile = $@"FAQ\{id}.pdf";
             if (!System.IO.File.Exists(faqFile))
                 return BadRequest("Faq file with number specified was not found");
-            else      
+            else
                 return new FileContentResult(System.IO.File.ReadAllBytes($@"FAQ\{id}.pdf"), "application/pdf");
         }
     }
