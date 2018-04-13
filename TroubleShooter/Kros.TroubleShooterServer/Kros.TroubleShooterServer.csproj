@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\faq1258.pdf" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="FAQ\1150.pdf" />
     <None Remove="FAQ\1258.pdf" />
   </ItemGroup>
@@ -81,14 +77,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="wwwroot\faq1258.pdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Page>
+    <ProjectReference Include="..\Kros.ElipticCryptography\Kros.ElipticCryptography.csproj" />
+    <ProjectReference Include="..\Kros.TroubleShooterCom\Kros.TroubleShooterCom.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kros.ElipticCryptography\Kros.ElipticCryptography.csproj" />
-    <ProjectReference Include="..\Kros.TroubleShooterCom\Kros.TroubleShooterCom.csproj" />
+    <Folder Include="Connected Services\" />
   </ItemGroup>
 
 </Project>
