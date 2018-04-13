@@ -21,7 +21,7 @@ namespace Kros.TroubleShooterServer
         {
             services.AddMvc();
             services.AddDbContext<ServisContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection1")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

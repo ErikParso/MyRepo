@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 
 namespace Kros.TroubleShooterClient
@@ -16,7 +17,7 @@ namespace Kros.TroubleShooterClient
         /// <summary>
         /// the service uri
         /// </summary>
-        public const string URI = "http://localhost:10001/";
+        public const string URI = "http://olymptroubleshooter.azurewebsites.net";
 
         /// <summary>
         /// init this client
@@ -33,7 +34,7 @@ namespace Kros.TroubleShooterClient
         /// <returns></returns>
         public bool TryConnection()
         {
-            string uri = (SERVICE_PATH + "/test");
+            string uri = Path.Combine(SERVICE_PATH,"test");
             try
             {
                 HttpResponseMessage response = GetAsync(uri).GetAwaiter().GetResult();
@@ -46,7 +47,6 @@ namespace Kros.TroubleShooterClient
             {
                 return false;
             }
-
         }
     }
 }

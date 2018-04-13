@@ -6,17 +6,66 @@
 
   <ItemGroup>
     <Compile Remove="Servis\**" />
-    <Compile Remove="UpdateFiles\**" />
     <Content Remove="Servis\**" />
-    <Content Remove="UpdateFiles\**" />
     <EmbeddedResource Remove="Servis\**" />
-    <EmbeddedResource Remove="UpdateFiles\**" />
     <None Remove="Servis\**" />
-    <None Remove="UpdateFiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="UpdateFiles\AdobeSecurityPatch.cs" />
+    <Compile Remove="UpdateFiles\ChybaZdvihuAccessPatch.cs" />
+    <Compile Remove="UpdateFiles\FrameworkVersionPatch.cs" />
+    <Compile Remove="UpdateFiles\InstructionBuilder.cs" />
+    <Compile Remove="UpdateFiles\PoskodeneFontyPatch.cs" />
+    <Compile Remove="UpdateFiles\PravaManZostPatch.cs" />
+    <Compile Remove="UpdateFiles\Questions.cs" />
+    <Compile Remove="UpdateFiles\ServicePackPatch.cs" />
+    <Compile Remove="UpdateFiles\TestPatch.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="wwwroot\faq1258.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="FAQ\1150.pdf" />
+    <None Remove="FAQ\1258.pdf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="FAQ\1150.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FAQ\1258.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpdateFiles\AdobeSecurityPatch.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpdateFiles\ChybaZdvihuAccessPatch.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpdateFiles\FrameworkVersionPatch.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpdateFiles\InstructionBuilder.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpdateFiles\PoskodeneFontyPatch.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpdateFiles\PravaManZostPatch.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpdateFiles\Questions.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpdateFiles\ServicePackPatch.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="UpdateFiles\TestPatch.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
