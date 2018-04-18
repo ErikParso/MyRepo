@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using ElipticCurves;
 using Kros.TroubleShooterCommon;
@@ -111,29 +112,35 @@ namespace Kros.TroubleShooterServer.Controllers
         [HttpPost("servis")]
         public IActionResult Post()
         {
+            IFormCollection form = Request.Form;
+
             if (!Directory.Exists(SERVIS_DIR))
                 Directory.CreateDirectory(SERVIS_DIR);
 
-            string attachmentDir = null;
-            while (string.IsNullOrEmpty(attachmentDir) || Directory.Exists(Path.Combine(SERVIS_DIR, attachmentDir)))
-            {
-                byte[] dirnamebytes = new byte[30];
-                rnd.NextBytes(dirnamebytes);
-                attachmentDir = Convert.ToBase64String(dirnamebytes);
-                foreach (char c in Path.GetInvalidFileNameChars())
-                    attachmentDir = attachmentDir.Replace(c, '_');
-            }
-            Directory.CreateDirectory(Path.Combine(SERVIS_DIR, attachmentDir));
+            //generate zip name
+            byte[] dirnamebytes = new byte[30];
+            rnd.NextBytes(dirnamebytes);
+            string attachmentDir = Convert.ToBase64String(dirnamebytes);
+            foreach (char c in Path.GetInvalidFileNameChars())
+                attachmentDir = attachmentDir.Replace(c, '_');
 
-            IFormCollection form = Request.Form;
-            foreach (IFormFile file in form.Files)
+            //ctreate zip with attachments zip
+            using (var fileStream = new FileStream(Path.Combine(SERVIS_DIR, attachmentDir + ".zip"), FileMode.CreateNew))
             {
-                using (FileStream fs = new FileStream(Path.Combine(SERVIS_DIR, attachmentDir, file.FileName), FileMode.OpenOrCreate))
+                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
                 {
-                    file.CopyTo(fs);
+                    foreach (IFormFile file in form.Files)
+                    {
+                        var demoFile = archive.CreateEntry(file.FileName);
+                        using (var entryStream = demoFile.Open())
+                        {
+                            file.CopyTo(entryStream);
+                        }
+                    }
                 }
             }
 
+            //write servis information in database
             Servis s = new Servis()
             {
                 AttachmentsDirectory = attachmentDir,
@@ -211,6 +218,19 @@ namespace Kros.TroubleShooterServer.Controllers
                 return BadRequest("Faq file with number specified was not found");
             else
                 return new FileContentResult(System.IO.File.ReadAllBytes($@"FAQ\{id}.pdf"), "application/pdf");
+        }
+
+        /// <summary>
+        /// Gets zipped attachmets. 
+        /// </summary>
+        [HttpGet("attachment/{name}")]
+        public IActionResult GetAttachment(string name)
+        {
+            string attachment = $@"{SERVIS_DIR}\{name}.zip";
+            if (!System.IO.File.Exists(attachment))
+                return BadRequest("Attachments could not be found.");
+            else
+                return new FileContentResult(System.IO.File.ReadAllBytes(attachment), "application/zip");
         }
     }
 }
