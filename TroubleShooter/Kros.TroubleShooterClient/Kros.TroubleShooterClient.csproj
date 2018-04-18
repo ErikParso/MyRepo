@@ -302,9 +302,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if not exist "$(SolutionDir)Kros.TroubleShooterServer\UpdateFiles" mkdir "$(SolutionDir)Kros.TroubleShooterServer\UpdateFiles"
-del "$(SolutionDir)Kros.TroubleShooterServer\UpdateFiles\*.cs"
-xcopy /Q /Y "$(ProjectDir)\Patches" "$(SolutionDir)Kros.TroubleShooterServer\UpdateFiles"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

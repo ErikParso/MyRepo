@@ -46,7 +46,8 @@ namespace Kros.TroubleShooterClient.ViewModel
                     IsPath = o.IsPath,
                     PossibleValues = o.PossibleValues?.ToList(),
                     Value = o.Value,
-                    LargeText = o.LargeText
+                    LargeText = o.LargeText,
+                    Mandatory = o.Mandatory
                 };
                 Properties.Add(prop);
             }
@@ -57,31 +58,14 @@ namespace Kros.TroubleShooterClient.ViewModel
                 //zobrazia sa ked spustis apku standalone
                 Properties.Add(new OptionalServiceProp()
                 {
-                    Name = "Zákaznícke číslo",
-                    Value = "1234567890",
-                    Editable = false
-                });
-                Properties.Add(new OptionalServiceProp()
-                {
-                    Name = "Kontakt",
-                    Mandatory = true
+                    Name = "Zákaznícke číslo alebo kontakt",
+                    Editable = true, Mandatory = true
                 });
                 Properties.Add(new OptionalServiceProp()
                 {
                     Name = "Popis problému",
                     LargeText = true,
                     Mandatory = true
-                });
-                Properties.Add(new OptionalServiceProp()
-                {
-                    Name = "Typ databázy",
-                    PossibleValues = new List<string>() { "Access", "SQL" },
-                    Mandatory = true
-                });
-                Properties.Add(new OptionalServiceProp()
-                {
-                    Name = "Cesta k Olympu",
-                    IsPath = true
                 });
             }
                 

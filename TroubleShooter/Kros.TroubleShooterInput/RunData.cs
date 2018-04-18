@@ -93,6 +93,7 @@ namespace Kros.TroubleShooterInput
         public bool IsPath { get; set; }
         public string[] PossibleValues { get; set; }
         public bool LargeText { get; set; }
+        public bool Mandatory { get; set; }
     }
 
     public enum StartupMode
