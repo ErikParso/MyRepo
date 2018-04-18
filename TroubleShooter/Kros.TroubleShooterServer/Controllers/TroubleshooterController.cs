@@ -14,60 +14,60 @@ using Microsoft.Extensions.Primitives;
 namespace Kros.TroubleShooterServer.Controllers
 {
     /// <summary>
-    /// provides functions needed for update sources on clients
+    /// Provides functions for client updates and services.
     /// </summary>
     [Route("api/[controller]")]
-    public class UpdateFilesController : Controller
+    public class TroubleshooterController : Controller
     {
         /// <summary>
-        /// directory with patch files
+        /// Directory with patch files.
         /// </summary>
         private const string SOURCE_FILES_DIR = "UpdateFiles";
 
         /// <summary>
-        /// directory with patch files
+        /// Directory with servis attachments.
         /// </summary>
         private const string SERVIS_DIR = "Servis";
 
         /// <summary>
-        /// server private key to sign protected source files
+        /// Generated server private key to sign protected source files.
         /// </summary>
         private byte[] signatureKey = Convert.FromBase64String("YkOydPkgS0av3U6xeOEMl74HkbMA");
 
         /// <summary>
-        /// provider used to sign source files
+        /// Service used to sign source files.
         /// </summary>
         private ECSignature signatureMaker;
 
         /// <summary>
-        /// provider used to generate key pair 
+        /// Service used to generate key pair.
         /// </summary>
         private ECKeysGenerator keyGen;
 
         /// <summary>
-        /// provider to derive shared secret between client and server
+        /// Service to derive shared secret between client and server.
         /// </summary>
         private ECDiffieHelman diffieHelman;
 
         /// <summary>
-        /// list of actual source files and its versions
+        /// List of actual source files and its versions.
         /// </summary>
         private IEnumerable<SourceFileInfo> sourceFiles;
 
         /// <summary>
-        /// for generating attachment directories
+        /// Instance used for generating attachment directories.
         /// </summary>
         private Random rnd;
 
         /// <summary>
-        /// servis database entity model
+        /// Database repository. Entity dbContext.
         /// </summary>
         private ServisContext ctx;
 
         /// <summary>
-        /// see calss info
+        /// <see cref="TroubleshooterController"/>
         /// </summary>
-        public UpdateFilesController(ServisContext ctx)
+        public TroubleshooterController(ServisContext ctx)
         {
             this.ctx = ctx;
             ElipticCurve curve = ElipticCurve.secp160r1();
@@ -79,12 +79,12 @@ namespace Kros.TroubleShooterServer.Controllers
         }
 
         /// <summary>
-        /// Gets source code encoded by common secret and signed by server
+        /// Gets protected source. Code encoded by common secret and signed by server.
         /// </summary>
-        /// <param name="request">contains filename and clients public key</param>
-        /// <returns>protected source</returns>
-        [HttpPost("sources")]
-        public ProtectedSource Post([FromBody] ProtectedSourceRequest request)
+        /// <param name="request">Contains requested source file name and clients public key to derive encryption common secret.</param>
+        /// <returns>Protected source.</returns>
+        [HttpPost("source")]
+        public ProtectedSource Get([FromBody] ProtectedSourceRequest request)
         {
             //read source code
             string sourceCode = System.IO.File.ReadAllText(Path.Combine(SOURCE_FILES_DIR, request.FileName));
@@ -104,10 +104,13 @@ namespace Kros.TroubleShooterServer.Controllers
             };
         }
 
-        [HttpPost("service")]
+        /// <summary>
+        /// Stores service information and attachments on server.
+        /// </summary>
+        /// <returns>Result.</returns>
+        [HttpPost("servis")]
         public IActionResult Post()
         {
-
             if (!Directory.Exists(SERVIS_DIR))
                 Directory.CreateDirectory(SERVIS_DIR);
 
@@ -156,16 +159,19 @@ namespace Kros.TroubleShooterServer.Controllers
         }
 
         /// <summary>
-        /// gets actual file info
+        /// Gets server files info for update. File names with actual versions.
         /// </summary>
-        /// <returns></returns>
         [HttpGet("updateinfo")]
         public IEnumerable<SourceFileInfo> GetFileInfo()
         {
             return sourceFiles;
         }
 
-        [HttpGet("errors")]
+        /// <summary>
+        /// Gets all servis informations from server.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("problems")]
         public IEnumerable<Servis> GetServises()
         {
             IEnumerable<Servis> ret = ctx.Servises.Include("ServisInformations").OrderBy(s => s.ReceiveDate).ToList();
@@ -173,9 +179,8 @@ namespace Kros.TroubleShooterServer.Controllers
         }
 
         /// <summary>
-        /// gets actual file info
+        /// Tests connection.
         /// </summary>
-        /// <returns></returns>
         [HttpGet("test")]
         public IActionResult TestConn()
         {
@@ -185,8 +190,7 @@ namespace Kros.TroubleShooterServer.Controllers
         /// <summary>
         /// Clears db and attachments. 
         /// </summary>
-        /// <returns></returns>
-        [HttpGet("clear")]
+        [HttpDelete("clear")]
         public IActionResult Clear()
         {
             if (Directory.Exists(SERVIS_DIR))
@@ -197,11 +201,10 @@ namespace Kros.TroubleShooterServer.Controllers
         }
 
         /// <summary>
-        /// gets actual file info
+        /// Gets instruction file of number specified. 
         /// </summary>
-        /// <returns></returns>
         [HttpGet("faq/{id}")]
-        public IActionResult TestConn(int id)
+        public IActionResult Faq(int id)
         {
             string faqFile = $@"FAQ\{id}.pdf";
             if (!System.IO.File.Exists(faqFile))

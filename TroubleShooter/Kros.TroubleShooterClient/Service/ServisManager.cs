@@ -20,7 +20,7 @@ namespace Kros.TroubleShooterClient.Service
         /// <returns>if data was succesfully send to server</returns>
         public bool SendToServis(IEnumerable<string> attachments, IEnumerable<OptionalServiceProp> properties)
         {
-            string uri = (TroubleShooterClient.SERVICE_PATH + "/service");
+            string uri = (TroubleShooterClient.SERVICE_PATH + "/servis");
             //create httpContent
             MultipartFormDataContent form = new MultipartFormDataContent();
             foreach (string attachment in attachments)

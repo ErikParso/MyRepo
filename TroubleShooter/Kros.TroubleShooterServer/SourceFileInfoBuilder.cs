@@ -6,10 +6,18 @@ using System.Text.RegularExpressions;
 
 namespace Kros.TroubleShooterServer
 {
+    /// <summary>
+    /// Takes version info from source file.
+    /// </summary>
     public class SourceFileInfoBuilder
     {
         private static Regex versionRegex = new Regex(@"^\/\/version\((?'version'\d{10})\)");
 
+        /// <summary>
+        /// Reads source files and returns info collection (name and version).
+        /// </summary>
+        /// <param name="sourceFilesDirectory">Source files path.</param>
+        /// <returns>Source file info collection.</returns>
         public static IEnumerable<SourceFileInfo> GetSourceFiles(string sourceFilesDirectory)
         {
             foreach (string sourceFile in Directory.GetFiles(sourceFilesDirectory, "*.cs"))

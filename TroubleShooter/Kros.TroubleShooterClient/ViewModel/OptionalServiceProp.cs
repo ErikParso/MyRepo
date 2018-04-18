@@ -13,10 +13,9 @@ namespace Kros.TroubleShooterClient.ViewModel
         private bool editable = true;
         private bool isPath = false;
         private List<string> possibleValues;
-        private bool isValid;
 
         /// <summary>
-        /// property name will be displayed as a label on form
+        /// Property name will be displayed as a label on form.
         /// </summary>
         public string Name { get => name; set { this.name = value; RaisePropertyChanged("Name"); } }
         /// <summary>

@@ -209,7 +209,7 @@ namespace Kros.TroubleShooterClient.Update
             byte[] dhClientPrivate;
             _keyGen.GenerateKeyPair(out dhClientPrivate, out dhClientPublic);
 
-            string uri = (TroubleShooterClient.SERVICE_PATH + "/sources");
+            string uri = (TroubleShooterClient.SERVICE_PATH + "/source");
             ProtectedSourceRequest request = new ProtectedSourceRequest() { DhClientPublic = dhClientPublic, FileName = sourceFileInfo.FileName };
             HttpResponseMessage response = _client.PostAsJsonAsync(uri, request).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)

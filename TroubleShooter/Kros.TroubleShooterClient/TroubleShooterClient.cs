@@ -12,7 +12,7 @@ namespace Kros.TroubleShooterClient
         /// <summary>
         /// controllers path
         /// </summary>
-        public const string SERVICE_PATH = "api/updateFiles";
+        public const string SERVICE_PATH = "api/troubleshooter";
 
         /// <summary>
         /// the service uri
