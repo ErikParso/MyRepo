@@ -1,4 +1,4 @@
-﻿//version(2018022620)
+﻿//version(2018022622)
 
 using System;
 using System.Threading;
@@ -22,7 +22,7 @@ namespace Kros.TroubleShooterClient.Patches
     {
         public override string Description => "Problém sa podarí identifikovať ale nepodarí sa ho odstrániť. K dispozícii je funkčný návod na jeho odstránenie.";
         public override string PatchName => "Problém variant 2";
-        public override string Instruction => "Funkčný návod na odstránenie problému";
+        public override string Instruction => new InstructionBuilder("Funkčný návod na odstránenie problému").ToString();
         protected override bool ComplexIdentify() => true;
         protected override bool FastIdentify(RunData runData) => false;
         protected override bool SolveProblem(RunData data) => false;
@@ -44,7 +44,7 @@ namespace Kros.TroubleShooterClient.Patches
     {
         public override string Description => "Problém sa podarí identifikovať ale nepodarí sa ho odstrániť. K dispozícii je návod na jeho odstránenie ale užívateľ s ním má problém.";
         public override string PatchName => "Problém variant 4";
-        public override string Instruction => "Funkčný návod na odstránenie problému";
+        public override string Instruction => new InstructionBuilder("Nefunkčný návod na odstránenie problému").ToString();
         protected override bool ComplexIdentify() => true;
         protected override bool FastIdentify(RunData runData) => false;
         protected override bool SolveProblem(RunData data) => false;

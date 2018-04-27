@@ -117,24 +117,23 @@ namespace Kros.TroubleShooterServer.Controllers
             if (!Directory.Exists(SERVIS_DIR))
                 Directory.CreateDirectory(SERVIS_DIR);
 
-            //generate zip name
-            byte[] dirnamebytes = new byte[30];
-            rnd.NextBytes(dirnamebytes);
-            string attachmentDir = Convert.ToBase64String(dirnamebytes);
-            foreach (char c in Path.GetInvalidFileNameChars())
-                attachmentDir = attachmentDir.Replace(c, '_');
-
-            //ctreate zip with attachments zip
-            using (var fileStream = new FileStream(Path.Combine(SERVIS_DIR, attachmentDir + ".zip"), FileMode.CreateNew))
+            //process attachments
+            string attachmentDir = "NO_ATTACHMENTS";
+            if (form.Files.Any())
             {
-                using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
+                attachmentDir = Path.GetRandomFileName().Replace(".","_");
+                //ctreate zip with attachments zip
+                using (var fileStream = new FileStream(Path.Combine(SERVIS_DIR, attachmentDir + ".zip"), FileMode.CreateNew))
                 {
-                    foreach (IFormFile file in form.Files)
+                    using (var archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
                     {
-                        var demoFile = archive.CreateEntry(file.FileName);
-                        using (var entryStream = demoFile.Open())
+                        foreach (IFormFile file in form.Files)
                         {
-                            file.CopyTo(entryStream);
+                            var demoFile = archive.CreateEntry(file.FileName);
+                            using (var entryStream = demoFile.Open())
+                            {
+                                file.CopyTo(entryStream);
+                            }
                         }
                     }
                 }
@@ -147,7 +146,6 @@ namespace Kros.TroubleShooterServer.Controllers
                 ServisInformations = new List<ServisInformation>(),
                 ReceiveDate = DateTime.Now,
             };
-
             foreach (string key in form.Keys)
             {
                 StringValues val;
