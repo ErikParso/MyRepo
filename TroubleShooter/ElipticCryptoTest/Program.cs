@@ -8,8 +8,10 @@ namespace ElipticCryptoTest
     {
         static void Main(string[] args)
         {
-            runTest();
             generateKeys();
+            Console.WriteLine("Press enter to run tests....");
+            Console.ReadLine();
+            runTest();
             Console.ReadLine();
         }
 
