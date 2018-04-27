@@ -8,6 +8,10 @@
     <DocumentationFile>bin\Release\netcoreapp2.0\Kros.TroubleShooterServer.xml</DocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.0\Kros.TroubleShooterServer.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Servis\**" />
     <Content Remove="Servis\**" />

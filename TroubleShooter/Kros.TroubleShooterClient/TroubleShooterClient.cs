@@ -18,6 +18,7 @@ namespace Kros.TroubleShooterClient
         /// the service uri
         /// </summary>
         public const string URI = "http://olymptroubleshooter.azurewebsites.net";
+        //public const string URI = "http://localhost:10003";
 
         /// <summary>
         /// init this client
