@@ -35,8 +35,8 @@ namespace Kros.TroubleShooterServer
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.WithOrigins("http://olymptroubleshooter.azurewebsites.net"));
+                options.AddPolicy("AllowSpecificOrigin", builder => 
+                    builder.WithOrigins("http://olymptroubleshooter.azurewebsites.net", "http://localhost:4200", "http://localhost"));
             });
         }
 
@@ -55,7 +55,7 @@ namespace Kros.TroubleShooterServer
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Troubleshooter server V1");
             });
             app.UseCors(builder =>
-                builder.WithOrigins("http://olymptroubleshooter.azurewebsites.net"));
+                builder.WithOrigins("http://olymptroubleshooter.azurewebsites.net", "http://localhost:4200", "http://localhost"));
         }
     }
 }
