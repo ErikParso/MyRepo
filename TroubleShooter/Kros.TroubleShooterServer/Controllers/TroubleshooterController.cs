@@ -7,6 +7,7 @@ using ElipticCurves;
 using Kros.TroubleShooterCommon;
 using Kros.TroubleShooterCommon.Models;
 using Kros.TroubleShooterServer.Database;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace Kros.TroubleShooterServer.Controllers
     /// Provides functions for client updates and services.
     /// </summary>
     [Route("api/[controller]")]
+    [EnableCors("AllowSpecificOrigin")]
     public class TroubleshooterController : Controller
     {
         /// <summary>

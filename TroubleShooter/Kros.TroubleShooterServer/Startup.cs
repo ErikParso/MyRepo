@@ -33,6 +33,11 @@ namespace Kros.TroubleShooterServer
             });
             services.AddDbContext<ServisContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://olymptroubleshooter.azurewebsites.net"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +54,8 @@ namespace Kros.TroubleShooterServer
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Troubleshooter server V1");
             });
+            app.UseCors(builder =>
+                builder.WithOrigins("http://olymptroubleshooter.azurewebsites.net"));
         }
     }
 }
