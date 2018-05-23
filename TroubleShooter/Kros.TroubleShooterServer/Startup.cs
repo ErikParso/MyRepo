@@ -47,6 +47,7 @@ namespace Kros.TroubleShooterServer
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseMvc();
             app.UseSwagger();

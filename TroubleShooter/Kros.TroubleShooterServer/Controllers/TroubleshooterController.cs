@@ -147,6 +147,7 @@ namespace Kros.TroubleShooterServer.Controllers
                 AttachmentsDirectory = attachmentDir,
                 ServisInformations = new List<ServisInformation>(),
                 ReceiveDate = DateTime.Now,
+                Solved = false
             };
             foreach (string key in form.Keys)
             {
@@ -231,6 +232,17 @@ namespace Kros.TroubleShooterServer.Controllers
                 return BadRequest("Attachments could not be found.");
             else
                 return new FileContentResult(System.IO.File.ReadAllBytes(attachment), "application/zip");
+        }
+
+        /// <summary>
+        /// Marks problem as solved.
+        /// </summary>
+        [HttpGet("solved/{problemId}")]
+        public IActionResult SolveProblem(int problemId)
+        {
+            ctx.Servises.SingleOrDefault(s => s.ServisId == problemId).Solved = true;
+            ctx.SaveChanges();
+            return Ok();
         }
     }
 }

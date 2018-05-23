@@ -23,6 +23,7 @@ namespace Kros.TroubleShooterServer.Database
         public long ServisId { get; set; }
         public DateTime ReceiveDate { get; set; }
         public string AttachmentsDirectory { get; set; }
+        public bool Solved { get; set; }
 
         public List<ServisInformation> ServisInformations { get; set; }
     }
